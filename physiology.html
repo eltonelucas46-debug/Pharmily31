@@ -1,0 +1,1017 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#11834c">
+<title>Medical Physiology | PHARMILY31</title>
+<style>
+:root{
+  --blue:#1769e0;--navy:#101c36;--purple:#773be8;
+  --green:#11834c;--red:#d92332;--bg:#f1f5fc;
+  --border:#dce5f1;
+  --dashboard-height:150px;
+}
+*{box-sizing:border-box}
+html,body{max-width:100%;overflow-x:hidden}
+html{scroll-padding-top:calc(var(--dashboard-height) + 18px)}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--navy);line-height:1.6}
+header{background:linear-gradient(135deg,#101c36,#11663f,#1769e0);color:white;text-align:center;padding:26px 14px}
+header h1{margin:0;font-size:24px}
+header p{margin:5px 0}
+.container{width:min(950px,94%);max-width:100%;margin:22px auto}
+.card{background:white;padding:22px;border:1px solid var(--border);border-radius:16px;margin-bottom:18px;box-shadow:0 4px 18px #10213b0b;min-width:0}
+h2,h3{margin-top:0}
+.small{color:#63728b;font-size:13px}
+label.field{display:block;font-weight:bold;margin:12px 0 6px}
+input[type=text],select,textarea{width:100%;max-width:100%;padding:12px;border:1px solid #bac8dc;border-radius:9px;font-size:15px;font-family:inherit;background:white;color:var(--navy)}
+textarea{min-height:100px;resize:vertical;line-height:1.55}
+button{border:0;border-radius:9px;background:var(--blue);color:white;padding:13px 17px;font-size:15px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.secondary{background:#e8effa;color:var(--navy)}
+button.purple{background:var(--purple)}
+button.green{background:var(--green)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #91baff;outline-offset:3px}
+.hidden{display:none!important}
+.notice{background:#edf5ff;border-left:4px solid var(--blue);padding:13px;border-radius:9px;margin:13px 0}
+.warning{background:#fff0f0;color:#9c1824;padding:13px;border-radius:9px;margin:13px 0}
+.hero{position:relative;overflow:hidden;border-radius:17px;padding:27px 15px;text-align:center;color:white;background:linear-gradient(135deg,#101c36,#11663f,#1769e0);margin-bottom:18px}
+.hero:before,.hero:after{content:"";position:absolute;width:150px;height:150px;border:1px solid #ffffff30;border-radius:50%;animation:orbit 8s linear infinite}
+.hero:before{left:-55px;top:-65px}
+.hero:after{right:-45px;bottom:-90px;animation-direction:reverse}
+.hero-title{position:relative;z-index:1;font-size:clamp(26px,6vw,42px);font-weight:900;line-height:1.25}
+.hero-sub{position:relative;z-index:1}
+@keyframes orbit{to{transform:rotate(360deg)}}
+
+/* FIXED DASHBOARD: REMAINS VISIBLE WHILE THE STUDENT SCROLLS */
+.assessment-sticky{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  width:100%;
+  z-index:999;
+  background:var(--bg);
+  padding:8px max(3%,calc((100% - 950px)/2));
+  margin:0;
+  isolation:isolate;
+  box-shadow:0 5px 18px #10213b14;
+  border-bottom:1px solid var(--border);
+}
+.topbar{
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  background:white;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  margin-bottom:7px;
+  min-width:0;
+  box-shadow:0 4px 16px #10213b0b;
+}
+#studentLabel{
+  display:block;
+  font-weight:800;
+  overflow-wrap:anywhere;
+  line-height:1.35;
+}
+#modeLabel,#progressText{line-height:1.4}
+.timer{font-size:22px;font-weight:bold;font-variant-numeric:tabular-nums;color:var(--green)}
+.timer.red{color:var(--red);animation:pulse .8s infinite}
+@keyframes pulse{50%{opacity:.5}}
+.progress-track{height:8px;background:#e5ebf5;border-radius:10px;overflow:hidden;margin:0}
+.progress-fill{height:100%;width:0;background:var(--blue);transition:width .2s}
+
+/* JavaScript sets the actual fixed-dashboard height here. */
+#exam{padding-top:calc(var(--dashboard-height) + 15px)}
+.question{
+  background:white;
+  padding:19px;
+  margin-bottom:14px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  scroll-margin-top:calc(var(--dashboard-height) + 20px);
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+.question h3{font-size:16px;line-height:1.5;color:var(--green)}
+.q-number{font-size:12px;color:var(--blue);font-weight:bold;text-transform:uppercase}
+.option{display:flex;align-items:flex-start;gap:10px;padding:11px;margin:8px 0;border:1px solid var(--border);border-radius:9px;cursor:pointer;font-weight:normal;min-width:0}
+.option:has(input:checked){border-color:var(--blue);background:#edf5ff}
+.option input{margin:4px 0 0;flex-shrink:0;accent-color:var(--blue)}
+.option span{min-width:0;overflow-wrap:anywhere}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.score{font-size:42px;font-weight:bold;color:var(--blue);margin:8px 0}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:20px 0}
+.stat{background:#f3f7fd;padding:13px;border-radius:10px;overflow-wrap:anywhere;min-width:0}
+.stat strong{display:block;font-size:22px}
+.remark{padding:12px;margin:9px 0;background:#f3f7fd;border-left:4px solid var(--blue);border-radius:7px}
+.review-item{padding:15px 0;border-bottom:1px solid var(--border);overflow-wrap:anywhere}
+.correct{color:var(--green);font-weight:bold}
+.incorrect{color:var(--red);font-weight:bold}
+.badge{display:inline-block;background:#e8effa;padding:4px 9px;border-radius:7px;font-size:12px;margin:3px}
+
+/* RESULTS REGISTER */
+#register{width:100%;max-width:100%;min-width:0}
+.register-table-wrap{width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;border:1px solid var(--border);border-radius:8px}
+.register-table-wrap table{width:100%;min-width:760px;border-collapse:collapse;table-layout:auto}
+.register-table-wrap th,.register-table-wrap td{text-align:left;padding:9px 7px;border-bottom:1px solid var(--border);font-size:12px;overflow-wrap:anywhere;vertical-align:top}
+.register-table-wrap th{background:#f3f7fd}
+.register-table-wrap tbody tr:last-child td{border-bottom:0}
+.register-hint{font-size:12px;color:#63728b;margin-top:7px}
+footer{text-align:center;padding:20px;color:#63728b;font-size:12px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:8px 5px;border-bottom:1px solid var(--border);font-size:12px}
+
+/* SUBMISSION CONFIRMATION MODAL */
+.submit-modal{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(9,20,40,.72);
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+.submit-modal.hidden{display:none!important}
+.submit-dialog{
+  width:min(440px,100%);
+  max-height:90vh;
+  max-height:90dvh;
+  overflow-y:auto;
+  background:white;
+  color:var(--navy);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:25px;
+  box-shadow:0 24px 80px #00000030;
+  animation:modalEnter .2s ease-out;
+}
+@keyframes modalEnter{
+  from{opacity:0;transform:translateY(12px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.submit-icon{display:grid;place-items:center;width:56px;height:56px;margin:0 auto 12px;border-radius:16px;background:#e8f5ee;font-size:27px}
+.submit-eyebrow{text-align:center;color:var(--green);font-size:11px;font-weight:800;letter-spacing:1.2px;margin:0 0 8px}
+.submit-dialog h2{text-align:center;font-size:24px;margin:0 0 10px}
+#submitModalMessage{text-align:center;color:#63728b;font-size:14px;margin:0 0 20px}
+.submit-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:15px}
+.submit-summary>div{background:#f3f7fd;border:1px solid var(--border);border-radius:12px;padding:13px;text-align:center}
+.submit-summary span{display:block;color:#63728b;font-size:12px}
+.submit-summary strong{display:block;font-size:25px;margin-top:4px}
+#modalUnanswered{color:var(--red)}
+.submit-warning{background:#fff0f0;color:#9c1824;padding:11px;border-radius:9px;font-size:13px;margin:0 0 15px}
+.submit-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.submit-actions button{width:100%;min-height:46px;padding:11px;font-size:13px}
+.submit-footer{text-align:center;color:#63728b;font-size:11px;margin:16px 0 0}
+
+@media(max-width:500px){
+ header h1{font-size:20px}
+ .card{padding:16px}
+ .question{padding:14px}
+ .score{font-size:36px}
+ .hero{padding:25px 8px}
+ .container{width:94%;margin:14px auto}
+ .assessment-sticky{padding:5px 3% 7px}
+ .topbar{padding:8px;gap:6px;border-radius:10px}
+ #studentLabel{font-size:13px}
+ .topbar .small{font-size:11px}
+ .timer{font-size:19px}
+ .progress-track{height:7px}
+ .stats{gap:8px}
+ .stat{padding:10px}
+ .stat strong{font-size:19px}
+ button{max-width:100%}
+ .actions button{flex:1 1 auto}
+ .register-table-wrap table{min-width:760px}
+ .submit-dialog{padding:19px}
+ .submit-dialog h2{font-size:21px}
+ .submit-actions{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+ .submit-dialog{animation:none}
+ .hero:before,.hero:after,.timer.red{animation:none}
+}
+@media print{
+ body{background:white;color:black;font-size:11px}
+ header{background:white!important;color:black;padding:8px}
+ header h1{font-size:18px}
+ .container{width:100%;max-width:100%;margin:0}
+ #setup,#exam,footer,.no-print,.submit-modal{display:none!important}
+ #results{display:block!important}
+ #results .card{box-shadow:none;border:1px solid #bbb;padding:12px;margin:8px 0;break-inside:auto}
+ #results .review-item{break-inside:avoid}
+ #results button{display:none!important}
+ .score{font-size:25px}
+ .stats{gap:5px;margin:8px 0}
+ .stat{padding:6px}
+ .remark,.notice,.warning{background:white!important;color:black!important}
+ .review-item{padding:8px 0}
+ h2{font-size:16px}
+ .register-table-wrap{overflow:visible;border:0}
+ .register-table-wrap table{min-width:0;width:100%;table-layout:fixed}
+ .register-table-wrap th,.register-table-wrap td{font-size:8px;padding:4px 2px;overflow-wrap:anywhere}
+ .register-hint{display:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>🧠 Medical Physiology</h1>
+  <p>PHARMILY31 · Bachelor of Pharmacy · Year 1</p>
+  <p>General Physiology · Nerve &amp; Muscle · Autonomic Nervous System</p>
+</header>
+
+<main class="container">
+<section id="setup" class="card">
+  <div class="hero">
+    <div class="hero-title">⚡ PHYSIOLOGY ARENA ⚡</div>
+    <p class="hero-sub">Understand the mechanism. Apply the principle. Defend your answer.</p>
+    <p class="hero-sub">University-level assessment · Two assessment modes</p>
+  </div>
+  <h2>🩺 Assessment Centre</h2>
+  <p>Challenge your understanding of homeostasis, membrane transport, resting membrane potential, action potentials, neuromuscular transmission, muscle contraction, and autonomic physiology.</p>
+  <div id="identityBox" class="notice">Checking verified student session…</div>
+  <div class="notice">
+    <strong>Assessment rules</strong>
+    <ul>
+      <li><strong>MCQ Challenge:</strong> 30 questions, 30 marks, 15-minute target.</li>
+      <li>The MCQ timer turns red at 15:00. At 16:00, the assessment auto-submits and a 5-mark penalty is applied.</li>
+      <li><strong>Open-Ended Challenge:</strong> 30 questions in 30 minutes: 25 short-answer questions and 5 essays.</li>
+      <li>Short answers are marked flexibly using alternative terms, synonyms, and key scientific concepts.</li>
+      <li>Essays receive partial credit for relevant scientific points included in the response.</li>
+      <li>Blank answers receive zero. Review your answers before submission.</li>
+      <li>Automatic marking is an educational estimate, not a substitute for lecturer marking.</li>
+    </ul>
+  </div>
+  <h3>Choose your assessment</h3>
+  <div class="card">
+    <h3>📝 Option A: MCQ Challenge</h3>
+    <p>30 questions · A–E choices · 15-minute target · 30 marks</p>
+    <button id="mcqStart" onclick="startTest('mcq')" disabled>Start MCQ Assessment</button>
+  </div>
+  <div class="card">
+    <h3>✍️ Option B: Open-Ended Challenge</h3>
+    <p>25 short answers + 5 essays · 30 minutes · 50 marks</p>
+    <p class="small">Short answers: 1 mark each. Essays: 5 marks each. Partial credit is available.</p>
+    <button id="openStart" class="purple" onclick="startTest('open')" disabled>Start Open-Ended Assessment</button>
+  </div>
+  <p class="small">Student identity is read from the verified session created by index.html. Results are stored locally in this browser on this device.</p>
+</section>
+
+<section id="exam" class="hidden">
+  <div class="assessment-sticky" id="assessmentDashboard">
+    <div class="topbar">
+      <div style="flex:1;min-width:0">
+        <strong id="studentLabel"></strong>
+        <div class="small" id="modeLabel"></div>
+        <div class="small" id="progressText">0 answered</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div class="small" id="timerLabel">Elapsed time</div>
+        <div id="timer" class="timer">00:00</div>
+      </div>
+    </div>
+    <div class="progress-track" aria-label="Assessment progress">
+      <div id="progressFill" class="progress-fill"></div>
+    </div>
+  </div>
+  <div id="questionList"></div>
+  <div class="card">
+    <p id="unansweredNotice" class="small"></p>
+    <div class="actions">
+      <button onclick="submitTest(false)">Submit Assessment</button>
+      <button class="secondary" onclick="goToTop()">Back to Top ↑</button>
+    </div>
+  </div>
+</section>
+
+<section id="results" class="hidden">
+  <div class="card">
+    <h2>🏆 Assessment Results</h2>
+    <p id="resultName"></p>
+    <p id="resultMode"></p>
+    <div id="scoreDisplay" class="score">0/30</div>
+    <p id="percentageDisplay"></p>
+    <div class="stats">
+      <div class="stat"><span class="small">Raw score</span><strong id="rawScore">0</strong></div>
+      <div class="stat"><span class="small">Penalty</span><strong id="penalty">0</strong></div>
+      <div class="stat"><span class="small">Questions answered</span><strong id="answeredCount">0</strong></div>
+      <div class="stat"><span class="small">Questions blank</span><strong id="unansweredCount">0</strong></div>
+    </div>
+    <div id="overallRemark" class="notice"></div>
+    <div id="timeRemark"></div>
+  </div>
+  <div class="card">
+    <h2>📊 Performance Bands</h2>
+    <div id="intervalRemarks"></div>
+  </div>
+  <div class="card">
+    <h2>📋 Student Results Register</h2>
+    <p class="small">Attempt records are saved locally in this browser.</p>
+    <div id="register"></div>
+    <p class="register-hint">On a mobile phone, swipe the register left or right to view all columns.</p>
+    <div class="actions no-print">
+      <button onclick="printResults()">Print / Save as PDF</button>
+      <button class="secondary" onclick="showRegister()">View Register</button>
+    </div>
+    <p class="small no-print">Choose Print, then select Save as PDF if that option is available in your browser.</p>
+  </div>
+  <div class="card">
+    <h2>📚 Answers, Marking Feedback &amp; Explanations</h2>
+    <p class="small">For open-ended questions, the marking feedback shows which expected concepts were detected. Equivalent correct answers may still be missed by automated matching.</p>
+    <div id="reviewList"></div>
+  </div>
+  <div class="card no-print">
+    <h2>Next Step</h2>
+    <p id="nextMessage"></p>
+    <button onclick="backHome()">Return to Assessment Centre</button>
+  </div>
+</section>
+</main>
+
+<div id="submitModal" class="submit-modal hidden" role="dialog"
+     aria-modal="true" aria-labelledby="submitModalTitle"
+     aria-describedby="submitModalMessage">
+  <div class="submit-dialog">
+    <div class="submit-icon">📝</div>
+    <p class="submit-eyebrow">PHARMILY31 · ASSESSMENT CENTRE</p>
+    <h2 id="submitModalTitle">Submit Assessment?</h2>
+    <p id="submitModalMessage">Are you ready to submit your assessment?</p>
+    <div class="submit-summary">
+      <div><span>Answered</span><strong id="modalAnswered">0</strong></div>
+      <div><span>Unanswered</span><strong id="modalUnanswered">0</strong></div>
+    </div>
+    <p id="modalWarning" class="submit-warning hidden"></p>
+    <div class="submit-actions">
+      <button type="button" id="cancelSubmit" class="secondary">Review Answers</button>
+      <button type="button" id="confirmSubmit" class="green">Confirm Submission</button>
+    </div>
+    <p class="submit-footer">Please review your responses before final submission.</p>
+  </div>
+</div>
+
+<footer>PHARMILY31 · Medical Physiology Revision Arena</footer>
+
+<script>
+"use strict";
+
+const SESSION_KEY = "pharmily31Student";
+const STORAGE_KEY = "pharmily31PhysiologyResults_v1";
+let student = null;
+
+function getIdentity(){
+  try{
+    const raw=sessionStorage.getItem(SESSION_KEY);
+    if(!raw)return null;
+    const d=JSON.parse(raw);
+    if(!d||typeof d!=="object")return null;
+    const name=d.name||d.fullName||d.studentName||d.student||d.full_name||"";
+    const admission=d.admissionNumber||d.admission_number||d.admission||d.regNo||d.registrationNumber||d.registration_number||"";
+    if(!String(name).trim()||!String(admission).trim())return null;
+    return {name:String(name).trim(),admission:String(admission).trim()};
+  }catch(e){return null}
+}
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+function refreshIdentity(){
+  student=getIdentity();
+  const box=document.getElementById("identityBox");
+  const mcq=document.getElementById("mcqStart");
+  const open=document.getElementById("openStart");
+  if(student){
+    box.className="notice";
+    box.innerHTML="<strong>Verified session detected</strong><br>Student: "+
+      escapeHTML(student.name)+"<br>Admission number: "+escapeHTML(student.admission);
+    mcq.disabled=false;
+    open.disabled=false;
+  }else{
+    box.className="warning";
+    box.innerHTML="<strong>Registration verification required</strong><br>Your verified student session could not be found. Return to index.html, verify your name and admission number, then open Physiology again.";
+    mcq.disabled=true;
+    open.disabled=true;
+  }
+}
+
+/*
+ * Measure the fixed dashboard after it is visible.
+ * This keeps questions from being hidden underneath it,
+ * including when the screen rotates or the dashboard wraps.
+ */
+function syncDashboardSpace(){
+  const dashboard=document.getElementById("assessmentDashboard");
+  const exam=document.getElementById("exam");
+  if(!dashboard||!exam||exam.classList.contains("hidden"))return;
+  const height=Math.ceil(dashboard.getBoundingClientRect().height);
+  document.documentElement.style.setProperty("--dashboard-height",height+"px");
+}
+window.addEventListener("resize",syncDashboardSpace);
+window.addEventListener("orientationchange",()=>setTimeout(syncDashboardSpace,150));
+
+/* MCQ BANK: 30 QUESTIONS */
+const mcqs = [
+{q:"A cell is placed in a solution that has the same effective osmotic pressure as its cytosol but a higher concentration of a freely permeant solute. Which statement best predicts the sustained change in cell volume?",o:["The cell must shrink because all solutes draw water equally","The cell must swell permanently because the solution has more particles","Volume depends on the effective concentrations of nonpenetrating solutes after permeant solutes equilibrate","No water movement can occur at any time","The sodium-potassium pump immediately stops all water movement"],a:2,e:"Tonicity depends mainly on nonpenetrating, osmotically effective solutes. Freely permeant solutes can equilibrate across the membrane and do not necessarily maintain a sustained volume gradient."},
+{q:"A membrane is permeable to K⁺ but initially not to its counter-anion. As K⁺ diffuses out of the cell, what most directly opposes further K⁺ efflux?",o:["A fall in extracellular potassium concentration to zero","The electrical gradient that develops as the cell interior becomes more negative","A sudden increase in intracellular chloride permeability","Active transport of every potassium ion back into the cell","The disappearance of the potassium concentration gradient before any voltage develops"],a:1,e:"K⁺ diffusion outward leaves behind relatively impermeant negative charge. The resulting electrical gradient attracts K⁺ inward and opposes its concentration gradient."},
+{q:"A cell's resting membrane potential is −70 mV and the equilibrium potential for a particular monovalent cation is −90 mV. Assuming the membrane is permeable to that cation, which direction is favoured by its electrochemical gradient?",o:["No net force because both potentials are negative","Inward only because the ion is positively charged","No movement because the membrane is at rest","Outward, because the membrane potential is more positive than the ion's equilibrium potential","Direction cannot be inferred even if the ion's charge and equilibrium potential are known"],a:3,e:"For a cation, Vm − Eion = +20 mV. The membrane potential is more positive than the ion's equilibrium potential, so the electrical-plus-chemical driving force favours outward movement under this convention."},
+{q:"Which change is most likely to depolarise a typical neuron's resting membrane potential without directly opening voltage-gated sodium channels?",o:["A selective increase in resting sodium permeability","A selective increase in resting potassium permeability","A decrease in extracellular potassium with all else unchanged","A large increase in potassium leak conductance","An increase in the outward electrogenic action of the sodium-potassium pump"],a:0,e:"Increasing resting Na⁺ permeability draws Vm toward the more positive sodium equilibrium potential and therefore depolarises the membrane."},
+{q:"Why does the Na⁺/K⁺-ATPase contribute directly to the resting membrane potential but usually does not account for most of its magnitude?",o:["It transports equal numbers of positive charges in both directions","It only operates during action potentials","It transports three Na⁺ out for every two K⁺ in, making a small electrogenic contribution while ion gradients and selective permeability dominate","It allows all ions to equilibrate across the membrane","It transports potassium out and sodium into the cell"],a:2,e:"The pump is electrogenic because it exports three Na⁺ and imports two K⁺ per ATP. Its direct voltage effect is usually modest, while gradients and membrane permeabilities are the main determinants of resting Vm."},
+{q:"A patient's plasma becomes markedly hypo-osmotic relative to the intracellular fluid. If the change is sustained and the solutes are effectively nonpenetrating, what is the expected cellular response?",o:["Water leaves cells and they shrink","Cells lose all membrane potential instantly","Cell volume remains fixed because membranes exclude water","Cells swell as water enters by osmosis","Only extracellular volume changes"],a:3,e:"A hypo-osmotic extracellular environment favours water entry into cells, increasing cell volume; severe swelling can disrupt cellular function."},
+{q:"Which statement best distinguishes negative feedback from positive feedback in physiological regulation?",o:["Negative feedback amplifies deviations; positive feedback reverses them","Negative feedback opposes a deviation from a regulated variable; positive feedback reinforces a process until a terminating event","Both always require the hypothalamus","Positive feedback is the universal mechanism for maintaining a stable set point","Negative feedback operates only in endocrine systems"],a:1,e:"Negative feedback reduces deviation from a regulated range. Positive feedback reinforces a change, as in the oxytocin-driven amplification of uterine contractions during labour."},
+{q:"A solute has a concentration of 140 mmol/L outside a cell and 14 mmol/L inside. The membrane is permeable to the solute. What can be concluded about its net movement before equilibrium?",o:["It must move inward regardless of its charge","It must move outward because intracellular concentration is lower","It cannot move unless ATP is available","The direction depends only on the cell's size","The chemical gradient favours inward diffusion, but the electrical gradient may modify net movement for a charged solute"],a:4,e:"A concentration gradient alone favours movement from high to low concentration. For charged solutes, the electrical gradient also contributes to the electrochemical driving force."},
+{q:"Which statement about facilitated diffusion is correct?",o:["It requires direct ATP hydrolysis for every transported molecule","It always moves solute against its electrochemical gradient","It uses membrane proteins and moves a substance down its electrochemical gradient without direct metabolic energy input","It occurs only through the lipid bilayer","It is synonymous with primary active transport"],a:2,e:"Facilitated diffusion uses channels or carriers to assist movement down an electrochemical gradient without direct ATP hydrolysis by the transport process."},
+{q:"A hormone binds a receptor on the extracellular surface of a target cell. Which property most strongly supports the use of a cell-surface receptor?",o:["The hormone is unable to bind any protein","The hormone is always transported by a sodium channel","The hormone must be a steroid","The hormone is sufficiently water-soluble or otherwise unable to freely cross the lipid bilayer","The hormone has no effect on intracellular signalling"],a:3,e:"Many hydrophilic hormones cannot readily cross the lipid bilayer and therefore signal through cell-surface receptors and intracellular signalling pathways."},
+{q:"Which sequence best describes the rising phase of a typical neuronal action potential?",o:["Voltage-gated Na⁺ channels activate, Na⁺ conductance rises, and the membrane depolarises","K⁺ channels close permanently and chloride exits rapidly","The Na⁺/K⁺ pump reverses direction","Calcium is always the only inward current","All membrane channels become impermeable"],a:0,e:"Depolarisation opens voltage-gated Na⁺ channels. Rapid inward sodium current produces the rising phase of the neuronal action potential."},
+{q:"Why is a second action potential difficult or impossible to initiate during the absolute refractory period?",o:["All intracellular potassium has been depleted","The membrane has no capacitance","The sodium-potassium pump has stopped permanently","Voltage-gated Na⁺ channels are inactivated and cannot immediately reopen","The cell has lost every ion gradient"],a:3,e:"During the absolute refractory period, many voltage-gated Na⁺ channels are inactivated. They must recover from inactivation before another action potential can be generated."},
+{q:"Increasing extracellular potassium concentration generally makes a typical neuron's resting membrane potential less negative. Why?",o:["The potassium equilibrium potential becomes more negative","The potassium concentration gradient driving K⁺ outward is reduced, shifting its equilibrium potential toward more positive values","Potassium becomes electrically neutral","The sodium-potassium pump transports four K⁺ into the cell per ATP","All potassium channels close permanently"],a:1,e:"Raising extracellular K⁺ reduces the K⁺ concentration ratio across the membrane, making EK less negative. Because resting Vm is strongly influenced by K⁺, it generally depolarises."},
+{q:"Which property of myelinated axons most directly increases conduction velocity?",o:["Continuous regeneration of action potentials at every point under the myelin","An increase in membrane capacitance under myelin","A reduction in membrane resistance","Elimination of all voltage-gated channels from nodes","Saltatory conduction between nodes of Ranvier, aided by high internodal resistance and lower capacitance"],a:4,e:"Myelin increases membrane resistance and lowers capacitance, allowing depolarising current to spread rapidly to nodes of Ranvier where action potentials are regenerated."},
+{q:"A demyelinating disorder slows conduction in a nerve fibre. Which physical consequence of myelin loss best explains this?",o:["The axon no longer contains any cytoplasm","The sodium equilibrium potential becomes exactly zero","Current leaks across the membrane more readily and more charge is needed to change membrane voltage","The axon becomes a perfect electrical insulator","The internodal membrane capacitance falls to zero"],a:2,e:"Loss of myelin lowers membrane resistance and increases effective capacitance, slowing current spread and potentially causing conduction block."},
+{q:"At the skeletal neuromuscular junction, acetylcholine normally produces an end-plate potential by:",o:["Activating ligand-gated nicotinic receptors that permit cation flow, producing local depolarisation","Opening only voltage-gated potassium channels on the motor axon","Inhibiting all postsynaptic ion movement","Directly hydrolysing ATP in myosin heads","Binding to intracellular steroid receptors"],a:0,e:"Acetylcholine activates muscle-type nicotinic receptors, which are ligand-gated cation channels. Net inward positive current depolarises the end plate."},
+{q:"Botulinum toxin causes weakness primarily by interfering with:",o:["The binding of oxygen to myoglobin","The release of acetylcholine from presynaptic cholinergic terminals","The production of ATP by glycolysis only","The binding of calcium to troponin","The synthesis of actin in every skeletal muscle cell"],a:1,e:"Botulinum toxins cleave SNARE proteins needed for synaptic vesicle fusion, reducing acetylcholine release at the neuromuscular junction."},
+{q:"In skeletal muscle, calcium initiates contraction most directly by binding to:",o:["Tropomyosin's ATP-binding site","Myosin light-chain kinase as the universal skeletal-muscle trigger","Acetylcholinesterase","Troponin C, shifting the troponin-tropomyosin complex away from actin's myosin-binding sites","The sodium-potassium pump"],a:3,e:"Ca²⁺ binds troponin C, causing a conformational change that moves tropomyosin and exposes myosin-binding sites on actin."},
+{q:"During a normal skeletal-muscle cross-bridge cycle, what is the principal role of ATP binding to myosin?",o:["It permanently attaches myosin to actin","It releases calcium from troponin","It detaches myosin from actin; ATP hydrolysis then re-cocks the myosin head","It directly breaks down actin filaments","It closes all sarcoplasmic-reticulum calcium channels"],a:2,e:"ATP binding lowers myosin's affinity for actin and allows detachment. Hydrolysis to ADP and Pi energises the myosin head for the next cycle."},
+{q:"Why does rigor occur when ATP becomes unavailable in muscle?",o:["Myosin cannot detach efficiently from actin without ATP","Calcium can no longer bind any protein","Actin immediately dissolves","Myosin heads are unable to bind actin at all","The sarcolemma becomes impermeable to every ion"],a:0,e:"ATP is needed for myosin detachment from actin. Without ATP, cross-bridges remain attached, producing rigor."},
+{q:"Which change best describes an isometric skeletal-muscle contraction?",o:["Muscle length shortens while tension stays exactly zero","The muscle lengthens with no tension","The muscle has no cross-bridge cycling","Muscle length remains approximately constant while tension develops","The muscle relaxes without consuming energy"],a:3,e:"In an isometric contraction, muscle length is held approximately constant while force or tension increases."},
+{q:"A motor unit is best defined as:",o:["One muscle fibre and all its nuclei","One motor neuron and all the skeletal muscle fibres it innervates","All motor neurons supplying one limb","One sarcomere and its T-tubules","One neuromuscular junction plus the whole spinal cord"],a:1,e:"A motor unit comprises a single alpha motor neuron and every skeletal muscle fibre innervated by its axon branches."},
+{q:"Which change in a skeletal muscle fibre most directly permits relaxation after stimulation ends?",o:["Persistent elevation of cytosolic calcium","Continuous activation of troponin C","Permanent opening of ryanodine receptors","Inhibition of all ATP production","ATP-dependent reuptake of Ca²⁺ into the sarcoplasmic reticulum, lowering cytosolic calcium"],a:4,e:"SERCA pumps use ATP to return calcium to the sarcoplasmic reticulum. Falling cytosolic Ca²⁺ allows tropomyosin to again block actin's myosin-binding sites."},
+{q:"Which autonomic receptor mechanism is correctly matched?",o:["α₁ — Gq signalling, commonly increasing intracellular Ca²⁺ through IP₃/DAG pathways","β₁ — ligand-gated chloride channel","M₂ — Gs stimulation of cAMP in the heart","β₂ — direct opening of nicotinic channels","Nicotinic Nn — intracellular steroid receptor"],a:0,e:"α₁ receptors generally couple to Gq, activating phospholipase C and the IP₃/DAG pathway. This commonly increases intracellular calcium in smooth muscle."},
+{q:"Stimulation of cardiac β₁-adrenergic receptors generally causes:",o:["Reduced heart rate and reduced contractility","Complete inhibition of sinoatrial-node activity","Increased heart rate and contractility through Gs-cAMP signalling","Skeletal-muscle paralysis","Direct closure of all cardiac calcium channels"],a:2,e:"β₁ receptors couple to Gs, increase cAMP signalling, and generally increase heart rate, AV conduction, and myocardial contractility."},
+{q:"Which effect is most characteristic of muscarinic M₂ receptor activation in the heart?",o:["Increased cAMP and faster pacemaker firing","Reduced heart rate, partly through Gi signalling and increased potassium conductance","Skeletal muscle end-plate depolarisation","Increased release of noradrenaline from every sympathetic terminal","Direct stimulation of adrenal cortisol secretion"],a:1,e:"M₂ receptors couple to Gi, reduce cAMP, and can open GIRK potassium channels, slowing sinoatrial-node firing and atrioventricular conduction."},
+{q:"Which transmitter-receptor combination is typical of the sympathetic postganglionic pathway to most sweat glands?",o:["Noradrenaline acting on β₁ receptors","Dopamine acting on D₂ receptors","Adrenaline acting on nicotinic receptors","Acetylcholine acting on muscarinic receptors","GABA acting on GABA-A receptors"],a:3,e:"Most sympathetic postganglionic neurons release noradrenaline, but sympathetic fibres to most eccrine sweat glands release acetylcholine acting at muscarinic receptors."},
+{q:"A drug selectively blocks β₂-adrenergic receptors in bronchial smooth muscle. Which effect is most likely?",o:["Enhanced bronchodilation in response to β₂ stimulation","No possible change in airway tone","Increased activation of skeletal-muscle nicotinic receptors","Permanent closure of the trachea in every patient","Reduced β₂-mediated relaxation, potentially favouring bronchoconstriction"],a:4,e:"β₂ receptor activation relaxes bronchial smooth muscle. Blocking these receptors reduces this bronchodilator response and may favour bronchoconstriction."},
+{q:"Which statement best describes the adrenal medulla's relationship to the sympathetic nervous system?",o:["It acts like a modified sympathetic ganglion; preganglionic sympathetic fibres stimulate chromaffin cells to release catecholamines into blood","It is a parasympathetic ganglion that releases acetylcholine into the gut","It releases only aldosterone","It receives no autonomic input","It is made entirely of skeletal muscle"],a:0,e:"Preganglionic sympathetic cholinergic fibres activate nicotinic receptors on adrenal chromaffin cells, leading to secretion of adrenaline and noradrenaline into circulation."},
+{q:"Which statement about autonomic ganglia is correct?",o:["All postganglionic autonomic neurons release adrenaline","Parasympathetic ganglia are always located beside the spinal cord","Both sympathetic and parasympathetic preganglionic neurons normally release acetylcholine onto nicotinic neuronal receptors in ganglia","All autonomic ganglia use muscarinic receptors as their only fast synaptic receptor","The sympathetic division has no preganglionic neurons"],a:2,e:"Both autonomic divisions use acetylcholine at nicotinic neuronal receptors in their ganglia. Their postganglionic transmitters and target receptors differ by pathway."},
+{q:"Which response is most consistent with increased parasympathetic activity in a healthy resting adult?",o:["Increased heart rate and reduced digestive motility","Increased pupil dilation and generalized sweating","Marked bronchodilation and inhibition of salivation","Reduced heart rate and increased gastrointestinal activity","Universal constriction of all systemic arterioles"],a:3,e:"Parasympathetic activity commonly slows the heart and promotes digestion, glandular secretion, and gastrointestinal motility. It does not control all systemic arterioles directly."}
+];
+
+/* OPEN-ENDED QUESTIONS: 25 SHORT ANSWERS */
+const shortQs = [
+{q:"Define homeostasis and state one physiological example.",rubric:[["maintenance of a relatively stable internal environment","stable internal environment","internal environment within limits","dynamic constancy"],["negative feedback","thermoregulation","blood glucose regulation","blood pressure regulation","osmoregulation"]],model:"Homeostasis is the maintenance of a relatively stable internal environment despite internal or external changes. Examples include temperature, blood glucose, blood pressure, and osmolarity regulation.",ex:"Homeostasis is dynamic, not absolute constancy. Negative-feedback systems detect deviations and produce responses that oppose them."},
+{q:"Differentiate negative feedback from positive feedback and give one example of either.",rubric:[["opposes the initial change","reduces the deviation","counteracts a disturbance","returns toward a set point"],["amplifies the initial change","reinforces the change","oxytocin and labour","blood clotting","positive feedback"]],model:"Negative feedback opposes deviations, such as thermoregulation. Positive feedback reinforces a process, such as oxytocin-mediated uterine contractions or the clotting cascade.",ex:"The key distinction is whether the response counteracts or amplifies the initiating change."},
+{q:"Distinguish osmolality from tonicity.",rubric:[["osmoles per kilogram of solvent","osmoles per kg","particles per kilogram","osmolality"],["effective nonpenetrating solutes","cell volume effect","effective osmotic pressure","tonicity"]],model:"Osmolality measures osmoles of solute per kilogram of solvent. Tonicity describes a solution's sustained effect on cell volume and depends mainly on effective, nonpenetrating solutes.",ex:"A solution can have a high osmolality but not exert equivalent sustained tonicity if its solutes cross the cell membrane."},
+{q:"State two major functions of the plasma membrane.",rubric:[["selective permeability","controls movement","barrier","compartmentalisation","regulates transport"],["receptors","cell signalling","cell recognition","maintains gradients","electrical excitability","cell adhesion"]],model:"The plasma membrane provides selective permeability and compartmentalisation; it also supports signalling, recognition, adhesion, and electrochemical gradients.",ex:"Award credit for two distinct functions."},
+{q:"Differentiate simple diffusion from facilitated diffusion.",rubric:[["directly through lipid bilayer","without transport protein","down concentration gradient","simple diffusion"],["channel or carrier protein","uses a membrane protein","specific carrier","facilitated diffusion","saturable carrier"]],model:"Simple diffusion occurs directly through the membrane or a permeable pathway down a gradient. Facilitated diffusion uses channels or carriers to move substances down their electrochemical gradient without direct ATP use.",ex:"Carrier-mediated transport can show saturation; both processes are passive when moving down the gradient."},
+{q:"What is primary active transport? Give one example.",rubric:[["moves against electrochemical gradient","against concentration gradient","uses energy directly","direct atp hydrolysis"],["sodium potassium pump","na k atpase","calcium atpase","proton pump","h k atpase"]],model:"Primary active transport uses energy directly, usually from ATP hydrolysis, to move substances against their electrochemical gradients. Example: Na⁺/K⁺-ATPase.",ex:"Secondary active transport uses an ion gradient created by primary active transport rather than directly hydrolysing ATP at the cotransporter."},
+{q:"Explain why the Na⁺/K⁺-ATPase is called electrogenic.",rubric:[["three sodium out","3 na out","exports three sodium","three na"],["two potassium in","2 k in","imports two potassium","net positive charge out","net one positive charge outward"]],model:"For each ATP hydrolysed, the pump normally moves three Na⁺ out and two K⁺ in. One net positive charge moves outward, making the pump electrogenic.",ex:"The pump also maintains the Na⁺ and K⁺ gradients needed for excitability and secondary active transport."},
+{q:"Define resting membrane potential and state the principal ion that influences it in a typical neuron.",rubric:[["voltage across membrane at rest","potential difference across the membrane","inside negative relative to outside","resting membrane potential"],["potassium","k plus","k+","potassium leak channels","potassium permeability"]],model:"Resting membrane potential is the electrical potential difference across the membrane when the cell is not generating an action potential. In typical neurons, K⁺ permeability is a major determinant.",ex:"The exact voltage depends on ionic gradients, relative permeabilities, and electrogenic transport."},
+{q:"What is the Nernst equilibrium potential?",rubric:[["electrical force balances chemical gradient","chemical and electrical forces balance","no net movement of that ion","equilibrium potential"],["specific ion","one ion species","depends on ion concentration ratio","nernst equation","ion concentration gradient"]],model:"The Nernst potential is the membrane voltage at which the electrical force on a particular ion balances its chemical gradient, so there is no net electrochemical driving force for that ion.",ex:"It is specific to one ion and depends on its charge, temperature, and concentration ratio."},
+{q:"Define an action potential and name the two principal phases of a typical neuronal action potential.",rubric:[["rapid transient change in membrane potential","rapid reversal of membrane potential","all or none electrical signal","propagated electrical signal"],["depolarisation","rising phase","repolarisation","falling phase"]],model:"An action potential is a rapid, transient, regenerative change in membrane potential. Typical neuronal phases include depolarisation and repolarisation, often followed by after-hyperpolarisation.",ex:"Action potentials are regenerative and propagate without decrement along healthy axons."},
+{q:"Explain the absolute refractory period.",rubric:[["cannot generate another action potential","no second action potential","impossible to initiate another spike"],["sodium channel inactivation","voltage gated na channels inactivated","na channels must recover","inactivation gates"]],model:"During the absolute refractory period, another action potential cannot be generated because many voltage-gated Na⁺ channels are inactivated and have not recovered.",ex:"The relative refractory period follows and requires a stronger-than-normal stimulus."},
+{q:"What is saltatory conduction?",rubric:[["action potential regenerated at nodes","jumps from node to node","node of ranvier","nodes of ranvier"],["myelin","myelinated axon","rapid conduction","internodal current spread","increased membrane resistance"]],model:"Saltatory conduction is rapid impulse propagation in myelinated axons, with action potentials regenerated at nodes of Ranvier while current spreads beneath myelin between nodes.",ex:"Myelin increases membrane resistance and decreases capacitance, improving conduction speed."},
+{q:"Name the neurotransmitter and receptor type at the skeletal neuromuscular junction.",rubric:[["acetylcholine","ach"],["nicotinic muscle receptor","nm receptor","n m receptor","muscle type nicotinic","nicotinic acetylcholine receptor"]],model:"Acetylcholine activates muscle-type nicotinic acetylcholine receptors on the motor end plate.",ex:"These ligand-gated cation channels produce an end-plate potential that normally triggers a muscle action potential."},
+{q:"State the role of calcium in skeletal muscle contraction.",rubric:[["released from sarcoplasmic reticulum","calcium release","cytosolic calcium increases","ca2+"],["binds troponin c","troponin c","moves tropomyosin","exposes myosin binding sites","actin binding sites exposed"]],model:"Ca²⁺ is released from the sarcoplasmic reticulum and binds troponin C. This moves tropomyosin and exposes myosin-binding sites on actin.",ex:"Calcium is the signal that permits cross-bridge cycling; ATP is required for cycling and detachment."},
+{q:"Explain the role of ATP in the cross-bridge cycle.",rubric:[["detaches myosin from actin","myosin detachment","breaks actin myosin cross bridge"],["hydrolysis cocks the myosin head","energises myosin head","re cocks myosin","powers calcium reuptake","atp hydrolysis"]],model:"ATP binding allows myosin to detach from actin. ATP hydrolysis energises the myosin head for another cycle; ATP also powers calcium reuptake into the sarcoplasmic reticulum.",ex:"Without ATP, actin-myosin cross-bridges remain attached, contributing to rigor."},
+{q:"Differentiate isometric and isotonic muscle contraction.",rubric:[["constant length","length does not change","isometric","tension develops without shortening"],["muscle length changes","shortens or lengthens","isotonic","movement under load"]],model:"Isometric contraction develops tension with approximately constant muscle length. Isotonic contraction involves a change in muscle length while moving a load, classically described as concentric or eccentric.",ex:"Real movements can combine changes in muscle length and tension."},
+{q:"Define a motor unit.",rubric:[["one motor neuron","single motor neuron","alpha motor neuron"],["all muscle fibres it innervates","muscle fibres supplied by it","its innervated muscle fibres"]],model:"A motor unit consists of one alpha motor neuron and all skeletal muscle fibres supplied by its axon.",ex:"Small motor units allow fine control; larger units generate greater force."},
+{q:"Name the two main divisions of the autonomic nervous system and one general function.",rubric:[["sympathetic"],["parasympathetic","rest and digest","fight or flight","involuntary visceral control","heart rate and digestion"]],model:"The sympathetic and parasympathetic divisions regulate involuntary functions of organs and glands. Sympathetic activity supports mobilisation; parasympathetic activity commonly supports digestion and energy conservation.",ex:"Both divisions may influence the same organ with different effects."},
+{q:"Which neurotransmitter is released by autonomic preganglionic neurons, and which receptor receives it in the ganglion?",rubric:[["acetylcholine","ach"],["nicotinic neuronal receptor","nicotinic n","nn receptor","neuronal nicotinic receptor"]],model:"Autonomic preganglionic neurons release acetylcholine, which acts on nicotinic neuronal receptors in autonomic ganglia.",ex:"This is true for both sympathetic and parasympathetic preganglionic pathways."},
+{q:"State the usual transmitter released by most sympathetic postganglionic neurons and name an important exception.",rubric:[["noradrenaline","norepinephrine","na"],["sweat glands","eccrine sweat glands","acetylcholine at sweat glands","sympathetic cholinergic sweat fibres"]],model:"Most sympathetic postganglionic neurons release noradrenaline. An important exception is sympathetic innervation of most eccrine sweat glands, which uses acetylcholine at muscarinic receptors.",ex:"The adrenal medulla releases catecholamines into the bloodstream after preganglionic stimulation."},
+{q:"Compare the typical cardiac effects of β₁-adrenergic and M₂ muscarinic receptor activation.",rubric:[["beta 1 increases heart rate","β1 increases heart rate","increased chronotropy","increases contractility","gs camp"],["m2 decreases heart rate","reduced heart rate","slows sinoatrial node","gi","increases potassium conductance","reduces camp"]],model:"β₁ activation generally increases heart rate and contractility through Gs-cAMP signalling. M₂ activation generally slows heart rate through Gi signalling and increased potassium conductance.",ex:"Autonomic effects vary with tissue and physiological context."},
+{q:"What is the difference between a neurotransmitter and a hormone?",rubric:[["released by neuron","synaptic cleft","local synaptic signalling","neurotransmitter"],["bloodstream","circulates in blood","acts on distant target","endocrine","hormone"]],model:"A neurotransmitter is released by a neuron and typically acts across a synapse or locally. A hormone is released into circulation or extracellular fluid to act on target cells, often at a distance.",ex:"Some chemical messengers can act in more than one signalling role."},
+{q:"Explain the concept of receptor specificity and why two tissues can respond differently to the same chemical messenger.",rubric:[["binds a particular receptor","specific ligand receptor interaction","receptor specificity","receptor type"],["different receptor subtypes","different signalling pathways","different intracellular proteins","different gene expression","different cell machinery"]],model:"Receptor specificity reflects selective ligand-receptor interactions. Different tissues may express different receptor subtypes or intracellular signalling machinery, producing different responses to the same messenger.",ex:"The effect depends on receptor subtype, cell context, and downstream signalling pathways."},
+{q:"Define threshold in the context of neuronal action potentials.",rubric:[["critical membrane potential","voltage needed to trigger","threshold potential","minimum depolarisation"],["regenerative opening of sodium channels","voltage gated sodium channels activate","positive feedback of sodium entry","all or none action potential"]],model:"Threshold is the membrane potential at which depolarisation activates enough voltage-gated Na⁺ channels to initiate a regenerative action potential.",ex:"Threshold is not an identical fixed voltage under every physiological condition."},
+{q:"Describe one reason why an increase in extracellular potassium can be dangerous to cardiac function.",rubric:[["depolarises resting membrane potential","changes potassium equilibrium potential","alters membrane excitability"],["inactivates sodium channels","slows conduction","arrhythmia","abnormal cardiac rhythm","dangerous changes in cardiac conduction"]],model:"Increased extracellular K⁺ depolarises the resting membrane potential. Severe or sustained depolarisation can inactivate Na⁺ channels, alter conduction, and cause dangerous arrhythmias.",ex:"The effect depends on the magnitude and rate of potassium change and the physiological context."},
+{q:"Distinguish an ion channel from a carrier protein.",rubric:[["forms a pore","channel provides pathway","selective pore","ions pass through channel"],["binds solute and changes conformation","carrier changes shape","alternating access","carrier protein","binding and conformational change"]],model:"An ion channel forms a selective pathway through which ions move down their electrochemical gradient. A carrier binds its substrate and changes conformation to move it across the membrane.",ex:"Channels can conduct ions rapidly; carriers often display saturation and alternating access."}
+];
+
+/* ESSAY BANK: 5 QUESTIONS */
+const essays = [
+{q:"Essay 1: Explain how a typical neuronal resting membrane potential is established and maintained. Include ion distribution, selective permeability, the Na⁺/K⁺ pump, and the effect of changing extracellular potassium.",rubric:[
+["intracellular potassium is high","high intracellular k","extracellular sodium is high","unequal ion distribution","ion concentration gradients"],
+["potassium leak channels","greater resting permeability to potassium","selective membrane permeability","k permeability"],
+["negative intracellular potential","electrical gradient","diffusion of potassium leaves negative charge","chemical and electrical forces"],
+["three sodium out","two potassium in","na k atpase","sodium potassium pump","pump maintains gradients"],
+["increased extracellular potassium depolarises","high extracellular k depolarises","reduced potassium gradient","less negative resting potential","hyperkalaemia alters excitability"]
+],model:"A good answer explains unequal ion distributions, selective permeability dominated by K⁺ leak at rest, the electrical gradient created by ion movement, the electrogenic Na⁺/K⁺ pump maintaining gradients, and depolarisation when extracellular K⁺ rises.",ex:"One mark per rubric category. Alternative scientifically equivalent explanations should be considered."},
+{q:"Essay 2: Describe the phases of a typical neuronal action potential and explain the roles of voltage-gated Na⁺ and K⁺ channels, refractory periods, and myelination.",rubric:[
+["threshold reached","depolarisation activates voltage gated sodium","rapid sodium influx","rising phase"],
+["sodium channels inactivate","potassium channels open","potassium efflux","repolarisation"],
+["after hyperpolarisation","continued potassium conductance","restoration of resting potential"],
+["absolute refractory due to sodium channel inactivation","relative refractory","channel recovery","refractory period limits frequency"],
+["myelin increases resistance","reduces capacitance","nodes of ranvier","saltatory conduction","faster conduction"]
+],model:"A complete answer covers threshold and Na⁺ influx, Na⁺ channel inactivation and K⁺-mediated repolarisation, after-hyperpolarisation, refractory periods, and saltatory conduction in myelinated axons.",ex:"One mark for each major concept category. Precise numerical voltages are not required unless requested."},
+{q:"Essay 3: Explain excitation-contraction coupling and the skeletal-muscle cross-bridge cycle, from the motor end plate to relaxation.",rubric:[
+["acetylcholine released","nicotinic receptor","end plate potential","muscle action potential"],
+["t tubule","dihydropyridine receptor","ryanodine receptor","calcium released from sarcoplasmic reticulum"],
+["calcium binds troponin c","tropomyosin moves","actin sites exposed"],
+["myosin binds actin","power stroke","atp detaches myosin","atp hydrolysis re cocks myosin"],
+["serca","calcium reuptake","calcium falls","troponin releases calcium","relaxation"]
+],model:"A complete response follows ACh release and end-plate depolarisation, muscle action potential and T-tubule signalling, SR Ca²⁺ release, troponin-mediated exposure of actin sites, ATP-dependent cross-bridge cycling, and Ca²⁺ reuptake for relaxation.",ex:"One mark per category. Include the roles of ATP and calcium clearly."},
+{q:"Essay 4: Compare sympathetic and parasympathetic autonomic pathways, including origin, ganglia, neurotransmitters, receptors, and typical physiological effects.",rubric:[
+["thoracolumbar sympathetic","craniosacral parasympathetic","spinal thoracic lumbar","brainstem sacral"],
+["sympathetic ganglia near spinal cord","paravertebral","prevertebral","parasympathetic ganglia near or in target organs"],
+["preganglionic acetylcholine","nicotinic receptors in both ganglia"],
+["most sympathetic postganglionic noradrenaline","parasympathetic postganglionic acetylcholine","muscarinic receptors","sweat gland exception"],
+["sympathetic mobilisation","fight or flight","parasympathetic digestion","rest and digest","organ-specific effects"]
+],model:"Compare thoracolumbar versus craniosacral outflow, ganglion locations, ACh at nicotinic ganglionic receptors, usual postganglionic transmitters and receptors, and typical organ effects with appropriate exceptions.",ex:"One mark per category. Mention that effects are organ-specific rather than universal."},
+{q:"Essay 5: Explain how autonomic receptor signalling regulates heart rate and airway tone. Include α₁, β₁, β₂, and M₂ receptor mechanisms where relevant.",rubric:[
+["beta 1","gs","camp","increased heart rate","increased contractility"],
+["m2","gi","reduced camp","potassium conductance","slows heart rate"],
+["beta 2","gs","camp","smooth muscle relaxation","bronchodilation"],
+["alpha 1","gq","ip3","dag","increased intracellular calcium","smooth muscle contraction"],
+["receptor distribution","second messenger pathways","different tissue responses","selective agonist or antagonist effects"]
+],model:"Explain β₁-Gs-cAMP effects on the heart, M₂-Gi and potassium effects that slow cardiac pacemaking, β₂-mediated airway smooth-muscle relaxation, and α₁-Gq/IP₃-DAG signalling that commonly promotes smooth-muscle contraction.",ex:"One mark per category. Avoid claiming that a receptor produces the same effect in every tissue."}
+];
+
+/* STATE AND HELPERS */
+let mode="",currentQuestions=[],answers=[],startTime=0;
+let timerInterval=null,submitted=false,results=[],currentResult=null;
+let pendingAutomatic=false;
+
+function loadResults(){
+  try{
+    const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
+    results=Array.isArray(data)?data:[];
+  }catch(e){results=[]}
+}
+function saveResults(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(results))}
+  catch(e){alert("Your browser could not save the results. You can still print this report.")}
+}
+
+function startTest(selectedMode){
+  refreshIdentity();
+  if(!student){
+    alert("Please verify your registration on index.html first.");
+    return;
+  }
+
+  mode=selectedMode;
+  currentQuestions=mode==="mcq"?mcqs:shortQs.concat(essays);
+  answers=Array(currentQuestions.length).fill("");
+  startTime=Date.now();
+  submitted=false;
+  currentResult=null;
+  pendingAutomatic=false;
+
+  document.getElementById("setup").classList.add("hidden");
+  document.getElementById("results").classList.add("hidden");
+  document.getElementById("exam").classList.remove("hidden");
+
+  document.getElementById("studentLabel").textContent=
+    student.name+" | Admission No: "+student.admission;
+  document.getElementById("modeLabel").textContent=
+    mode==="mcq"?"MCQ Challenge · 30 marks":"Open-Ended Challenge · 50 marks";
+  document.getElementById("timerLabel").textContent=
+    mode==="mcq"?"Elapsed time · target 15:00":"Elapsed time · limit 30:00";
+
+  renderQuestions();
+  updateProgress();
+
+  /* Measure the dashboard once it is visible, then reserve space for it. */
+  requestAnimationFrame(()=>{
+    syncDashboardSpace();
+    window.scrollTo({top:0,behavior:"instant"});
+  });
+
+  updateTimer();
+  if(timerInterval)clearInterval(timerInterval);
+  timerInterval=setInterval(updateTimer,250);
+}
+
+function renderQuestions(){
+  const list=document.getElementById("questionList");
+  list.innerHTML="";
+  currentQuestions.forEach((q,i)=>{
+    const section=document.createElement("section");
+    section.className="question";
+    section.id="question-"+i;
+
+    const num=document.createElement("div");
+    num.className="q-number";
+    num.textContent=mode==="mcq"
+      ?"Question "+(i+1)+" · 1 mark"
+      :i<25?"Short Answer "+(i+1)+" · 1 mark":"Essay "+(i-24)+" · 5 marks";
+
+    const title=document.createElement("h3");
+    title.textContent=q.q;
+    section.append(num,title);
+
+    if(mode==="mcq"){
+      q.o.forEach((choice,j)=>{
+        const label=document.createElement("label");
+        label.className="option";
+        const radio=document.createElement("input");
+        radio.type="radio";radio.name="q"+i;radio.value=j;
+        radio.addEventListener("change",()=>{
+          if(submitted)return;
+          answers[i]=String(j);
+          updateProgress();
+        });
+        const text=document.createElement("span");
+        text.textContent=String.fromCharCode(65+j)+". "+choice;
+        label.append(radio,text);
+        section.appendChild(label);
+      });
+    }else{
+      const ta=document.createElement("textarea");
+      ta.id="answer-"+i;
+      ta.placeholder=i<25
+        ?"Write your answer using the relevant physiological terms…"
+        :"Develop a structured answer. Include mechanisms and key terms…";
+      ta.value=answers[i]||"";
+      ta.addEventListener("input",()=>{
+        if(submitted)return;
+        answers[i]=ta.value;
+        updateProgress();
+      });
+      section.appendChild(ta);
+
+      if(i>=25){
+        const note=document.createElement("p");
+        note.className="small";
+        note.textContent="Essay marking: 5 rubric points available. Relevant key concepts earn partial credit.";
+        section.appendChild(note);
+      }
+    }
+    list.appendChild(section);
+  });
+}
+
+function updateProgress(){
+  const count=answers.filter(a=>String(a).trim()!=="").length;
+  document.getElementById("progressText").textContent=
+    count+" of "+currentQuestions.length+" answered";
+  document.getElementById("progressFill").style.width=
+    (count/currentQuestions.length*100)+"%";
+  document.getElementById("unansweredNotice").textContent=
+    count===currentQuestions.length
+      ?"All questions have a response. You may submit."
+      :(currentQuestions.length-count)+" unanswered question(s) may receive zero marks.";
+}
+function formatTime(s){
+  return String(Math.floor(s/60)).padStart(2,"0")+":"+
+    String(s%60).padStart(2,"0");
+}
+function updateTimer(){
+  if(submitted)return;
+  const elapsed=Math.floor((Date.now()-startTime)/1000);
+  document.getElementById("timer").textContent=formatTime(elapsed);
+  const limit=mode==="mcq"?900:1800;
+  const hardLimit=mode==="mcq"?960:1800;
+  document.getElementById("timer").classList.toggle("red",elapsed>=limit);
+  if(elapsed>=hardLimit)submitTest(true,true);
+}
+function goToTop(){
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function normalise(s){
+  return String(s||"").toLowerCase()
+    .replace(/β/g," beta ").replace(/α/g," alpha ")
+    .replace(/γ/g," gamma ").replace(/δ/g," delta ")
+    .replace(/⁺/g,"+").replace(/⁻/g,"-")
+    .replace(/na\+/g," sodium ").replace(/k\+/g," potassium ")
+    .replace(/ca2\+/g," calcium ").replace(/ca\+\+/g," calcium ")
+    .replace(/atpase/g," atpase ")
+    .replace(/[^a-z0-9+.-]+/g," ").replace(/\s+/g," ").trim();
+}
+function containsAlternative(answer,alternatives){
+  const text=" "+normalise(answer)+" ";
+  return alternatives.some(term=>{
+    const t=normalise(term);
+    if(!t)return false;
+    return text.includes(" "+t+" ")||text.includes(t);
+  });
+}
+function markRubric(answer,rubric,pointsEach){
+  const hits=[];
+  let score=0;
+  rubric.forEach(criterion=>{
+    const hit=containsAlternative(answer,criterion);
+    hits.push(hit);
+    if(hit)score+=pointsEach;
+  });
+  return {score,hits};
+}
+function scoreOpenAnswer(q,index,answer){
+  const essay=index>=25;
+  const marked=markRubric(answer,q.rubric,essay?1:0.5);
+  const max=essay?5:1;
+  return {score:Math.min(max,marked.score),max,hits:marked.hits};
+}
+
+/* CUSTOM SUBMISSION DIALOG */
+function openSubmitModal(automatic=false){
+  if(submitted)return;
+
+  pendingAutomatic=automatic;
+  const answered=answers.filter(a=>String(a).trim()!=="").length;
+  const unanswered=answers.length-answered;
+  const modal=document.getElementById("submitModal");
+  const message=document.getElementById("submitModalMessage");
+  const warning=document.getElementById("modalWarning");
+  const cancel=document.getElementById("cancelSubmit");
+  const confirmButton=document.getElementById("confirmSubmit");
+
+  document.getElementById("modalAnswered").textContent=answered;
+  document.getElementById("modalUnanswered").textContent=unanswered;
+
+  if(automatic){
+    document.getElementById("submitModalTitle").textContent="Time Limit Reached";
+    message.textContent="Your assessment time has ended. Your responses will now be submitted automatically.";
+    warning.textContent=mode==="mcq"
+      ?"The 16-minute limit was reached. A 5-mark penalty will be applied."
+      :"The 30-minute time limit was reached.";
+    warning.classList.remove("hidden");
+    cancel.classList.add("hidden");
+    confirmButton.textContent="View Results";
+  }else{
+    document.getElementById("submitModalTitle").textContent="Submit Assessment?";
+    message.textContent=unanswered>0
+      ?"You still have unanswered questions. You can return to your assessment or submit your current responses."
+      :"You have answered every question. Are you ready to submit your assessment?";
+    if(unanswered>0){
+      warning.textContent=unanswered+" question(s) are blank and will receive zero marks.";
+      warning.classList.remove("hidden");
+    }else{
+      warning.classList.add("hidden");
+    }
+    cancel.classList.remove("hidden");
+    confirmButton.textContent="Confirm Submission";
+  }
+
+  modal.classList.remove("hidden");
+  document.body.style.overflow="hidden";
+  confirmButton.focus();
+}
+function closeSubmitModal(){
+  document.getElementById("submitModal").classList.add("hidden");
+  document.body.style.overflow="";
+}
+
+document.getElementById("cancelSubmit").addEventListener("click",()=>{
+  closeSubmitModal();
+});
+
+document.getElementById("confirmSubmit").addEventListener("click",()=>{
+  const automatic=pendingAutomatic;
+  closeSubmitModal();
+  submitTest(automatic,true);
+});
+
+document.getElementById("submitModal").addEventListener("click",event=>{
+  if(event.target.id==="submitModal"&&!pendingAutomatic){
+    closeSubmitModal();
+  }
+});
+
+document.addEventListener("keydown",event=>{
+  const modal=document.getElementById("submitModal");
+  if(event.key==="Escape"&&!modal.classList.contains("hidden")&&!pendingAutomatic){
+    closeSubmitModal();
+  }
+});
+
+function submitTest(automatic=false,confirmed=false){
+  if(submitted)return;
+
+  if(!automatic&&!confirmed){
+    openSubmitModal(false);
+    return;
+  }
+
+  const elapsed=Math.floor((Date.now()-startTime)/1000);
+  if(timerInterval){
+    clearInterval(timerInterval);
+    timerInterval=null;
+  }
+
+  submitted=true;
+  closeSubmitModal();
+
+  let raw=0;
+  const max=mode==="mcq"?30:50;
+  const marking=[];
+
+  currentQuestions.forEach((q,i)=>{
+    if(mode==="mcq"){
+      const correct=answers[i]!==""&&Number(answers[i])===q.a;
+      const score=correct?1:0;
+      raw+=score;
+      marking.push({score,max:1,correct,feedback:null});
+    }else{
+      const result=scoreOpenAnswer(q,i,answers[i]);
+      raw+=result.score;
+      marking.push({
+        score:result.score,
+        max:result.max,
+        correct:result.score===result.max,
+        feedback:result.hits
+      });
+    }
+  });
+
+  const late=mode==="mcq"&&elapsed>=960;
+  const deduction=late?5:0;
+  const finalScore=Math.max(0,raw-deduction);
+
+  currentResult={
+    name:student.name,
+    admission:student.admission,
+    mode,
+    rawScore:raw,
+    penalty:deduction,
+    finalScore,
+    max,
+    percentage:finalScore/max*100,
+    elapsedSeconds:elapsed,
+    late,
+    answers:[...answers],
+    marking,
+    date:new Date().toLocaleString()
+  };
+
+  results.push(currentResult);
+  saveResults();
+
+  document.getElementById("exam").classList.add("hidden");
+  document.getElementById("results").classList.remove("hidden");
+  document.documentElement.style.setProperty("--dashboard-height","0px");
+  showResult(currentResult,automatic);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function performanceComment(p){
+  if(p>=90)return"Outstanding performance. You demonstrated excellent command of the assessed concepts.";
+  if(p>=80)return"Excellent performance. Continue practising clinical and mechanistic applications.";
+  if(p>=70)return"Very good understanding. Review the concepts that cost you marks.";
+  if(p>=60)return"Good progress, but some concepts need more consolidation.";
+  if(p>=50)return"A developing foundation. Revisit the explanations and practise retrieval.";
+  if(p>=40)return"More revision is needed. Focus on mechanisms rather than memorising isolated facts.";
+  return"Use this attempt diagnostically. Review foundational concepts, then attempt the assessment again.";
+}
+function bandComment(lower){
+  if(lower===0)return"Revisit foundational terminology and core mechanisms.";
+  if(lower===20)return"Basic knowledge is emerging; practise explaining cause and effect.";
+  if(lower===40)return"Develop a stronger conceptual foundation.";
+  if(lower===60)return"Good progress; practise applying mechanisms to new situations.";
+  if(lower===80)return"Strong performance and a good level of conceptual understanding.";
+  return"Excellent to outstanding mastery of the assessed concepts.";
+}
+
+function showResult(r,automatic){
+  document.getElementById("resultName").textContent=
+    "Student: "+r.name+" · Admission number: "+r.admission+" · "+r.date;
+  document.getElementById("resultMode").textContent=
+    r.mode==="mcq"?"MCQ Challenge":"Open-Ended Challenge";
+  document.getElementById("scoreDisplay").textContent=
+    r.finalScore.toFixed(1)+"/"+r.max;
+  document.getElementById("percentageDisplay").textContent=
+    "Final percentage: "+r.percentage.toFixed(1)+"%";
+  document.getElementById("rawScore").textContent=
+    r.rawScore.toFixed(1)+"/"+r.max;
+  document.getElementById("penalty").textContent=r.penalty+" marks";
+  document.getElementById("answeredCount").textContent=
+    r.answers.filter(a=>String(a).trim()!=="").length;
+  document.getElementById("unansweredCount").textContent=
+    r.answers.filter(a=>String(a).trim()==="").length;
+  document.getElementById("overallRemark").innerHTML=
+    "<strong>Overall feedback</strong><br>"+escapeHTML(performanceComment(r.percentage));
+
+  let timeText="Time used: "+formatTime(r.elapsedSeconds)+". ";
+  if(r.mode==="mcq"){
+    timeText+=r.late
+      ?"The 16-minute limit was reached and a 5-mark penalty was applied."
+      :r.elapsedSeconds>=900
+        ?"The 15-minute target was exceeded, but the 16-minute penalty threshold was not reached."
+        :"Completed within the 15-minute target.";
+  }else{
+    timeText+=r.elapsedSeconds>=1800
+      ?"The 30-minute time limit was reached."
+      :"Completed within the 30-minute time limit.";
+  }
+  if(automatic)timeText+=" Assessment submitted automatically.";
+  document.getElementById("timeRemark").innerHTML=
+    "<div class='"+(r.late?"warning":"notice")+"'>"+escapeHTML(timeText)+"</div>";
+
+  const bands=document.getElementById("intervalRemarks");
+  bands.innerHTML="";
+  for(let lower=0;lower<=80;lower+=20){
+    const upper=lower+19.99;
+    const reached=r.percentage>=lower&&
+      (lower===80?r.percentage<=100:r.percentage<=upper);
+    const div=document.createElement("div");
+    div.className="remark";
+    div.innerHTML="<strong>"+lower+"–"+(lower===80?100:upper.toFixed(0))+
+      "%</strong> — "+escapeHTML(bandComment(lower))+
+      (reached?" <strong>← Your band</strong>":"");
+    bands.appendChild(div);
+  }
+  renderReview(r);
+  renderRegister();
+}
+
+function renderReview(r){
+  const box=document.getElementById("reviewList");
+  box.innerHTML="";
+  currentQuestions.forEach((q,i)=>{
+    const m=r.marking[i];
+    const div=document.createElement("div");
+    div.className="review-item";
+    let html="<strong>Q"+(i+1)+". "+escapeHTML(q.q)+"</strong><br>";
+    html+="<span class='"+(m.correct?"correct":"incorrect")+"'>"+
+      (m.correct?"✓ Full marks":"Score: "+m.score.toFixed(1)+"/"+m.max)+
+      "</span><br>";
+
+    if(r.mode==="mcq"){
+      const yours=r.answers[i]===""
+        ?"Not answered"
+        :String.fromCharCode(65+Number(r.answers[i]))+". "+q.o[Number(r.answers[i])];
+      const key=String.fromCharCode(65+q.a)+". "+q.o[q.a];
+      html+="<span class='small'>Your answer: "+escapeHTML(yours)+"</span><br>";
+      html+="<span class='correct'>Correct answer: "+escapeHTML(key)+"</span><br>";
+      html+="<p>"+escapeHTML(q.e)+"</p>";
+    }else{
+      html+="<p><strong>Your response:</strong><br>"+
+        escapeHTML(r.answers[i]||"Not answered").replace(/\n/g,"<br>")+"</p>";
+      html+="<p><strong>Model answer:</strong><br>"+
+        escapeHTML(q.model)+"</p>";
+      html+="<p>"+escapeHTML(q.ex)+"</p>";
+      html+="<p><strong>Rubric detected:</strong> ";
+      html+=(m.feedback||[]).map((hit,j)=>
+        "<span class='badge'>"+(hit?"✓":"○")+" Criterion "+(j+1)+"</span>"
+      ).join(" ");
+      html+="</p>";
+    }
+    div.innerHTML=html;
+    box.appendChild(div);
+  });
+}
+
+function renderRegister(){
+  const box=document.getElementById("register");
+  box.innerHTML="";
+  if(!results.length){
+    box.textContent="No completed attempts yet.";
+    return;
+  }
+
+  const wrap=document.createElement("div");
+  wrap.className="register-table-wrap";
+  const table=document.createElement("table");
+  const thead=document.createElement("thead");
+  const head=document.createElement("tr");
+
+  ["Student","Admission No.","Mode","Date","Raw","Penalty","Final","%","Time"].forEach(t=>{
+    const th=document.createElement("th");
+    th.textContent=t;
+    head.appendChild(th);
+  });
+  thead.appendChild(head);
+  table.appendChild(thead);
+
+  const body=document.createElement("tbody");
+  results.forEach(r=>{
+    const tr=document.createElement("tr");
+    [
+      r.name,r.admission,r.mode==="mcq"?"MCQ":"Open",r.date,
+      r.rawScore.toFixed(1)+"/"+r.max,"-"+r.penalty,
+      r.finalScore.toFixed(1)+"/"+r.max,r.percentage.toFixed(1)+"%",
+      formatTime(r.elapsedSeconds)
+    ].forEach(value=>{
+      const td=document.createElement("td");
+      td.textContent=value;
+      tr.appendChild(td);
+    });
+    body.appendChild(tr);
+  });
+
+  table.appendChild(body);
+  wrap.appendChild(table);
+  box.appendChild(wrap);
+}
+
+function printResults(){window.print()}
+function showRegister(){
+  document.getElementById("register").scrollIntoView({behavior:"smooth"});
+}
+function backHome(){
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null}
+  closeSubmitModal();
+  document.getElementById("results").classList.add("hidden");
+  document.getElementById("exam").classList.add("hidden");
+  document.getElementById("setup").classList.remove("hidden");
+  document.documentElement.style.setProperty("--dashboard-height","0px");
+  refreshIdentity();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+loadResults();
+refreshIdentity();
+</script>
+</body>
+</html>
+

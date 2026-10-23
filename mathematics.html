@@ -1,0 +1,1017 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1769e0">
+<title>Mathematics | PHARMILY31</title>
+
+<style>
+:root{
+  --blue:#1769e0;--navy:#101c36;--purple:#773be8;
+  --green:#11834c;--red:#d92332;--bg:#f1f5fc;
+  --border:#dce5f1;--dashboard-height:150px;
+}
+*{box-sizing:border-box}
+html,body{max-width:100%;overflow-x:hidden}
+html{scroll-padding-top:calc(var(--dashboard-height) + 18px)}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--navy);line-height:1.6}
+header{background:linear-gradient(135deg,#101c36,#1769e0,#3c8dff);color:white;text-align:center;padding:26px 14px}
+header h1{margin:0;font-size:24px}
+header p{margin:5px 0}
+.container{width:min(950px,94%);max-width:100%;margin:22px auto}
+.card{background:white;padding:22px;border:1px solid var(--border);border-radius:16px;margin-bottom:18px;box-shadow:0 4px 18px #10213b0b;min-width:0}
+h2,h3{margin-top:0}
+.small{color:#63728b;font-size:13px}
+label.field{display:block;font-weight:bold;margin:12px 0 6px}
+input[type=text],select,textarea{width:100%;max-width:100%;padding:12px;border:1px solid #bac8dc;border-radius:9px;font-size:15px;font-family:inherit;background:white;color:var(--navy)}
+textarea{min-height:74px;resize:vertical;line-height:1.55}
+button{border:0;border-radius:9px;background:var(--blue);color:white;padding:13px 17px;font-size:15px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.secondary{background:#e8effa;color:var(--navy)}
+button.purple{background:var(--purple)}
+button.green{background:var(--green)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #91baff;outline-offset:3px}
+.hidden{display:none!important}
+.notice{background:#edf5ff;border-left:4px solid var(--blue);padding:13px;border-radius:9px;margin:13px 0}
+.warning{background:#fff0f0;color:#9c1824;padding:13px;border-radius:9px;margin:13px 0}
+.hero{position:relative;overflow:hidden;border-radius:17px;padding:27px 15px;text-align:center;color:white;background:linear-gradient(135deg,#101c36,#1769e0,#3c8dff);margin-bottom:18px}
+.hero:before,.hero:after{content:"";position:absolute;width:150px;height:150px;border:1px solid #ffffff30;border-radius:50%;animation:orbit 8s linear infinite}
+.hero:before{left:-55px;top:-65px}
+.hero:after{right:-45px;bottom:-90px;animation-direction:reverse}
+.hero-title{position:relative;z-index:1;font-size:clamp(26px,6vw,42px);font-weight:900;line-height:1.25}
+.hero-sub{position:relative;z-index:1}
+@keyframes orbit{to{transform:rotate(360deg)}}
+
+/* FIXED DASHBOARD */
+.assessment-sticky{
+position:fixed;top:0;left:0;right:0;width:100%;z-index:999;
+background:var(--bg);padding:8px max(3%,calc((100% - 950px)/2));
+margin:0;isolation:isolate;box-shadow:0 5px 18px #10213b14;
+border-bottom:1px solid var(--border);
+}
+.topbar{position:relative;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;background:white;padding:10px 12px;border:1px solid var(--border);border-radius:12px;margin-bottom:7px;min-width:0;box-shadow:0 4px 16px #10213b0b}
+#studentLabel{display:block;font-weight:800;overflow-wrap:anywhere;line-height:1.35}
+#modeLabel,#progressText{line-height:1.4}
+.timer{font-size:22px;font-weight:bold;font-variant-numeric:tabular-nums;color:var(--blue)}
+.timer.red{color:var(--red);animation:pulse .8s infinite}
+@keyframes pulse{50%{opacity:.5}}
+.progress-track{height:8px;background:#e5ebf5;border-radius:10px;overflow:hidden;margin:0}
+.progress-fill{height:100%;width:0;background:var(--blue);transition:width .2s}
+#exam{padding-top:calc(var(--dashboard-height) + 15px)}
+.question{background:white;padding:19px;margin-bottom:14px;border:1px solid var(--border);border-radius:13px;scroll-margin-top:calc(var(--dashboard-height) + 20px);min-width:0;overflow-wrap:anywhere}
+.question h3{font-size:16px;line-height:1.5;color:var(--blue)}
+.q-number{font-size:12px;color:var(--blue);font-weight:bold;text-transform:uppercase}
+.answer-label{display:block;font-size:13px;font-weight:bold;color:#465774;margin:13px 0 6px}
+.answer-box{width:100%;min-height:55px;padding:12px;border:1px solid #bac8dc;border-radius:9px;font:15px Arial,sans-serif;resize:vertical}
+.answer-box:focus{border-color:var(--blue)}
+.answer-hint{font-size:12px;color:#63728b;margin-top:5px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.score{font-size:42px;font-weight:bold;color:var(--blue);margin:8px 0}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:20px 0}
+.stat{background:#f3f7fd;padding:13px;border-radius:10px;overflow-wrap:anywhere;min-width:0}
+.stat strong{display:block;font-size:22px}
+.remark{padding:12px;margin:9px 0;background:#f3f7fd;border-left:4px solid var(--blue);border-radius:7px}
+.review-item{padding:15px 0;border-bottom:1px solid var(--border);overflow-wrap:anywhere}
+.correct{color:var(--green);font-weight:bold}
+.incorrect{color:var(--red);font-weight:bold}
+.badge{display:inline-block;background:#e8effa;padding:4px 9px;border-radius:7px;font-size:12px;margin:3px}
+.model-solution{background:#f3f7fd;border-left:4px solid var(--blue);padding:12px;border-radius:8px;margin:10px 0;white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* RESULTS REGISTER */
+#register{width:100%;max-width:100%;min-width:0}
+.register-table-wrap{width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;border:1px solid var(--border);border-radius:8px}
+.register-table-wrap table{width:100%;min-width:760px;border-collapse:collapse;table-layout:auto}
+.register-table-wrap th,.register-table-wrap td{text-align:left;padding:9px 7px;border-bottom:1px solid var(--border);font-size:12px;overflow-wrap:anywhere;vertical-align:top}
+.register-table-wrap th{background:#f3f7fd}
+.register-table-wrap tbody tr:last-child td{border-bottom:0}
+.register-hint{font-size:12px;color:#63728b;margin-top:7px}
+footer{text-align:center;padding:20px;color:#63728b;font-size:12px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:8px 5px;border-bottom:1px solid var(--border);font-size:12px}
+
+/* SUBMISSION CONFIRMATION MODAL */
+.submit-modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(9,20,40,.72);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.submit-modal.hidden{display:none!important}
+.submit-dialog{width:min(440px,100%);max-height:90vh;max-height:90dvh;overflow-y:auto;background:white;color:var(--navy);border:1px solid var(--border);border-radius:20px;padding:25px;box-shadow:0 24px 80px #00000030;animation:modalEnter .2s ease-out}
+@keyframes modalEnter{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.submit-icon{display:grid;place-items:center;width:56px;height:56px;margin:0 auto 12px;border-radius:16px;background:#e8effa;font-size:27px}
+.submit-eyebrow{text-align:center;color:var(--blue);font-size:11px;font-weight:800;letter-spacing:1.2px;margin:0 0 8px}
+.submit-dialog h2{text-align:center;font-size:24px;margin:0 0 10px}
+#submitModalMessage{text-align:center;color:#63728b;font-size:14px;margin:0 0 20px}
+.submit-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:15px}
+.submit-summary>div{background:#f3f7fd;border:1px solid var(--border);border-radius:12px;padding:13px;text-align:center}
+.submit-summary span{display:block;color:#63728b;font-size:12px}
+.submit-summary strong{display:block;font-size:25px;margin-top:4px}
+#modalUnanswered{color:var(--red)}
+.submit-warning{background:#fff0f0;color:#9c1824;padding:11px;border-radius:9px;font-size:13px;margin:0 0 15px}
+.submit-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.submit-actions button{width:100%;min-height:46px;padding:11px;font-size:13px}
+.submit-footer{text-align:center;color:#63728b;font-size:11px;margin:16px 0 0}
+
+@media(max-width:500px){
+header h1{font-size:20px}
+.card{padding:16px}
+.question{padding:14px}
+.score{font-size:36px}
+.hero{padding:25px 8px}
+.container{width:94%;margin:14px auto}
+.assessment-sticky{padding:5px 3% 7px}
+.topbar{padding:8px;gap:6px;border-radius:10px}
+#studentLabel{font-size:13px}
+.topbar .small{font-size:11px}
+.timer{font-size:19px}
+.progress-track{height:7px}
+.stats{gap:8px}
+.stat{padding:10px}
+.stat strong{font-size:19px}
+button{max-width:100%}
+.actions button{flex:1 1 auto}
+.register-table-wrap table{min-width:760px}
+.submit-dialog{padding:19px}
+.submit-dialog h2{font-size:21px}
+.submit-actions{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+.submit-dialog{animation:none}
+.hero:before,.hero:after,.timer.red{animation:none}
+}
+@media print{
+body{background:white;color:black;font-size:11px}
+header{background:white!important;color:black;padding:8px}
+header h1{font-size:18px}
+.container{width:100%;max-width:100%;margin:0}
+#setup,#exam,footer,.no-print,.submit-modal{display:none!important}
+#results{display:block!important}
+#results .card{box-shadow:none;border:1px solid #bbb;padding:12px;margin:8px 0;break-inside:auto}
+#results .review-item{break-inside:avoid}
+#results button{display:none!important}
+.score{font-size:25px}
+.stats{gap:5px;margin:8px 0}
+.stat{padding:6px}
+.remark,.notice,.warning{background:white!important;color:black!important}
+.review-item{padding:8px 0}
+h2{font-size:16px}
+.register-table-wrap{overflow:visible;border:0}
+.register-table-wrap table{min-width:0;width:100%;table-layout:fixed}
+.register-table-wrap th,.register-table-wrap td{font-size:8px;padding:4px 2px;overflow-wrap:anywhere}
+.register-hint{display:none}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>🔵 Mathematics</h1>
+  <p>PHARMILY31 · Bachelor of Pharmacy · Year 1</p>
+  <p>Trigonometry · Algebra · Functions · Indices · Logarithms · Series</p>
+</header>
+
+<main class="container">
+<section id="setup" class="card">
+  <div class="hero">
+    <div class="hero-title">🔵 MATHEMATICS ARENA 🔵</div>
+    <p class="hero-sub">Understand the principle. Calculate accurately. Give the correct answer.</p>
+    <p class="hero-sub">University-level assessment · Open-ended questions only</p>
+  </div>
+
+  <h2>📐 Assessment Centre</h2>
+  <p>Challenge your understanding of trigonometry, functions and graphs, radian and degree measure, sine and cosine, trigonometric identities, quadratic equations, polynomial theorems, binomial expansion, indices, logarithms, sequences, and series.</p>
+
+  <div id="identityBox" class="notice">Checking verified student session…</div>
+
+  <div class="notice">
+    <strong>Assessment rules</strong>
+    <ul>
+      <li><strong>Open-Ended Challenge:</strong> 30 questions, 50 minutes, 30 marks.</li>
+      <li>All questions require an answer only. Write the final value, expression, equation, or requested result in the answer field.</li>
+      <li>Do not write your procedure in the answer field. The working and procedure are provided in the marking scheme after submission.</li>
+      <li>For numerical answers, include units where applicable. Use exact values when requested.</li>
+      <li>Equivalent mathematical forms may be accepted when recognised by the marking system.</li>
+      <li>Blank answers receive zero. Review your answers before submission.</li>
+      <li>Automatic marking is an educational estimate. Mathematically equivalent answers may not always be recognised automatically.</li>
+    </ul>
+  </div>
+
+  <h3>Choose your assessment</h3>
+  <div class="card">
+    <h3>🔵 Open-Ended Mathematics Challenge</h3>
+    <p>30 questions · Answer only · 50 minutes · 30 marks</p>
+    <p class="small">The marking scheme contains the required working, formulas, and explanations. You only enter your final answer.</p>
+    <button id="openStart" class="blue" onclick="startTest()" disabled>Start Mathematics Assessment</button>
+  </div>
+
+  <p class="small">Student identity is read from the verified session created by index.html. Results are stored locally in this browser on this device.</p>
+</section>
+
+<section id="exam" class="hidden">
+  <div class="assessment-sticky" id="assessmentDashboard">
+    <div class="topbar">
+      <div style="flex:1;min-width:0">
+        <strong id="studentLabel"></strong>
+        <div class="small" id="modeLabel">Open-Ended Mathematics Challenge</div>
+        <div class="small" id="progressText">0 answered</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div class="small" id="timerLabel">Time remaining · 50:00</div>
+        <div id="timer" class="timer">50:00</div>
+      </div>
+    </div>
+    <div class="progress-track" aria-label="Assessment progress">
+      <div id="progressFill" class="progress-fill"></div>
+    </div>
+  </div>
+
+  <div id="questionList"></div>
+
+  <div class="card">
+    <p id="unansweredNotice" class="small"></p>
+    <div class="actions">
+      <button onclick="requestSubmit(false)">Submit Assessment</button>
+      <button class="secondary" onclick="goToTop()">Back to Top ↑</button>
+    </div>
+  </div>
+</section>
+
+<section id="results" class="hidden">
+  <div class="card">
+    <h2>🏆 Mathematics Assessment Results</h2>
+    <p id="resultName"></p>
+    <p id="resultMode"></p>
+    <div id="scoreDisplay" class="score">0/30</div>
+    <p id="percentageDisplay"></p>
+    <div class="stats">
+      <div class="stat"><span class="small">Raw score</span><strong id="rawScore">0</strong></div>
+      <div class="stat"><span class="small">Penalty</span><strong id="penalty">0</strong></div>
+      <div class="stat"><span class="small">Questions answered</span><strong id="answeredCount">0</strong></div>
+      <div class="stat"><span class="small">Questions blank</span><strong id="unansweredCount">0</strong></div>
+    </div>
+    <div id="overallRemark" class="notice"></div>
+    <div id="timeRemark"></div>
+  </div>
+
+  <div class="card">
+    <h2>📊 Performance Bands</h2>
+    <div id="intervalRemarks"></div>
+  </div>
+
+  <div class="card">
+    <h2>📋 Student Results Register</h2>
+    <p class="small">Mathematics assessment attempts are saved locally in this browser.</p>
+    <div id="register"></div>
+    <p class="register-hint">On a mobile phone, swipe the register left or right to view all columns.</p>
+    <div class="actions no-print">
+      <button onclick="printResults()">Print / Save as PDF</button>
+      <button class="secondary" onclick="showRegister()">View Register</button>
+    </div>
+    <p class="small no-print">Choose Print, then select Save as PDF if that option is available in your browser.</p>
+  </div>
+
+  <div class="card">
+    <h2>📘 Answers, Marking Scheme &amp; Working</h2>
+    <p class="small">The marking scheme displays the correct answer and the procedure used to obtain it. This is shown after submission; the assessment itself requires final answers only.</p>
+    <div id="reviewList"></div>
+  </div>
+
+  <div class="card no-print">
+    <h2>Next Step</h2>
+    <p id="nextMessage"></p>
+    <button onclick="backHome()">Return to Assessment Centre</button>
+  </div>
+</section>
+</main>
+
+<div id="submitModal" class="submit-modal hidden" role="dialog"
+     aria-modal="true" aria-labelledby="submitModalTitle"
+     aria-describedby="submitModalMessage">
+  <div class="submit-dialog">
+    <div class="submit-icon">📝</div>
+    <p class="submit-eyebrow">PHARMILY31 · ASSESSMENT CENTRE</p>
+    <h2 id="submitModalTitle">Submit Assessment?</h2>
+    <p id="submitModalMessage">Are you ready to submit your assessment?</p>
+    <div class="submit-summary">
+      <div><span>Answered</span><strong id="modalAnswered">0</strong></div>
+      <div><span>Unanswered</span><strong id="modalUnanswered">0</strong></div>
+    </div>
+    <p id="modalWarning" class="submit-warning hidden"></p>
+    <div class="submit-actions">
+      <button type="button" id="cancelSubmit" class="secondary">Review Answers</button>
+      <button type="button" id="confirmSubmit" class="green">Confirm Submission</button>
+    </div>
+    <p class="submit-footer">Please review your responses before final submission.</p>
+  </div>
+</div>
+
+<footer>PHARMILY31 · Mathematics Revision Arena</footer>
+
+<script>
+"use strict";
+
+const SESSION_KEY="pharmily31Student";
+const STORAGE_KEY="pharmily31MathematicsResults_v1";
+const DURATION_SECONDS=50*60;
+let student=null,answers=[],startTime=0,timerInterval=null;
+let submitted=false,results=[],currentResult=null,previousFocus=null;
+
+function getIdentity(){
+  try{
+    const raw=sessionStorage.getItem(SESSION_KEY);
+    if(!raw)return null;
+    const d=JSON.parse(raw);
+    if(!d||typeof d!=="object")return null;
+    const name=d.name||d.fullName||d.studentName||d.student||d.full_name||"";
+    const admission=d.admissionNumber||d.admission_number||d.admission||d.regNo||d.registrationNumber||d.registration_number||"";
+    if(!String(name).trim()||!String(admission).trim())return null;
+    return {name:String(name).trim(),admission:String(admission).trim()};
+  }catch(e){return null}
+}
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+function refreshIdentity(){
+  student=getIdentity();
+  const box=document.getElementById("identityBox");
+  const open=document.getElementById("openStart");
+  if(student){
+    box.className="notice";
+    box.innerHTML="<strong>Verified session detected</strong><br>Student: "+
+      escapeHTML(student.name)+"<br>Admission number: "+escapeHTML(student.admission);
+    open.disabled=false;
+  }else{
+    box.className="warning";
+    box.innerHTML="<strong>Registration verification required</strong><br>Return to index.html, verify your name and admission number, then reopen Mathematics.";
+    open.disabled=true;
+  }
+}
+
+function syncDashboardSpace(){
+  const dashboard=document.getElementById("assessmentDashboard");
+  const exam=document.getElementById("exam");
+  if(!dashboard||!exam||exam.classList.contains("hidden"))return;
+  const height=Math.ceil(dashboard.getBoundingClientRect().height);
+  document.documentElement.style.setProperty("--dashboard-height",height+"px");
+}
+window.addEventListener("resize",syncDashboardSpace);
+window.addEventListener("orientationchange",()=>setTimeout(syncDashboardSpace,150));
+
+/*
+  Each question has one mark.
+  accepted contains alternative final-answer forms.
+  The procedure is shown in the marking scheme, not required in the answer box.
+*/
+const questions=[
+{
+topic:"Degree and radian measure",
+q:"Convert 150° to radians. Give the exact answer in terms of π.",
+accepted:["5pi/6","5π/6","(5/6)pi","(5/6)π"],
+answer:"5π/6",
+working:"Radians = degrees × π/180°\n150° × π/180° = 150π/180 = 5π/6.",
+explanation:"Use the conversion factor π radians = 180°."
+},
+{
+topic:"Degree and radian measure",
+q:"Convert 7π/12 radians to degrees.",
+accepted:["105","105 degrees","105°"],
+answer:"105°",
+working:"Degrees = radians × 180°/π\n(7π/12) × 180°/π = 7 × 15° = 105°.",
+explanation:"The π terms cancel during conversion."
+},
+{
+topic:"Arc length",
+q:"A circle has radius 8 cm. Find the arc length subtended by a central angle of π/3 radians. Give your answer in cm.",
+accepted:["8pi/3","8π/3","2.6667pi","2.667pi","8.38","8.3776"],
+answer:"8π/3 cm (approximately 8.38 cm)",
+working:"Arc length s = rθ\ns = 8 × π/3 = 8π/3 cm ≈ 8.38 cm.",
+explanation:"In s = rθ, the angle must be expressed in radians."
+},
+{
+topic:"Trigonometry",
+q:"Evaluate sin 30° + cos 60°. Give the exact numerical answer.",
+accepted:["1","1.0"],
+answer:"1",
+working:"sin 30° = 1/2 and cos 60° = 1/2.\nTheir sum is 1/2 + 1/2 = 1.",
+explanation:"These are standard exact trigonometric values."
+},
+{
+topic:"Trigonometry",
+q:"Evaluate tan 45° + sin 90°.",
+accepted:["2","2.0"],
+answer:"2",
+working:"tan 45° = 1 and sin 90° = 1.\nTherefore, 1 + 1 = 2.",
+explanation:"Both standard trigonometric values equal 1."
+},
+{
+topic:"Trigonometry",
+q:"If sin θ = 3/5 and θ is acute, find cos θ.",
+accepted:["4/5","0.8"],
+answer:"4/5",
+working:"sin²θ + cos²θ = 1\ncos²θ = 1 − 9/25 = 16/25.\nSince θ is acute, cos θ is positive: cos θ = 4/5.",
+explanation:"Use the Pythagorean identity and the acute-angle condition."
+},
+{
+topic:"Trigonometric identities",
+q:"Simplify (1 − cos²x)/sin x, where sin x ≠ 0.",
+accepted:["sin x","sin(x)","sin"],
+answer:"sin x",
+working:"1 − cos²x = sin²x.\nTherefore, sin²x/sin x = sin x.",
+explanation:"Apply sin²x + cos²x = 1, then simplify."
+},
+{
+topic:"Trigonometric identities",
+q:"Simplify (sec²x − 1)/tan x, where the expression is defined.",
+accepted:["tan x","tan(x)","tan"],
+answer:"tan x",
+working:"sec²x − 1 = tan²x.\nTherefore, tan²x/tan x = tan x.",
+explanation:"Use the identity sec²x = 1 + tan²x."
+},
+{
+topic:"Trigonometric equations",
+q:"Find the acute angle θ if cos θ = √3/2. Give your answer in degrees.",
+accepted:["30","30°","30 degrees"],
+answer:"30°",
+working:"cos 30° = √3/2.\nTherefore, θ = 30° in the acute-angle interval.",
+explanation:"Use the standard exact cosine values."
+},
+{
+topic:"Trigonometric equations",
+q:"Solve sin θ = 1/2 for 0° ≤ θ ≤ 360°. Give all solutions in degrees, separated by a comma.",
+accepted:["30,150","30°,150°","150,30","30 and 150","30 150"],
+answer:"30°, 150°",
+working:"The reference angle is 30° because sin 30° = 1/2.\nSine is positive in quadrants I and II.\nTherefore, θ = 30°, 150°.",
+explanation:"Use the reference angle and the quadrants where sine is positive."
+},
+{
+topic:"Functions",
+q:"If f(x) = 2x² − 3x + 1, find f(2).",
+accepted:["3","3.0"],
+answer:"3",
+working:"f(2) = 2(2²) − 3(2) + 1 = 8 − 6 + 1 = 3.",
+explanation:"Substitute x = 2 and evaluate using the order of operations."
+},
+{
+topic:"Functions and graphs",
+q:"Find the gradient of the straight line passing through (2, 3) and (6, 11).",
+accepted:["2","2.0"],
+answer:"2",
+working:"Gradient m = (y₂ − y₁)/(x₂ − x₁)\nm = (11 − 3)/(6 − 2) = 8/4 = 2.",
+explanation:"The gradient is the change in y divided by the change in x."
+},
+{
+topic:"Quadratic equations",
+q:"Solve x² − 5x + 6 = 0. Give both roots separated by a comma.",
+accepted:["2,3","3,2","x=2,x=3","x = 2, x = 3"],
+answer:"x = 2, 3",
+working:"x² − 5x + 6 = (x − 2)(x − 3) = 0.\nTherefore, x = 2 or x = 3.",
+explanation:"Factorise the quadratic and set each factor equal to zero."
+},
+{
+topic:"Quadratic equations",
+q:"Find the discriminant of 2x² + 3x − 2 = 0.",
+accepted:["25","25.0"],
+answer:"25",
+working:"For ax² + bx + c = 0, the discriminant is Δ = b² − 4ac.\nΔ = 3² − 4(2)(−2) = 9 + 16 = 25.",
+explanation:"A positive discriminant indicates two distinct real roots."
+},
+{
+topic:"Quadratic equations",
+q:"Find the vertex x-coordinate of y = x² − 6x + 11.",
+accepted:["3","x=3","x = 3"],
+answer:"x = 3",
+working:"For y = ax² + bx + c, the vertex x-coordinate is −b/(2a).\nx = −(−6)/(2 × 1) = 3.",
+explanation:"The vertex lies on the axis of symmetry of the parabola."
+},
+{
+topic:"Remainder Theorem",
+q:"Find the remainder when P(x) = x³ − 2x² + 4x − 5 is divided by x − 2.",
+accepted:["3"],
+answer:"3",
+working:"By the Remainder Theorem, the remainder is P(2).\nP(2) = 8 − 8 + 8 − 5 = 3.",
+explanation:"For division by x − a, the remainder is P(a)."
+},
+{
+topic:"Remainder Theorem",
+q:"Find k if P(x) = x³ + kx + 2 leaves a remainder of 10 when divided by x − 2.",
+accepted:["1","k=1","k = 1"],
+answer:"k = 1",
+working:"P(2) = 10.\n8 + 2k + 2 = 10\n2k + 10 = 10, so k = 0.",
+explanation:"Substitute x = 2 and equate the result to the given remainder."
+},
+{
+topic:"Factor Theorem",
+q:"Given P(x) = x³ − 4x² + x + 6, state the value of P(2).",
+accepted:["0"],
+answer:"0",
+working:"P(2) = 8 − 16 + 2 + 6 = 0.",
+explanation:"A zero value indicates that x − 2 is a factor of the polynomial."
+},
+{
+topic:"Factorisation of polynomials",
+q:"Factorise fully x³ − 4x² + x + 6.",
+accepted:["(x-2)(x-3)(x+1)","(x−2)(x−3)(x+1)","(x+1)(x-2)(x-3)","(x+1)(x−2)(x−3)"],
+answer:"(x − 2)(x − 3)(x + 1)",
+working:"P(2) = 0, so x − 2 is a factor.\nDividing gives x² − 2x − 3.\nThen x² − 2x − 3 = (x − 3)(x + 1).\nHence P(x) = (x − 2)(x − 3)(x + 1).",
+explanation:"Use the Factor Theorem to identify a factor, then factorise the quotient."
+},
+{
+topic:"Binomial expansion",
+q:"Find the coefficient of x² in the expansion of (1 + 2x)⁴.",
+accepted:["24"],
+answer:"24",
+working:"The x² term is C(4,2)(2x)².\nCoefficient = 6 × 4 = 24.",
+explanation:"Use the binomial coefficient C(4,2) and the square of 2."
+},
+{
+topic:"Binomial expansion",
+q:"Find the constant term in the expansion of (x + 2)⁴.",
+accepted:["16"],
+answer:"16",
+working:"The constant term is obtained by selecting 2 from each factor: 2⁴ = 16.",
+explanation:"Every term containing x disappears from the constant term."
+},
+{
+topic:"Binomial Theorem",
+q:"Find the coefficient of x³ in the expansion of (2 + x)⁵.",
+accepted:["40"],
+answer:"40",
+working:"The x³ term is C(5,3)2²x³.\nCoefficient = 10 × 4 = 40.",
+explanation:"The binomial term is C(n,r)a^(n−r)b^r."
+},
+{
+topic:"Binomial Theorem",
+q:"Find the term independent of x in the expansion of (x² + 1/x)³.",
+accepted:["3"],
+answer:"3",
+working:"General term: C(3,r)(x²)^(3−r)(x⁻¹)^r.\nPower of x = 6 − 3r.\nFor a constant, 6 − 3r = 0, so r = 2.\nConstant term = C(3,2) = 3.",
+explanation:"Set the total power of x equal to zero to find the constant term."
+},
+{
+topic:"Indices",
+q:"Simplify a³ × a⁵/a², where a ≠ 0.",
+accepted:["a^6","a⁶"],
+answer:"a⁶",
+working:"When multiplying powers, add indices; when dividing, subtract them.\na³ × a⁵/a² = a^(3+5−2) = a⁶.",
+explanation:"Apply the laws of indices."
+},
+{
+topic:"Indices",
+q:"Evaluate 27^(2/3).",
+accepted:["9","9.0"],
+answer:"9",
+working:"27^(2/3) = (∛27)² = 3² = 9.",
+explanation:"The denominator gives the root and the numerator gives the power."
+},
+{
+topic:"Logarithms",
+q:"Evaluate log₂ 32.",
+accepted:["5"],
+answer:"5",
+working:"Let log₂ 32 = y. Then 2ʸ = 32 = 2⁵.\nTherefore, y = 5.",
+explanation:"A logarithm asks for the power to which the base must be raised."
+},
+{
+topic:"Logarithms",
+q:"Solve log₁₀ x = 2.",
+accepted:["100","x=100","x = 100"],
+answer:"x = 100",
+working:"log₁₀ x = 2 means x = 10² = 100.",
+explanation:"Convert the logarithmic equation to exponential form."
+},
+{
+topic:"Sequences",
+q:"Find the 10th term of the arithmetic sequence 3, 7, 11, 15, …",
+accepted:["39","39.0"],
+answer:"39",
+working:"First term a = 3 and common difference d = 4.\naₙ = a + (n − 1)d\na₁₀ = 3 + 9(4) = 39.",
+explanation:"Use the nth-term formula for an arithmetic sequence."
+},
+{
+topic:"Series",
+q:"Find the sum of the first 10 terms of the arithmetic sequence 2, 5, 8, 11, …",
+accepted:["155","155.0"],
+answer:"155",
+working:"a = 2, d = 3, n = 10.\nSₙ = n/2[2a + (n − 1)d]\nS₁₀ = 10/2[4 + 27] = 5 × 31 = 155.",
+explanation:"Use the sum formula for an arithmetic series."
+},
+{
+topic:"Geometric sequences and series",
+q:"Find the sum of the first five terms of the geometric sequence 2, 6, 18, 54, …",
+accepted:["242","242.0"],
+answer:"242",
+working:"a = 2, r = 3, n = 5.\nSₙ = a(rⁿ − 1)/(r − 1), for r ≠ 1.\nS₅ = 2(3⁵ − 1)/(3 − 1) = 2(242)/2 = 242.",
+explanation:"Apply the finite geometric-series formula."
+}
+];
+
+function loadResults(){
+  try{
+    const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
+    results=Array.isArray(data)?data:[];
+  }catch(e){results=[]}
+}
+function saveResults(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(results))}
+  catch(e){showNoticeModal("Results could not be saved","Your browser could not save this attempt locally. You can still view and print the result, but it may not remain in the register after closing the page.")}
+}
+
+function normalise(value){
+  return String(value||"")
+    .toLowerCase()
+    .replace(/−/g,"-")
+    .replace(/π/g,"pi")
+    .replace(/²/g,"^2")
+    .replace(/³/g,"^3")
+    .replace(/√/g,"sqrt")
+    .replace(/°/g,"")
+    .replace(/[−–]/g,"-")
+    .replace(/×/g,"*")
+    .replace(/\s+/g,"")
+    .replace(/,/g,"")
+    .replace(/x=/g,"")
+    .replace(/k=/g,"")
+    .replace(/[^a-z0-9^*+./()=-]/g,"");
+}
+function checkAnswer(userAnswer,q){
+  const user=normalise(userAnswer);
+  if(!user)return false;
+  return q.accepted.some(a=>normalise(a)===user);
+}
+
+function startTest(){
+  refreshIdentity();
+  if(!student){
+    showNoticeModal("Registration verification required","Return to index.html, verify your student registration, and reopen Mathematics.");
+    return;
+  }
+  answers=Array(questions.length).fill("");
+  startTime=Date.now();
+  submitted=false;
+  currentResult=null;
+
+  document.getElementById("setup").classList.add("hidden");
+  document.getElementById("results").classList.add("hidden");
+  document.getElementById("exam").classList.remove("hidden");
+  document.getElementById("studentLabel").textContent=student.name+" · "+student.admission;
+  document.getElementById("modeLabel").textContent="Open-Ended Mathematics Challenge · 30 marks";
+  renderQuestions();
+  updateProgress();
+  updateTimer();
+  syncDashboardSpace();
+
+  if(timerInterval)clearInterval(timerInterval);
+  timerInterval=setInterval(updateTimer,250);
+  requestAnimationFrame(syncDashboardSpace);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function renderQuestions(){
+  const list=document.getElementById("questionList");
+  list.innerHTML="";
+  questions.forEach((q,i)=>{
+    const section=document.createElement("section");
+    section.className="question";
+    section.id="question-"+i;
+
+    const number=document.createElement("div");
+    number.className="q-number";
+    number.textContent="QUESTION "+String(i+1).padStart(2,"0")+" · 1 MARK · "+q.topic.toUpperCase();
+
+    const title=document.createElement("h3");
+    title.textContent=q.q;
+
+    const label=document.createElement("label");
+    label.className="answer-label";
+    label.htmlFor="answer-"+i;
+    label.textContent="Your final answer";
+
+    const textarea=document.createElement("textarea");
+    textarea.id="answer-"+i;
+    textarea.className="answer-box";
+    textarea.rows=2;
+    textarea.placeholder="Enter answer only…";
+    textarea.value=answers[i]||"";
+    textarea.autocomplete="off";
+    textarea.spellcheck=false;
+    textarea.addEventListener("input",()=>{
+      if(submitted)return;
+      answers[i]=textarea.value;
+      updateProgress();
+    });
+
+    const hint=document.createElement("div");
+    hint.className="answer-hint";
+    hint.textContent="Final answer only. Working is provided in the marking scheme after submission.";
+
+    section.append(number,title,label,textarea,hint);
+    list.appendChild(section);
+  });
+}
+
+function updateProgress(){
+  const answered=answers.filter(a=>String(a).trim()!=="").length;
+  const unanswered=questions.length-answered;
+  document.getElementById("progressText").textContent=answered+" of "+questions.length+" answered";
+  document.getElementById("progressFill").style.width=(answered/questions.length*100)+"%";
+  document.getElementById("unansweredNotice").textContent=
+    unanswered===0?"All questions have a response. You may submit.":
+    unanswered+" unanswered question(s) may receive zero marks.";
+}
+
+function formatTime(seconds){
+  return String(Math.floor(seconds/60)).padStart(2,"0")+":"+
+    String(seconds%60).padStart(2,"0");
+}
+
+function updateTimer(){
+  if(submitted)return;
+  const elapsed=Math.floor((Date.now()-startTime)/1000);
+  const remaining=Math.max(0,DURATION_SECONDS-elapsed);
+  document.getElementById("timer").textContent=formatTime(remaining);
+  document.getElementById("timer").classList.toggle("red",remaining<=300);
+  document.getElementById("timerLabel").textContent=
+    remaining<=300?"Time remaining · FINAL 5 MINUTES":"Time remaining · 50:00";
+
+  if(remaining<=0)requestSubmit(true);
+}
+
+function goToTop(){
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function openSubmitModal(automatic){
+  const answered=answers.filter(a=>String(a).trim()!=="").length;
+  const unanswered=questions.length-answered;
+  previousFocus=document.activeElement;
+
+  document.getElementById("submitModalTitle").textContent=
+    automatic?"Time is up!":"Submit Assessment?";
+  document.getElementById("submitModalMessage").textContent=
+    automatic?"The 50-minute assessment period has ended. Your answers will now be submitted.":
+    "Are you ready to submit your Mathematics assessment?";
+  document.getElementById("modalAnswered").textContent=answered;
+  document.getElementById("modalUnanswered").textContent=unanswered;
+
+  const warning=document.getElementById("modalWarning");
+  if(automatic){
+    warning.textContent="The assessment time has ended. Your current answers will be marked.";
+    warning.classList.remove("hidden");
+    document.getElementById("cancelSubmit").classList.add("hidden");
+    document.getElementById("confirmSubmit").textContent="View Results";
+  }else{
+    warning.textContent=unanswered?
+      "You still have "+unanswered+" unanswered question(s). Blank answers receive zero marks.":
+      "All questions have been answered. You can submit when ready.";
+    warning.classList.remove("hidden");
+    document.getElementById("cancelSubmit").classList.remove("hidden");
+    document.getElementById("confirmSubmit").textContent="Confirm Submission";
+  }
+
+  document.getElementById("submitModal").classList.remove("hidden");
+  document.body.style.overflow="hidden";
+  if(!automatic)document.getElementById("cancelSubmit").focus();
+}
+
+function closeSubmitModal(){
+  document.getElementById("submitModal").classList.add("hidden");
+  document.body.style.overflow="";
+  if(previousFocus&&typeof previousFocus.focus==="function")previousFocus.focus();
+}
+
+function requestSubmit(automatic){
+  if(submitted)return;
+  openSubmitModal(automatic);
+}
+
+function showNoticeModal(title,message){
+  previousFocus=document.activeElement;
+  document.getElementById("submitModalTitle").textContent=title;
+  document.getElementById("submitModalMessage").textContent=message;
+  document.getElementById("modalAnswered").textContent="—";
+  document.getElementById("modalUnanswered").textContent="—";
+  document.getElementById("modalWarning").classList.add("hidden");
+  document.getElementById("cancelSubmit").classList.add("hidden");
+  document.getElementById("confirmSubmit").textContent="Close";
+  document.getElementById("submitModal").classList.remove("hidden");
+  document.body.style.overflow="hidden";
+}
+
+document.getElementById("cancelSubmit").addEventListener("click",()=>{
+  if(submitted)return;
+  closeSubmitModal();
+});
+document.getElementById("confirmSubmit").addEventListener("click",()=>{
+  if(submitted){
+    closeSubmitModal();
+    return;
+  }
+  closeSubmitModal();
+  finishSubmit(false);
+});
+
+function finishSubmit(automatic){
+  if(submitted)return;
+  submitted=true;
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null}
+
+  const elapsed=Math.min(DURATION_SECONDS,Math.floor((Date.now()-startTime)/1000));
+  let raw=0;
+  const marking=[];
+
+  questions.forEach((q,i)=>{
+    const correct=checkAnswer(answers[i],q);
+    const score=correct?1:0;
+    raw+=score;
+    marking.push({score,max:1,correct});
+  });
+
+  currentResult={
+    name:student.name,
+    admission:student.admission,
+    mode:"Open-Ended Mathematics",
+    rawScore:raw,
+    penalty:0,
+    finalScore:raw,
+    max:questions.length,
+    percentage:raw/questions.length*100,
+    elapsedSeconds:elapsed,
+    automatic:!!automatic,
+    answers:[...answers],
+    marking,
+    date:new Date().toLocaleString()
+  };
+
+  results.push(currentResult);
+  saveResults();
+
+  document.getElementById("exam").classList.add("hidden");
+  document.getElementById("results").classList.remove("hidden");
+  showResult(currentResult);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function performanceComment(p){
+  if(p>=90)return"Outstanding performance. You demonstrated excellent command of the assessed mathematical concepts.";
+  if(p>=80)return"Excellent performance. Continue practising exact values and algebraic reasoning.";
+  if(p>=70)return"Very good understanding. Review the topics where you lost marks.";
+  if(p>=60)return"Good progress, but some concepts need further consolidation.";
+  if(p>=50)return"A developing foundation. Revisit the relevant formulas and practise applying them.";
+  if(p>=40)return"More revision is needed. Focus on the underlying principles before attempting similar questions again.";
+  return"Use this attempt diagnostically. Review the worked solutions and practise the foundational concepts.";
+}
+
+function bandComment(lower){
+  if(lower===0)return"Revisit foundational formulas and algebraic operations.";
+  if(lower===20)return"Practise substitution, exact values, and basic simplification.";
+  if(lower===40)return"Strengthen your understanding of the core methods.";
+  if(lower===60)return"Good progress; practise multi-step problems and exact answers.";
+  if(lower===80)return"Strong performance and good mathematical understanding.";
+  return"Excellent mastery of the assessed mathematical concepts.";
+}
+
+function showResult(r){
+  document.getElementById("resultName").textContent=
+    "Student: "+r.name+" · Admission number: "+r.admission+" · "+r.date;
+  document.getElementById("resultMode").textContent=
+    "Open-Ended Mathematics Challenge · 30 questions · 50 minutes";
+  document.getElementById("scoreDisplay").textContent=
+    r.finalScore+"/"+r.max;
+  document.getElementById("percentageDisplay").textContent=
+    "Final percentage: "+r.percentage.toFixed(1)+"%";
+  document.getElementById("rawScore").textContent=r.rawScore+"/"+r.max;
+  document.getElementById("penalty").textContent="0 marks";
+  document.getElementById("answeredCount").textContent=
+    r.answers.filter(a=>String(a).trim()!=="").length;
+  document.getElementById("unansweredCount").textContent=
+    r.answers.filter(a=>String(a).trim()==="").length;
+
+  document.getElementById("overallRemark").innerHTML=
+    "<strong>Overall feedback</strong><br>"+escapeHTML(performanceComment(r.percentage));
+
+  const timeText="Time used: "+formatTime(r.elapsedSeconds)+". "+
+    (r.automatic?"The 50-minute limit was reached and the assessment was submitted automatically.":
+    "Assessment submitted by the student.");
+  document.getElementById("timeRemark").innerHTML=
+    "<div class='"+(r.automatic?"warning":"notice")+"'>"+escapeHTML(timeText)+"</div>";
+
+  const bands=document.getElementById("intervalRemarks");
+  bands.innerHTML="";
+  for(let lower=0;lower<=80;lower+=20){
+    const upper=lower===80?100:lower+19.99;
+    const reached=r.percentage>=lower&&r.percentage<=upper;
+    const div=document.createElement("div");
+    div.className="remark";
+    div.innerHTML="<strong>"+lower+"–"+(lower===80?100:lower+20)+"%</strong> — "+
+      escapeHTML(bandComment(lower))+(reached?" <strong>← Your band</strong>":"");
+    bands.appendChild(div);
+  }
+  renderReview(r);
+  renderRegister();
+
+  document.getElementById("nextMessage").textContent=r.percentage>=70?
+    "Good work. Review the solutions for any missed questions and continue practising the topics that need improvement.":
+    "Review the worked marking scheme, practise the formulas and methods, then try another assessment.";
+}
+
+function renderReview(r){
+  const box=document.getElementById("reviewList");
+  box.innerHTML="";
+
+  questions.forEach((q,i)=>{
+    const m=r.marking[i];
+    const div=document.createElement("div");
+    div.className="review-item";
+
+    let html="<strong style='color:var(--blue)'>Q"+(i+1)+". "+
+      escapeHTML(q.q)+"</strong><br>";
+    html+="<span class='"+(m.correct?"correct":"incorrect")+"'>"+
+      (m.correct?"✓ Correct · 1/1 mark":"✗ Incorrect or not recognised · "+m.score+"/1 mark")+
+      "</span><br>";
+    html+="<span class='small'>Topic: "+escapeHTML(q.topic)+"</span>";
+
+    html+="<p><strong>Your answer:</strong><br>"+
+      escapeHTML(r.answers[i]||"Not answered")+"</p>";
+
+    html+="<div class='model-solution'><strong>Correct answer</strong><br>"+
+      escapeHTML(q.answer)+"<br><br><strong>Marking scheme / working</strong><br>"+
+      escapeHTML(q.working)+"</div>";
+
+    html+="<p><strong>Explanation:</strong> "+escapeHTML(q.explanation)+"</p>";
+    div.innerHTML=html;
+    box.appendChild(div);
+  });
+}
+
+function renderRegister(){
+  const box=document.getElementById("register");
+  box.innerHTML="";
+  if(!results.length){
+    box.textContent="No completed attempts yet.";
+    return;
+  }
+
+  const wrap=document.createElement("div");
+  wrap.className="register-table-wrap";
+  const table=document.createElement("table");
+  const thead=document.createElement("thead");
+  const head=document.createElement("tr");
+
+  ["Student","Admission No.","Assessment","Date","Raw","Penalty","Final","%","Time"].forEach(t=>{
+    const th=document.createElement("th");
+    th.textContent=t;
+    head.appendChild(th);
+  });
+  thead.appendChild(head);
+  table.appendChild(thead);
+
+  const body=document.createElement("tbody");
+  results.forEach(r=>{
+    const tr=document.createElement("tr");
+    [
+      r.name,r.admission,"Mathematics",r.date,
+      r.rawScore+"/"+r.max,"-"+r.penalty,
+      r.finalScore+"/"+r.max,r.percentage.toFixed(1)+"%",
+      formatTime(r.elapsedSeconds)
+    ].forEach(value=>{
+      const td=document.createElement("td");
+      td.textContent=value;
+      tr.appendChild(td);
+    });
+    body.appendChild(tr);
+  });
+
+  table.appendChild(body);
+  wrap.appendChild(table);
+  box.appendChild(wrap);
+}
+
+function printResults(){window.print()}
+function showRegister(){
+  document.getElementById("register").scrollIntoView({behavior:"smooth"});
+}
+
+function backHome(){
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null}
+  document.getElementById("results").classList.add("hidden");
+  document.getElementById("exam").classList.add("hidden");
+  document.getElementById("setup").classList.remove("hidden");
+  refreshIdentity();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.addEventListener("keydown",event=>{
+  const modal=document.getElementById("submitModal");
+  if(event.key==="Escape"&&!modal.classList.contains("hidden")&&!submitted){
+    closeSubmitModal();
+  }
+});
+
+loadResults();
+refreshIdentity();
+</script>
+</body>
+</html>
+

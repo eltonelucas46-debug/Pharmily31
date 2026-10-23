@@ -1,0 +1,1084 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#8b4513">
+<title>Biochemistry & General Chemistry | PHARMILY31</title>
+<style>
+:root{
+  --blue:#1769e0;--navy:#101c36;--purple:#773be8;
+  --green:#11834c;--red:#d92332;--bg:#fdfbf7;
+  --border:#e6dec9;
+  --dashboard-height:150px;
+  --brown:#8b4513;
+}
+*{box-sizing:border-box}
+html,body{max-width:100%;overflow-x:hidden}
+html{scroll-padding-top:calc(var(--dashboard-height) + 18px)}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--navy);line-height:1.6}
+header{background:linear-gradient(135deg,#3d1c02,#5c3a21,#8b4513);color:white;text-align:center;padding:26px 14px}
+header h1{margin:0;font-size:24px}
+header p{margin:5px 0}
+.container{width:min(950px,94%);max-width:100%;margin:22px auto}
+.card{background:white;padding:22px;border:1px solid var(--border);border-radius:16px;margin-bottom:18px;box-shadow:0 4px 18px #3d1c020b;min-width:0}
+h2,h3{margin-top:0}
+.small{color:#7a6b5d;font-size:13px}
+label.field{display:block;font-weight:bold;margin:12px 0 6px}
+input[type=text],select,textarea{width:100%;max-width:100%;padding:12px;border:1px solid #d4c5a9;border-radius:9px;font-size:15px;font-family:inherit;background:white;color:var(--navy)}
+textarea{min-height:100px;resize:vertical;line-height:1.55}
+button{border:0;border-radius:9px;background:var(--brown);color:white;padding:13px 17px;font-size:15px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.secondary{background:#f4efe6;color:var(--navy)}
+button.purple{background:var(--purple)}
+button.green{background:var(--green)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #d4a373;outline-offset:3px}
+.hidden{display:none!important}
+.notice{background:#fdf6ed;border-left:4px solid var(--brown);padding:13px;border-radius:9px;margin:13px 0}
+.warning{background:#fff0f0;color:#9c1824;padding:13px;border-radius:9px;margin:13px 0}
+.hero{position:relative;overflow:hidden;border-radius:17px;padding:27px 15px;text-align:center;color:white;background:linear-gradient(135deg,#3d1c02,#5c3a21,#8b4513);margin-bottom:18px}
+.hero:before,.hero:after{content:"";position:absolute;width:150px;height:150px;border:1px solid #ffffff30;border-radius:50%;animation:orbit 8s linear infinite}
+.hero:before{left:-55px;top:-65px}
+.hero:after{right:-45px;bottom:-90px;animation-direction:reverse}
+.hero-title{position:relative;z-index:1;font-size:clamp(26px,6vw,42px);font-weight:900;line-height:1.25}
+.hero-sub{position:relative;z-index:1}
+@keyframes orbit{to{transform:rotate(360deg)}}
+
+.assessment-sticky{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  width:100%;
+  z-index:999;
+  background:var(--bg);
+  padding:8px max(3%,calc((100% - 950px)/2));
+  margin:0;
+  isolation:isolate;
+  box-shadow:0 5px 18px #3d1c0214;
+  border-bottom:1px solid var(--border);
+}
+.topbar{
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  background:white;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  margin-bottom:7px;
+  min-width:0;
+  box-shadow:0 4px 16px #3d1c020b;
+}
+#studentLabel{
+  display:block;
+  font-weight:800;
+  overflow-wrap:anywhere;
+  line-height:1.35;
+}
+#modeLabel,#progressText{line-height:1.4}
+.timer{font-size:22px;font-weight:bold;font-variant-numeric:tabular-nums;color:var(--brown)}
+.timer.red{color:var(--red);animation:pulse .8s infinite}
+@keyframes pulse{50%{opacity:.5}}
+.progress-track{height:8px;background:#eadecb;border-radius:10px;overflow:hidden;margin:0}
+.progress-fill{height:100%;width:0;background:var(--brown);transition:width .2s}
+
+#exam{padding-top:calc(var(--dashboard-height) + 15px)}
+.question{
+  background:white;
+  padding:19px;
+  margin-bottom:14px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  scroll-margin-top:calc(var(--dashboard-height) + 20px);
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+.question h3{font-size:16px;line-height:1.5;color:var(--brown)}
+.q-number{font-size:12px;color:var(--brown);font-weight:bold;text-transform:uppercase}
+.option{display:flex;align-items:flex-start;gap:10px;padding:11px;margin:8px 0;border:1px solid var(--border);border-radius:9px;cursor:pointer;font-weight:normal;min-width:0}
+.option:has(input:checked){border-color:var(--brown);background:#fdf6ed}
+.option input{margin:4px 0 0;flex-shrink:0;accent-color:var(--brown)}
+.option span{min-width:0;overflow-wrap:anywhere}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.score{font-size:42px;font-weight:bold;color:var(--brown);margin:8px 0}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:20px 0}
+.stat{background:#fdf6ed;padding:13px;border-radius:10px;overflow-wrap:anywhere;min-width:0}
+.stat strong{display:block;font-size:22px}
+.remark{padding:12px;margin:9px 0;background:#fdf6ed;border-left:4px solid var(--brown);border-radius:7px}
+.review-item{padding:15px 0;border-bottom:1px solid var(--border);overflow-wrap:anywhere}
+.correct{color:var(--green);font-weight:bold}
+.incorrect{color:var(--red);font-weight:bold}
+.badge{display:inline-block;background:#f4efe6;padding:4px 9px;border-radius:7px;font-size:12px;margin:3px}
+
+#register{width:100%;max-width:100%;min-width:0}
+.register-table-wrap{width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;border:1px solid var(--border);border-radius:8px}
+.register-table-wrap table{width:100%;min-width:760px;border-collapse:collapse;table-layout:auto}
+.register-table-wrap th,.register-table-wrap td{text-align:left;padding:9px 7px;border-bottom:1px solid var(--border);font-size:12px;overflow-wrap:anywhere;vertical-align:top}
+.register-table-wrap th{background:#fdf6ed}
+.register-table-wrap tbody tr:last-child td{border-bottom:0}
+.register-hint{font-size:12px;color:#7a6b5d;margin-top:7px}
+footer{text-align:center;padding:20px;color:#7a6b5d;font-size:12px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:8px 5px;border-bottom:1px solid var(--border);font-size:12px}
+
+.submit-modal{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(61,28,2,.72);
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+.submit-modal.hidden{display:none!important}
+.submit-dialog{
+  width:min(440px,100%);
+  max-height:90vh;
+  max-height:90dvh;
+  overflow-y:auto;
+  background:white;
+  color:var(--navy);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:25px;
+  box-shadow:0 24px 80px #00000030;
+  animation:modalEnter .2s ease-out;
+}
+@keyframes modalEnter{
+  from{opacity:0;transform:translateY(12px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.submit-icon{display:grid;place-items:center;width:56px;height:56px;margin:0 auto 12px;border-radius:16px;background:#fdf6ed;font-size:27px}
+.submit-eyebrow{text-align:center;color:var(--brown);font-size:11px;font-weight:800;letter-spacing:1.2px;margin:0 0 8px}
+.submit-dialog h2{text-align:center;font-size:24px;margin:0 0 10px}
+#submitModalMessage{text-align:center;color:#7a6b5d;font-size:14px;margin:0 0 20px}
+.submit-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:15px}
+.submit-summary>div{background:#fdf6ed;border:1px solid var(--border);border-radius:12px;padding:13px;text-align:center}
+.submit-summary span{display:block;color:#7a6b5d;font-size:12px}
+.submit-summary strong{display:block;font-size:25px;margin-top:4px}
+#modalUnanswered{color:var(--red)}
+.submit-warning{background:#fff0f0;color:#9c1824;padding:11px;border-radius:9px;font-size:13px;margin:0 0 15px}
+.submit-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.submit-actions button{width:100%;min-height:46px;padding:11px;font-size:13px}
+.submit-footer{text-align:center;color:#7a6b5d;font-size:11px;margin:16px 0 0}
+
+@media(max-width:500px){
+ header h1{font-size:20px}
+ .card{padding:16px}
+ .question{padding:14px}
+ .score{font-size:36px}
+ .hero{padding:25px 8px}
+ .container{width:94%;margin:14px auto}
+ .assessment-sticky{padding:5px 3% 7px}
+ .topbar{padding:8px;gap:6px;border-radius:10px}
+ #studentLabel{font-size:13px}
+ .topbar .small{font-size:11px}
+ .timer{font-size:19px}
+ .progress-track{height:7px}
+ .stats{gap:8px}
+ .stat{padding:10px}
+ .stat strong{font-size:19px}
+ button{max-width:100%}
+ .actions button{flex:1 1 auto}
+ .register-table-wrap table{min-width:760px}
+ .submit-dialog{padding:19px}
+ .submit-dialog h2{font-size:21px}
+ .submit-actions{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+ .submit-dialog{animation:none}
+ .hero:before,.hero:after,.timer.red{animation:none}
+}
+@media print{
+ body{background:white;color:black;font-size:11px}
+ header{background:white!important;color:black;padding:8px}
+ header h1{font-size:18px}
+ .container{width:100%;max-width:100%;margin:0}
+ #setup,#exam,footer,.no-print,.submit-modal{display:none!important}
+ #results{display:block!important}
+ #results .card{box-shadow:none;border:1px solid #bbb;padding:12px;margin:8px 0;break-inside:auto}
+ #results .review-item{break-inside:avoid}
+ #results button{display:none!important}
+ .score{font-size:25px}
+ .stats{gap:5px;margin:8px 0}
+ .stat{padding:6px}
+ .remark,.notice,.warning{background:white!important;color:black!important}
+ .review-item{padding:8px 0}
+ h2{font-size:16px}
+ .register-table-wrap{overflow:visible;border:0}
+ .register-table-wrap table{min-width:0;width:100%;table-layout:fixed}
+ .register-table-wrap th,.register-table-wrap td{font-size:8px;padding:4px 2px;overflow-wrap:anywhere}
+ .register-hint{display:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>⚗️ Biochemistry & General Chemistry</h1>
+  <p>PHARMILY31 · Bachelor of Pharmacy · Year 1</p>
+  <p>Matter, Measurements &amp; Problem Solving · Atomic Theory &amp; Quantum Model · Periodic Table · Structure &amp; Bonding (Lewis Theory)</p>
+</header>
+
+<main class="container">
+<section id="setup" class="card">
+  <div class="hero">
+    <div class="hero-title">⚛️ CHEMISTRY ARENA ⚛️</div>
+    <p class="hero-sub">Master the atoms, bonds, and quantitative principles governing biochemistry.</p>
+    <p class="hero-sub">University-level assessment · Two assessment modes</p>
+  </div>
+  <h2>🧪 Assessment Centre</h2>
+  <p>Challenge your understanding of matter, measurements, stoichiometry, quantum numbers, atomic structure, periodicity, Lewis structures, VSEPR theory, and chemical bonding.</p>
+  <div id="identityBox" class="notice">Checking verified student session…</div>
+  <div class="notice">
+    <strong>Assessment rules</strong>
+    <ul>
+      <li><strong>MCQ Challenge:</strong> 30 conceptual questions, 30 marks, 15-minute target (No calculations).</li>
+      <li>The MCQ timer turns red at 15:00. At 16:00, the assessment auto-submits and a 5-mark penalty is applied.</li>
+      <li><strong>Open-Ended Calculation Challenge:</strong> 30 numerical problems in 30 minutes (30 marks). Enter <strong>only the final numerical answer</strong> (with correct units if specified).</li>
+      <li>Constants and unit conversion factors are provided directly within each calculation question.</li>
+      <li>Blank answers receive zero. Review your answers before submission.</li>
+      <li>Automatic marking is an educational estimate, not a substitute for lecturer marking.</li>
+    </ul>
+  </div>
+  <h3>Choose your assessment</h3>
+  <div class="card">
+    <h3>📝 Option A: Conceptual MCQ Challenge</h3>
+    <p>30 questions · A–E choices · 15-minute target · 30 marks (No calculations)</p>
+    <button id="mcqStart" onclick="startTest('mcq')" disabled>Start MCQ Assessment</button>
+  </div>
+  <div class="card">
+    <h3>✍️ Option B: Open-Ended Calculation Challenge</h3>
+    <p>30 calculation problems · 30 minutes · 30 marks · Enter numeric answers only</p>
+    <p class="small">Includes atomic mass, moles, stoichiometry, gas laws, solution concentration, quantum energy, and bond energies.</p>
+    <button id="openStart" class="purple" onclick="startTest('open')" disabled>Start Calculation Assessment</button>
+  </div>
+  <p class="small">Student identity is read from the verified session created by index.html. Results are stored locally in this browser on this device.</p>
+</section>
+
+<section id="exam" class="hidden">
+  <div class="assessment-sticky" id="assessmentDashboard">
+    <div class="topbar">
+      <div style="flex:1;min-width:0">
+        <strong id="studentLabel"></strong>
+        <div class="small" id="modeLabel"></div>
+        <div class="small" id="progressText">0 answered</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div class="small" id="timerLabel">Elapsed time</div>
+        <div id="timer" class="timer">00:00</div>
+      </div>
+    </div>
+    <div class="progress-track" aria-label="Assessment progress">
+      <div id="progressFill" class="progress-fill"></div>
+    </div>
+  </div>
+  <div id="questionList"></div>
+  <div class="card">
+    <p id="unansweredNotice" class="small"></p>
+    <div class="actions">
+      <button onclick="submitTest(false)">Submit Assessment</button>
+      <button class="secondary" onclick="goToTop()">Back to Top ↑</button>
+    </div>
+  </div>
+</section>
+
+<section id="results" class="hidden">
+  <div class="card">
+    <h2>🏆 Assessment Results</h2>
+    <p id="resultName"></p>
+    <p id="resultMode"></p>
+    <div id="scoreDisplay" class="score">0/30</div>
+    <p id="percentageDisplay"></p>
+    <div class="stats">
+      <div class="stat"><span class="small">Raw score</span><strong id="rawScore">0</strong></div>
+      <div class="stat"><span class="small">Penalty</span><strong id="penalty">0</strong></div>
+      <div class="stat"><span class="small">Questions answered</span><strong id="answeredCount">0</strong></div>
+      <div class="stat"><span class="small">Questions blank</span><strong id="unansweredCount">0</strong></div>
+    </div>
+    <div id="overallRemark" class="notice"></div>
+    <div id="timeRemark"></div>
+  </div>
+  <div class="card">
+    <h2>📊 Performance Bands</h2>
+    <div id="intervalRemarks"></div>
+  </div>
+  <div class="card">
+    <h2>📋 Student Results Register</h2>
+    <p class="small">Attempt records are saved locally in this browser.</p>
+    <div id="register"></div>
+    <p class="register-hint">On a mobile phone, swipe the register left or right to view all columns.</p>
+    <div class="actions no-print">
+      <button onclick="printResults()">Print / Save as PDF</button>
+      <button class="secondary" onclick="showRegister()">View Register</button>
+    </div>
+    <p class="small no-print">Choose Print, then select Save as PDF if that option is available in your browser.</p>
+  </div>
+  <div class="card">
+    <h2>📚 Answers, Marking Feedback &amp; Explanations</h2>
+    <p class="small">For calculation questions, your entered numeric value is compared against the exact expected value within a tolerance range.</p>
+    <div id="reviewList"></div>
+  </div>
+  <div class="card no-print">
+    <h2>Next Step</h2>
+    <p id="nextMessage"></p>
+    <button onclick="backHome()">Return to Assessment Centre</button>
+  </div>
+</section>
+</main>
+
+<div id="submitModal" class="submit-modal hidden" role="dialog"
+     aria-modal="true" aria-labelledby="submitModalTitle"
+     aria-describedby="submitModalMessage">
+  <div class="submit-dialog">
+    <div class="submit-icon">📝</div>
+    <p class="submit-eyebrow">PHARMILY31 · ASSESSMENT CENTRE</p>
+    <h2 id="submitModalTitle">Submit Assessment?</h2>
+    <p id="submitModalMessage">Are you ready to submit your assessment?</p>
+    <div class="submit-summary">
+      <div><span>Answered</span><strong id="modalAnswered">0</strong></div>
+      <div><span>Unanswered</span><strong id="modalUnanswered">0</strong></div>
+    </div>
+    <p id="modalWarning" class="submit-warning hidden"></p>
+    <div class="submit-actions">
+      <button type="button" id="cancelSubmit" class="secondary">Review Answers</button>
+      <button type="button" id="confirmSubmit" class="green">Confirm Submission</button>
+    </div>
+    <p class="submit-footer">Please review your responses before final submission.</p>
+  </div>
+</div>
+
+<footer>PHARMILY31 · Biochemistry & General Chemistry Revision Arena</footer>
+
+<script>
+"use strict";
+
+const SESSION_KEY = "pharmily31Student";
+const STORAGE_KEY = "pharmily31BiochemistryResults_v1";
+let student = null;
+
+/*
+  SHARED REGISTRATION SESSION
+  This reads the verified student record saved by index.html.
+  Both pages must use the same sessionStorage key.
+*/
+function getIdentity(){
+  try{
+    const raw = sessionStorage.getItem(SESSION_KEY);
+    if(!raw) return null;
+
+    const d = JSON.parse(raw);
+    if(!d || typeof d !== "object") return null;
+
+    const name =
+      d.name ||
+      d.fullName ||
+      d.studentName ||
+      d.student ||
+      d.full_name ||
+      "";
+
+    const admission =
+      d.admissionNumber ||
+      d.admission_number ||
+      d.admission ||
+      d.regNo ||
+      d.registrationNumber ||
+      d.registration_number ||
+      "";
+
+    if(!String(name).trim() || !String(admission).trim()){
+      return null;
+    }
+
+    return {
+      name:String(name).trim(),
+      admission:String(admission).trim()
+    };
+  }catch(e){
+    return null;
+  }
+}
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,c=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[c]);
+}
+
+function refreshIdentity(){
+  student = getIdentity();
+
+  const box = document.getElementById("identityBox");
+  const mcq = document.getElementById("mcqStart");
+  const open = document.getElementById("openStart");
+
+  if(student){
+    box.className = "notice";
+    box.innerHTML =
+      "<strong>Verified session detected</strong><br>Student: " +
+      escapeHTML(student.name) +
+      "<br>Admission number: " +
+      escapeHTML(student.admission);
+
+    mcq.disabled = false;
+    open.disabled = false;
+  }else{
+    box.className = "warning";
+    box.innerHTML =
+      "<strong>Registration verification required</strong><br>" +
+      "Your verified student session could not be found. " +
+      "Return to index.html, verify your name and admission number, " +
+      "then open Chemistry again.";
+
+    mcq.disabled = true;
+    open.disabled = true;
+  }
+}
+
+function syncDashboardSpace(){
+  const dashboard = document.getElementById("assessmentDashboard");
+  const exam = document.getElementById("exam");
+
+  if(!dashboard || !exam || exam.classList.contains("hidden")) return;
+
+  const height = Math.ceil(dashboard.getBoundingClientRect().height);
+  document.documentElement.style.setProperty("--dashboard-height",height+"px");
+}
+
+window.addEventListener("resize",syncDashboardSpace);
+window.addEventListener("orientationchange",()=>setTimeout(syncDashboardSpace,150));
+
+/* MCQ BANK: 30 CONCEPTUAL QUESTIONS (NO CALCULATIONS) */
+const mcqs = [
+{q:"Which of the following best defines a pure chemical substance that cannot be broken down into simpler substances by chemical reactions?",o:["A homogeneous mixture","An element","A compound","A heterogeneous mixture","A solution"],a:1,e:"An element consists of atoms of only one kind and cannot be broken down chemically into simpler substances."},
+{q:"In the quantum mechanical model of the atom, what does the principal quantum number (n) primarily describe?",o:["The shape of the orbital","The spatial orientation of the orbital","The electron spin direction","The main energy level or shell of the orbital","The number of neutrons in the nucleus"],a:3,e:"The principal quantum number, n, designates the main energy level (shell) and relates to average distance from the nucleus."},
+{q:"What is the maximum number of electrons that can occupy a single d-subshell?",o:["2","6","10","14","18"],a:2,e:"A d-subshell contains 5 orbitals, each holding up to 2 electrons, for a maximum total of 10 electrons."},
+{q:"Which quantum number specifies the spatial orientation of an orbital in space?",o:["Principal quantum number (n)","Angular momentum quantum number (l)","Magnetic quantum number (ml)","Spin quantum number (ms)","Rydberg quantum number"],a:2,e:"The magnetic quantum number (ml) describes the orientation of an orbital within a subshell in space."},
+{q:"According to the Pauli exclusion principle, what must be true for two electrons residing in the same orbital?",o:["They must have the same spin quantum number","They must belong to different principal shells","They must have opposing spin quantum numbers","They must reside in different elements","They must have identical four quantum numbers"],a:2,e:"The Pauli exclusion principle states that no two electrons in an atom can have the exact same set of four quantum numbers; hence, two electrons in the same orbital must have opposite spins."},
+{q:"Hund's rule of maximum multiplicity states that when filling degenerate orbitals:",o:["Electrons pair up immediately before filling empty orbitals","Electrons occupy separate orbitals with parallel spins as far as possible before pairing","Lower energy levels are completely ignored","Electrons must have antiparallel spins","Only s-orbitals are filled first"],a:1,e:"Hund's rule dictates that electrons occupy degenerate orbitals singly with parallel spins before pairing up to minimise electron-electron repulsion."},
+{q:"Which periodic trend generally decreases as you move from left to right across a period in the periodic table?",o:["Electronegativity","Ionisation energy","Atomic radius","Nonmetallic character","Electron affinity"],a:2,e:"Atomic radius decreases across a period from left to right due to increasing effective nuclear charge pulling electrons closer to the nucleus."},
+{q:"Which element has the highest electronegativity value on the Pauling scale?",o:["Sodium","Fluorine","Chlorine","Oxygen","Cesium"],a:1,e:"Fluorine is the most electronegative element on the Pauling scale with a value of approximately 4.0."},
+{q:"What is the formal charge of the central oxygen atom in ozone (O₃) structured with a single bond and a double bond on the outer atoms?",o:["-1","0","+1","+2","-2"],a:2,e:"The central oxygen in ozone has 3 bonds and 1 lone pair, giving it a formal charge of 6 - 3 - 2 = +1."},
+{q:"According to VSEPR theory, what is the electron-pair geometry and molecular shape of a molecule with 4 bonding pairs and 0 lone pairs (e.g., CH₄)?",o:["Linear","Trigonal planar","Tetrahedral","Trigonal bipyramidal","Octahedral"],a:2,e:"Four regions of electron density arrange themselves in a tetrahedral geometry to maximise distance between them."},
+{q:"Which molecule exhibits a linear molecular geometry according to VSEPR theory?",o:["H₂O","NH₃","CO₂","SO₂","CH₄"],a:2,e:"Carbon dioxide (CO₂) has two double bonds around the central carbon with no lone pairs, yielding a linear 180° geometry."},
+{q:"Which type of chemical bond involves the complete transfer of one or more valence electrons from one atom to another?",o:["Covalent bond","Ionic bond","Hydrogen bond","Metallic bond","Van der Waals force"],a:1,e:"Ionic bonds form through electrostatic attraction between oppositely charged ions created by electron transfer."},
+{q:"What is the hybridization of the central carbon atom in ethene (C₂H₄), where carbon forms a double bond?",o:["sp","sp²","sp³","sp³d","sp³d²"],a:1,e:"A carbon atom forming one double bond and two single bonds is sp² hybridized, forming a trigonal planar arrangement."},
+{q:"Which intermolecular force is primarily responsible for the unusually high boiling point of water (H₂O)?",o:["London dispersion forces","Ion-dipole forces","Hydrogen bonding","Dipole-induced dipole forces","Metallic bonding"],a:2,e:"Hydrogen bonds form when hydrogen is covalently bonded to highly electronegative atoms (N, O, F), creating strong intermolecular attractions."},
+{q:"What term describes atoms of the same element that have the same atomic number but different mass numbers due to a different number of neutrons?",o:["Isomers","Allotropes","Isotopes","Isobars","Epimers"],a:2,e:"Isotopes are atoms of the same element with identical proton counts but varying neutron counts."},
+{q:"In Lewis theory, an atom is stable when it achieves a valence shell configuration resembling which group of elements?",o:["Halogens","Transition metals","Noble gases","Alkali metals","Alkaline earth metals"],a:2,e:"The octet rule states that atoms tend to gain, lose, or share electrons to attain the stable valence electron configuration of a noble gas (usually 8 valence electrons)."},
+{q:"Which of the following elements violates the octet rule by forming stable compounds with fewer than eight valence electrons around the central atom?",o:["Carbon","Nitrogen","Boron","Oxygen","Fluorine"],a:2,e:"Boron commonly forms compounds like BF₃ where the central boron atom is surrounded by only 6 valence electrons (an incomplete octet)."},
+{q:"What is the general electronic configuration of halogen atoms in their ground state?",o:["ns²","ns² np⁵","ns² np⁶","ns¹","ns² np³"],a:1,e:"Halogens belong to Group 17 and possess seven valence electrons with a general outer configuration of ns² np⁵."},
+{q:"Which transition metal complex geometry is typically exhibited by coordination number 4 when ligands are arranged tetrahedrally?",o:["Square planar","Linear","Tetrahedral","Octahedral","Trigonal planar"],a:2,e:"Coordination number 4 complexes can be tetrahedral or square planar, with tetrahedral geometry being extremely common in general chemistry."},
+{q:"What is the term for energy required to remove an electron from a gaseous atom in its ground state?",o:["Electron affinity","Electronegativity","Ionisation energy","Lattice energy","Enzymatic energy"],a:2,e:"Ionisation energy is the energy required to strip an electron from an isolated gaseous atom or ion."},
+{q:"Which property describes an atom's ability to attract shared electrons in a covalent chemical bond?",o:["Ionisation energy","Electron affinity","Electronegativity","Atomic radius","Polarizability"],a:2,e:"Electronegativity measures how strongly an atom attracts bonding electrons towards itself within a covalent bond."},
+{q:"What is the geometry around a central atom with 5 electron dense regions and 2 lone pairs (e.g., BrF₅ or similar)?",o:["Tetrahedral","Square pyramidal","Trigonal bipyramidal electron geometry with T-shaped molecular geometry","Octahedral","Linear"],a:2,e:"Five electron regions give a trigonal bipyramidal electron geometry. With 2 lone pairs occupying equatorial positions, the molecular shape is T-shaped. BrF₅ itself has six electron regions and a square-pyramidal molecular shape."},
+{q:"Which subshell fills immediately after the 4s subshell in neutral atoms according to the Aufbau principle?",o:["3d","4p","4d","5s","4f"],a:0,e:"According to the Aufbau principle and the (n+l) rule, the 3d subshell fills after 4s, followed by 4p."},
+{q:"What is the maximum number of electrons that can be accommodated in a shell with principal quantum number n = 3?",o:["6","8","18","32","2"],a:2,e:"The maximum number of electrons in any principal shell is given by the formula 2n². For n = 3, 2(3²) = 18 electrons."},
+{q:"Which statement regarding ionic compounds is correct?",o:["They generally have low melting and boiling points","They conduct electricity well in the solid state","They consist of discrete neutral molecules","They form crystal lattices with strong electrostatic forces between ions","They are formed exclusively between nonmetals"],a:3,e:"Ionic compounds form extended crystal lattices held together by strong electrostatic interactions between oppositely charged ions, leading to high melting points."},
+{q:"What type of bond is formed by the lateral (side-by-side) overlap of parallel p-orbitals?",o:["Sigma bond","Pi bond","Hydrogen bond","Ionic bond","Coordinate covalent bond"],a:1,e:"A pi (π) bond is formed by the sideways overlap of unhybridized parallel p-orbitals above and below the internuclear axis."},
+{q:"Which of the following molecules has a dipole moment of zero (i.e., nonpolar)?",o:["H₂O","NH₃","HCl","CO₂","CHCl₃"],a:3,e:"Carbon dioxide (CO₂) is linear with polar bonds that cancel out symmetrically, resulting in a net dipole moment of zero."},
+{q:"What is the oxidation state of sulfur in sulfuric acid (H₂SO₄)?",o:["+2","+4","+6","-2","0"],a:2,e:"In H₂SO₄, H is +1 (total +2) and O is -2 (total -8). For the molecule to be neutral, sulfur must be +6."},
+{q:"Which law states that the mass of reactants consumed equals the mass of products formed in a chemical reaction?",o:["Law of Definite Proportions","Law of Multiple Proportions","Law of Conservation of Mass","Avogadro's Law","Boyle's Law"],a:2,e:"The Law of Conservation of Mass states that matter is neither created nor destroyed during chemical reactions."},
+{q:"What units are standardly used to express molar mass in stoichiometry?",o:["g","mol","g/mol","L/mol","kg/m³"],a:2,e:"Molar mass is standardly expressed in grams per mole (g/mol)."}
+];
+
+/* OPEN-ENDED CALCULATION BANK: 30 QUESTIONS */
+const shortQs = [
+{q:"Calculate the molar mass of glucose (C₆H₁₂O₆) in g/mol. (Atomic masses: C = 12.01, H = 1.008, O = 16.00). Enter numeric answer only.",ans:"180.16",ex:"6(12.01) + 12(1.008) + 6(16.00) = 180.156 g/mol (or 180.16)."},
+{q:"How many moles of sodium chloride (NaCl) are present in 58.44 grams? (Molar mass = 58.44 g/mol). Enter numeric answer only.",ans:"1",ex:"Moles = mass / molar mass = 58.44 / 58.44 = 1.00 mol."},
+{q:"Calculate the mass in grams of 0.250 moles of calcium carbonate (CaCO₃). (Molar mass = 100.09 g/mol). Enter numeric answer only.",ans:"25.0",ex:"Mass = moles × molar mass = 0.250 × 100.09 = 25.02 g (or 25.0)."},
+{q:"What is the percentage composition by mass of oxygen in water (H₂O)? (H = 1.008, O = 16.00; molar mass = 18.015 g/mol). Enter percentage value.",ans:"88.8",ex:"(16.00 / 18.015) × 100 = 88.81% (or 88.8)."},
+{q:"A hydrocarbon contains 85.63% carbon and 14.37% hydrogen by mass. What is its empirical formula subscript for carbon? Enter numeric integer.",ans:"1",ex:"Moles C = 85.63 / 12.01 = 7.13; moles H = 14.37 / 1.008 = 14.26. Ratio H:C = 2:1. Empirical formula CH₂; carbon subscript = 1."},
+{q:"Determine the number of molecules in 2.00 moles of CO₂. Use Avogadro's number NA = 6.022 × 10²³ mol⁻¹. Enter the coefficient before 10²⁴.",ans:"1.20",ex:"2.00 × 6.022 × 10²³ = 1.2044 × 10²⁴ molecules."},
+{q:"Calculate the molarity of a solution containing 0.500 moles of solute in 250.0 mL of solution. Enter numeric value.",ans:"2.00",ex:"Molarity = 0.500 mol / 0.250 L = 2.00 M."},
+{q:"What volume in millilitres of 2.0 M HCl is required to obtain 0.50 moles of HCl? Enter numeric answer only.",ans:"250",ex:"Volume = moles / molarity = 0.50 / 2.0 = 0.250 L = 250 mL."},
+{q:"If 50.0 mL of 3.0 M stock NaOH is diluted to a final volume of 300.0 mL, what is the new concentration in mol/L?",ans:"0.5",ex:"C₁V₁ = C₂V₂; C₂ = (3.0 × 50.0) / 300.0 = 0.50 M."},
+{q:"Calculate the pH when [H⁺] = 1.0 × 10⁻⁴ M. Enter numeric value.",ans:"4",ex:"pH = -log[H⁺] = -log(1.0 × 10⁻⁴) = 4.0."},
+{q:"Calculate the pOH when [OH⁻] = 1.0 × 10⁻³ M. Enter numeric value.",ans:"3",ex:"pOH = -log[OH⁻] = -log(1.0 × 10⁻³) = 3.0."},
+{q:"At 25 °C, what is the pH if pOH = 4.5? Enter numeric value.",ans:"9.5",ex:"pH + pOH = 14.0; pH = 14.0 - 4.5 = 9.5."},
+{q:"Calculate the wavelength in nanometres of a photon with frequency 5.00 × 10¹⁴ s⁻¹. (c = 3.00 × 10⁸ m/s; 1 m = 10⁹ nm).",ans:"600",ex:"λ = c / ν = 6.00 × 10⁻⁷ m = 600 nm."},
+{q:"Calculate the energy in joules of one photon with frequency 4.00 × 10¹⁴ s⁻¹. (h = 6.626 × 10⁻³⁴ J·s). Enter the coefficient multiplied by 10⁻¹⁹.",ans:"2.65",ex:"E = hν = (6.626 × 10⁻³⁴)(4.00 × 10¹⁴) = 2.6504 × 10⁻¹⁹ J."},
+{q:"According to the Bohr model for hydrogen, what is the principal quantum number n of the ground state?",ans:"1",ex:"The ground state corresponds to the lowest principal energy level, n = 1."},
+{q:"How many electrons can be accommodated in the principal shell where n = 4?",ans:"32",ex:"Maximum electrons = 2n² = 2(4²) = 32."},
+{q:"What is the maximum number of orbitals in a p-subshell?",ans:"3",ex:"A p-subshell consists of three orbitals: px, py and pz."},
+{q:"How many valence electrons does a neutral phosphorus atom (Group 15) possess?",ans:"5",ex:"Phosphorus has the outer configuration 3s² 3p³ and therefore five valence electrons."},
+{q:"What is the formal charge on the central nitrogen atom in NH₄⁺? (N valence electrons = 5, nonbonding electrons = 0, bonds = 4). Enter numeric value.",ans:"1",ex:"Formal charge = 5 - 0 - 4 = +1."},
+{q:"In a Lewis structure of water (H₂O), how many lone pairs reside on the central oxygen atom?",ans:"2",ex:"Oxygen has six valence electrons; two are involved in O–H bonds and the remaining four form two lone pairs."},
+{q:"What is the total number of valence electrons in the carbonate ion (CO₃²⁻)?",ans:"24",ex:"Carbon contributes 4, three oxygens contribute 18, and the 2− charge adds 2: total = 24."},
+{q:"How many sigma (σ) bonds are present in ethene (C₂H₄)?",ans:"5",ex:"Ethene has four C–H sigma bonds and one C–C sigma bond."},
+{q:"How many pi (π) bonds are present in ethyne (C₂H₂)?",ans:"2",ex:"A carbon–carbon triple bond contains one sigma bond and two pi bonds."},
+{q:"What volume in litres does 1.00 mole of an ideal gas occupy at STP? (Molar volume = 22.4 L/mol).",ans:"22.4",ex:"At the stated STP conditions, 1.00 mol occupies 22.4 L."},
+{q:"A gas occupies 2.0 L at 1.0 atm. If pressure increases to 2.0 atm at constant temperature, what is the new volume in litres?",ans:"1.0",ex:"P₁V₁ = P₂V₂; V₂ = (1.0 × 2.0) / 2.0 = 1.0 L."},
+{q:"Calculate the density in g/L of oxygen gas (O₂; molar mass = 32.00 g/mol) at STP. Molar gas volume = 22.4 L/mol.",ans:"1.43",ex:"Density = molar mass / molar volume = 32.00 / 22.4 = 1.43 g/L."},
+{q:"How many grams of water are produced by complete combustion of 2.00 mol H₂ with excess oxygen? (2H₂ + O₂ → 2H₂O; molar mass H₂O = 18.015 g/mol).",ans:"36.0",ex:"Two moles of H₂ produce two moles of H₂O. Mass = 2.00 × 18.015 = 36.03 g."},
+{q:"What is the oxidation number of chromium in K₂Cr₂O₇? (K = +1, O = −2).",ans:"6",ex:"2(+1) + 2Cr + 7(−2) = 0, so Cr = +6."},
+{q:"If 10.0 g NaOH (molar mass = 40.00 g/mol) is dissolved to make 500.0 mL solution, what is the molarity?",ans:"0.50",ex:"Moles = 10.0 / 40.00 = 0.250 mol; molarity = 0.250 / 0.500 = 0.50 M."},
+{q:"What is the sum of coefficients in the balanced equation CH₄ + O₂ → CO₂ + H₂O using the smallest whole integers?",ans:"6",ex:"CH₄ + 2O₂ → CO₂ + 2H₂O. Sum = 1 + 2 + 1 + 2 = 6."}
+];
+
+/* STATE AND HELPERS */
+let mode="",currentQuestions=[],answers=[],startTime=0;
+let timerInterval=null,submitted=false,results=[],currentResult=null;
+let pendingAutomatic=false;
+
+function loadResults(){
+  try{
+    const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
+    results=Array.isArray(data)?data:[];
+  }catch(e){
+    results=[];
+  }
+}
+function saveResults(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(results));
+  }catch(e){
+    console.warn("Results could not be saved locally.",e);
+  }
+}
+
+function startTest(selectedMode){
+  refreshIdentity();
+
+  if(!student){
+    document.getElementById("identityBox").scrollIntoView({behavior:"smooth"});
+    return;
+  }
+
+  mode=selectedMode;
+  currentQuestions=mode==="mcq"?mcqs:shortQs;
+  answers=Array(currentQuestions.length).fill("");
+  startTime=Date.now();
+  submitted=false;
+  currentResult=null;
+  pendingAutomatic=false;
+
+  document.getElementById("setup").classList.add("hidden");
+  document.getElementById("results").classList.add("hidden");
+  document.getElementById("exam").classList.remove("hidden");
+
+  document.getElementById("studentLabel").textContent=
+    student.name+" | Admission No: "+student.admission;
+  document.getElementById("modeLabel").textContent=
+    mode==="mcq"?"Conceptual MCQ Challenge · 30 marks":"Calculation Challenge · 30 marks";
+  document.getElementById("timerLabel").textContent=
+    mode==="mcq"?"Elapsed time · target 15:00":"Elapsed time · limit 30:00";
+
+  renderQuestions();
+  updateProgress();
+
+  requestAnimationFrame(()=>{
+    syncDashboardSpace();
+    window.scrollTo({top:0,behavior:"instant"});
+  });
+
+  updateTimer();
+  if(timerInterval)clearInterval(timerInterval);
+  timerInterval=setInterval(updateTimer,250);
+}
+
+function renderQuestions(){
+  const list=document.getElementById("questionList");
+  list.innerHTML="";
+
+  currentQuestions.forEach((q,i)=>{
+    const section=document.createElement("section");
+    section.className="question";
+    section.id="question-"+i;
+
+    const num=document.createElement("div");
+    num.className="q-number";
+    num.textContent=mode==="mcq"
+      ?"Question "+(i+1)+" · 1 mark (Conceptual)"
+      :"Calculation Problem "+(i+1)+" · 1 mark";
+
+    const title=document.createElement("h3");
+    title.textContent=q.q;
+    section.append(num,title);
+
+    if(mode==="mcq"){
+      q.o.forEach((choice,j)=>{
+        const label=document.createElement("label");
+        label.className="option";
+
+        const radio=document.createElement("input");
+        radio.type="radio";
+        radio.name="q"+i;
+        radio.value=j;
+
+        radio.addEventListener("change",()=>{
+          if(submitted)return;
+          answers[i]=String(j);
+          updateProgress();
+        });
+
+        const text=document.createElement("span");
+        text.textContent=String.fromCharCode(65+j)+". "+choice;
+        label.append(radio,text);
+        section.appendChild(label);
+      });
+    }else{
+      const input=document.createElement("input");
+      input.type="text";
+      input.id="answer-"+i;
+      input.placeholder="Enter numeric answer only (e.g., 180.16)…";
+      input.value=answers[i]||"";
+
+      input.addEventListener("input",()=>{
+        if(submitted)return;
+        answers[i]=input.value;
+        updateProgress();
+      });
+
+      section.appendChild(input);
+
+      const note=document.createElement("p");
+      note.className="small";
+      note.textContent="Enter only numbers (and decimal point if needed). Units are evaluated automatically.";
+      section.appendChild(note);
+    }
+
+    list.appendChild(section);
+  });
+}
+
+function updateProgress(){
+  const count=answers.filter(a=>String(a).trim()!=="").length;
+
+  document.getElementById("progressText").textContent=
+    count+" of "+currentQuestions.length+" answered";
+
+  document.getElementById("progressFill").style.width=
+    (count/currentQuestions.length*100)+"%";
+
+  document.getElementById("unansweredNotice").textContent=
+    count===currentQuestions.length
+      ?"All questions have a response. You may submit."
+      :(currentQuestions.length-count)+" unanswered question(s) may receive zero marks.";
+}
+
+function formatTime(s){
+  return String(Math.floor(s/60)).padStart(2,"0")+":"+
+    String(s%60).padStart(2,"0");
+}
+
+function updateTimer(){
+  if(submitted)return;
+
+  const elapsed=Math.floor((Date.now()-startTime)/1000);
+  document.getElementById("timer").textContent=formatTime(elapsed);
+
+  const limit=mode==="mcq"?900:1800;
+  const hardLimit=mode==="mcq"?960:1800;
+
+  document.getElementById("timer").classList.toggle("red",elapsed>=limit);
+
+  if(elapsed>=hardLimit)submitTest(true,true);
+}
+
+function goToTop(){
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function checkNumericAnswer(userAns,expectedAns){
+  const cleanUser=String(userAns||"").trim().replace(/,/g,"");
+  const cleanExp=String(expectedAns||"").trim();
+
+  if(!cleanUser)return false;
+
+  const numUser=parseFloat(cleanUser);
+  const numExp=parseFloat(cleanExp);
+
+  if(isNaN(numUser)||isNaN(numExp)){
+    return cleanUser.toLowerCase()===cleanExp.toLowerCase();
+  }
+
+  const tolerance=Math.max(0.02*Math.abs(numExp),0.05);
+  return Math.abs(numUser-numExp)<=tolerance;
+}
+
+function openSubmitModal(automatic=false){
+  if(submitted)return;
+
+  pendingAutomatic=automatic;
+
+  const answered=answers.filter(a=>String(a).trim()!=="").length;
+  const unanswered=answers.length-answered;
+
+  const modal=document.getElementById("submitModal");
+  const message=document.getElementById("submitModalMessage");
+  const warning=document.getElementById("modalWarning");
+  const cancel=document.getElementById("cancelSubmit");
+  const confirmButton=document.getElementById("confirmSubmit");
+
+  document.getElementById("modalAnswered").textContent=answered;
+  document.getElementById("modalUnanswered").textContent=unanswered;
+
+  if(automatic){
+    document.getElementById("submitModalTitle").textContent="Time Limit Reached";
+    message.textContent="Your assessment time has ended. Your responses will now be submitted automatically.";
+
+    warning.textContent=mode==="mcq"
+      ?"The 16-minute limit was reached. A 5-mark penalty will be applied."
+      :"The 30-minute time limit was reached.";
+
+    warning.classList.remove("hidden");
+    cancel.classList.add("hidden");
+    confirmButton.textContent="View Results";
+  }else{
+    document.getElementById("submitModalTitle").textContent="Submit Assessment?";
+
+    message.textContent=unanswered>0
+      ?"You still have unanswered questions. You can return to your assessment or submit your current responses."
+      :"You have answered every question. Are you ready to submit your assessment?";
+
+    if(unanswered>0){
+      warning.textContent=unanswered+" question(s) are blank and will receive zero marks.";
+      warning.classList.remove("hidden");
+    }else{
+      warning.classList.add("hidden");
+    }
+
+    cancel.classList.remove("hidden");
+    confirmButton.textContent="Confirm Submission";
+  }
+
+  modal.classList.remove("hidden");
+  document.body.style.overflow="hidden";
+  confirmButton.focus();
+}
+
+function closeSubmitModal(){
+  document.getElementById("submitModal").classList.add("hidden");
+  document.body.style.overflow="";
+}
+
+document.getElementById("cancelSubmit").addEventListener("click",()=>{
+  closeSubmitModal();
+});
+
+document.getElementById("confirmSubmit").addEventListener("click",()=>{
+  const automatic=pendingAutomatic;
+  closeSubmitModal();
+  submitTest(automatic,true);
+});
+
+document.getElementById("submitModal").addEventListener("click",event=>{
+  if(event.target.id==="submitModal"&&!pendingAutomatic){
+    closeSubmitModal();
+  }
+});
+
+document.addEventListener("keydown",event=>{
+  const modal=document.getElementById("submitModal");
+
+  if(event.key==="Escape"&&!modal.classList.contains("hidden")&&!pendingAutomatic){
+    closeSubmitModal();
+  }
+});
+
+function submitTest(automatic=false,confirmed=false){
+  if(submitted)return;
+
+  if(!automatic&&!confirmed){
+    openSubmitModal(false);
+    return;
+  }
+
+  const elapsed=Math.floor((Date.now()-startTime)/1000);
+
+  if(timerInterval){
+    clearInterval(timerInterval);
+    timerInterval=null;
+  }
+
+  submitted=true;
+  closeSubmitModal();
+
+  let raw=0;
+  const max=30;
+  const marking=[];
+
+  currentQuestions.forEach((q,i)=>{
+    if(mode==="mcq"){
+      const correct=answers[i]!==""&&Number(answers[i])===q.a;
+      const score=correct?1:0;
+
+      raw+=score;
+      marking.push({score,max:1,correct,feedback:null});
+    }else{
+      const correct=checkNumericAnswer(answers[i],q.ans);
+      const score=correct?1:0;
+
+      raw+=score;
+      marking.push({
+        score:score,
+        max:1,
+        correct:correct,
+        feedback:null
+      });
+    }
+  });
+
+  const late=mode==="mcq"&&elapsed>=960;
+  const deduction=late?5:0;
+  const finalScore=Math.max(0,raw-deduction);
+
+  currentResult={
+    name:student.name,
+    admission:student.admission,
+    mode,
+    rawScore:raw,
+    penalty:deduction,
+    finalScore,
+    max,
+    percentage:finalScore/max*100,
+    elapsedSeconds:elapsed,
+    late,
+    answers:[...answers],
+    marking,
+    date:new Date().toLocaleString()
+  };
+
+  results.push(currentResult);
+  saveResults();
+
+  document.getElementById("exam").classList.add("hidden");
+  document.getElementById("results").classList.remove("hidden");
+  document.documentElement.style.setProperty("--dashboard-height","0px");
+
+  showResult(currentResult,automatic);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function performanceComment(p){
+  if(p>=90)return"Outstanding performance. You demonstrated excellent mastery of chemical principles and quantitative problem solving.";
+  if(p>=80)return"Excellent performance. Continue refining precision in calculation and stoichiometric reasoning.";
+  if(p>=70)return"Very good understanding. Review the specific principles that caused calculation discrepancies.";
+  if(p>=60)return"Good progress, but quantitative concepts require further consolidation.";
+  if(p>=50)return"A developing foundation. Revisit formula applications, units, and periodic trends.";
+  if(p>=40)return"More revision is needed. Focus on fundamental problem-solving steps.";
+  return"Use this attempt diagnostically. Review foundational calculations and chemical theory before retrying.";
+}
+
+function bandComment(lower){
+  if(lower===0)return"Revisit basic chemical calculations and atomic structure terminology.";
+  if(lower===20)return"Basic knowledge is emerging; practise stoichiometric problem solving.";
+  if(lower===40)return"Develop a stronger quantitative foundation.";
+  if(lower===60)return"Good progress; practise applying formulas to new chemical problems.";
+  if(lower===80)return"Strong performance and a high level of problem-solving accuracy.";
+  return"Excellent to outstanding mastery of biochemistry and general chemistry.";
+}
+
+function showResult(r,automatic){
+  document.getElementById("resultName").textContent=
+    "Student: "+r.name+" · Admission number: "+r.admission+" · "+r.date;
+
+  document.getElementById("resultMode").textContent=
+    r.mode==="mcq"?"Conceptual MCQ Challenge":"Calculation Challenge";
+
+  document.getElementById("scoreDisplay").textContent=
+    r.finalScore.toFixed(1)+"/"+r.max;
+
+  document.getElementById("percentageDisplay").textContent=
+    "Final percentage: "+r.percentage.toFixed(1)+"%";
+
+  document.getElementById("rawScore").textContent=
+    r.rawScore.toFixed(1)+"/"+r.max;
+
+  document.getElementById("penalty").textContent=r.penalty+" marks";
+
+  document.getElementById("answeredCount").textContent=
+    r.answers.filter(a=>String(a).trim()!=="").length;
+
+  document.getElementById("unansweredCount").textContent=
+    r.answers.filter(a=>String(a).trim()==="").length;
+
+  document.getElementById("overallRemark").innerHTML=
+    "<strong>Overall feedback</strong><br>"+
+    escapeHTML(performanceComment(r.percentage));
+
+  let timeText="Time used: "+formatTime(r.elapsedSeconds)+". ";
+
+  if(r.mode==="mcq"){
+    timeText+=r.late
+      ?"The 16-minute limit was reached and a 5-mark penalty was applied."
+      :r.elapsedSeconds>=900
+        ?"The 15-minute target was exceeded, but the 16-minute penalty threshold was not reached."
+        :"Completed within the 15-minute target.";
+  }else{
+    timeText+=r.elapsedSeconds>=1800
+      ?"The 30-minute time limit was reached."
+      :"Completed within the 30-minute time limit.";
+  }
+
+  if(automatic)timeText+=" Assessment submitted automatically.";
+
+  document.getElementById("timeRemark").innerHTML=
+    "<div class='"+(r.late?"warning":"notice")+"'>"+
+    escapeHTML(timeText)+"</div>";
+
+  const bands=document.getElementById("intervalRemarks");
+  bands.innerHTML="";
+
+  for(let lower=0;lower<=80;lower+=20){
+    const upper=lower+19.99;
+    const reached=r.percentage>=lower&&
+      (lower===80?r.percentage<=100:r.percentage<=upper);
+
+    const div=document.createElement("div");
+    div.className="remark";
+    div.innerHTML="<strong>"+lower+"–"+
+      (lower===80?100:upper.toFixed(0))+
+      "%</strong> — "+escapeHTML(bandComment(lower))+
+      (reached?" <strong>← Your band</strong>":"");
+
+    bands.appendChild(div);
+  }
+
+  renderReview(r);
+  renderRegister();
+}
+
+function renderReview(r){
+  const box=document.getElementById("reviewList");
+  box.innerHTML="";
+
+  currentQuestions.forEach((q,i)=>{
+    const m=r.marking[i];
+    const div=document.createElement("div");
+    div.className="review-item";
+
+    let html="<strong>Q"+(i+1)+". "+escapeHTML(q.q)+"</strong><br>";
+
+    html+="<span class='"+(m.correct?"correct":"incorrect")+"'>"+
+      (m.correct?"✓ Correct":"Incorrect (Score: 0/1)")+
+      "</span><br>";
+
+    if(r.mode==="mcq"){
+      const yours=r.answers[i]===""
+        ?"Not answered"
+        :String.fromCharCode(65+Number(r.answers[i]))+". "+q.o[Number(r.answers[i])];
+
+      const key=String.fromCharCode(65+q.a)+". "+q.o[q.a];
+
+      html+="<span class='small'>Your answer: "+escapeHTML(yours)+"</span><br>";
+      html+="<span class='correct'>Correct answer: "+escapeHTML(key)+"</span><br>";
+      html+="<p>"+escapeHTML(q.e)+"</p>";
+    }else{
+      const yours=r.answers[i]||"Not answered";
+
+      html+="<span class='small'>Your numeric answer: <strong>"+
+        escapeHTML(yours)+"</strong></span><br>";
+
+      html+="<span class='correct'>Expected answer: <strong>"+
+        escapeHTML(q.ans)+"</strong></span><br>";
+
+      html+="<p><strong>Detailed working / Explanation:</strong><br>"+
+        escapeHTML(q.ex)+"</p>";
+    }
+
+    div.innerHTML=html;
+    box.appendChild(div);
+  });
+}
+
+function renderRegister(){
+  const box=document.getElementById("register");
+  box.innerHTML="";
+
+  if(!results.length){
+    box.textContent="No completed attempts yet.";
+    return;
+  }
+
+  const wrap=document.createElement("div");
+  wrap.className="register-table-wrap";
+
+  const table=document.createElement("table");
+  const thead=document.createElement("thead");
+  const head=document.createElement("tr");
+
+  ["Student","Admission No.","Mode","Date","Raw","Penalty","Final","%","Time"].forEach(t=>{
+    const th=document.createElement("th");
+    th.textContent=t;
+    head.appendChild(th);
+  });
+
+  thead.appendChild(head);
+  table.appendChild(thead);
+
+  const body=document.createElement("tbody");
+
+  results.forEach(r=>{
+    const tr=document.createElement("tr");
+
+    [
+      r.name,
+      r.admission,
+      r.mode==="mcq"?"MCQ":"Calculation",
+      r.date,
+      r.rawScore.toFixed(1)+"/"+r.max,
+      "-"+r.penalty,
+      r.finalScore.toFixed(1)+"/"+r.max,
+      r.percentage.toFixed(1)+"%",
+      formatTime(r.elapsedSeconds)
+    ].forEach(value=>{
+      const td=document.createElement("td");
+      td.textContent=value;
+      tr.appendChild(td);
+    });
+
+    body.appendChild(tr);
+  });
+
+  table.appendChild(body);
+  wrap.appendChild(table);
+  box.appendChild(wrap);
+}
+
+function printResults(){
+  window.print();
+}
+
+function showRegister(){
+  document.getElementById("register").scrollIntoView({behavior:"smooth"});
+}
+
+function backHome(){
+  if(timerInterval){
+    clearInterval(timerInterval);
+    timerInterval=null;
+  }
+
+  closeSubmitModal();
+
+  document.getElementById("results").classList.add("hidden");
+  document.getElementById("exam").classList.add("hidden");
+  document.getElementById("setup").classList.remove("hidden");
+
+  document.documentElement.style.setProperty("--dashboard-height","0px");
+
+  refreshIdentity();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* INITIALISE PAGE AND READ THE INDEX.HTML SESSION */
+loadResults();
+refreshIdentity();
+</script>
+</body>
+</html>
+

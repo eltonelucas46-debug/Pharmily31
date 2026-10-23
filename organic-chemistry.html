@@ -1,0 +1,699 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#800020">
+<title>Organic Chemistry | PHARMILY31</title>
+
+<style>
+:root{
+  --blue:#1769e0;--navy:#101c36;--purple:#773be8;
+  --green:#11834c;--red:#d92332;--maroon:#800020;
+  --maroon-light:#a52a4a;--bg:#f5f2f4;--border:#e5d8df;
+}
+*{box-sizing:border-box}
+html,body{max-width:100%;overflow-x:hidden}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--navy);line-height:1.6}
+header{background:linear-gradient(135deg,#30101d,#800020,#a52a4a);color:white;text-align:center;padding:26px 14px}
+header h1{margin:0;font-size:24px}
+header p{margin:5px 0}
+.container{width:min(950px,94%);max-width:100%;margin:22px auto}
+.card{background:white;padding:22px;border:1px solid var(--border);border-radius:16px;margin-bottom:18px;box-shadow:0 4px 18px #30101d0b;min-width:0}
+h2,h3{margin-top:0}
+.small{color:#63728b;font-size:13px}
+label.field{display:block;font-weight:bold;margin:12px 0 6px}
+input[type=text],select,textarea{width:100%;max-width:100%;padding:12px;border:1px solid #cdbac4;border-radius:9px;font-size:15px;font-family:inherit;background:white;color:var(--navy)}
+textarea{min-height:100px;resize:vertical;line-height:1.55}
+button{border:0;border-radius:9px;background:var(--blue);color:white;padding:13px 17px;font-size:15px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.secondary{background:#e8effa;color:var(--navy)}
+button.purple{background:var(--purple)}
+button.green{background:var(--green)}
+button.maroon{background:var(--maroon)}
+button.danger{background:#a61b29}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #d7a4b7;outline-offset:3px}
+.hidden{display:none!important}
+.notice{background:#f9edf2;border-left:4px solid var(--maroon);padding:13px;border-radius:9px;margin:13px 0}
+.warning{background:#fff0f0;color:#9c1824;padding:13px;border-radius:9px;margin:13px 0}
+.hero{position:relative;overflow:hidden;border-radius:17px;padding:27px 15px;text-align:center;color:white;background:linear-gradient(135deg,#30101d,#800020,#a52a4a);margin-bottom:18px}
+.hero:before,.hero:after{content:"";position:absolute;width:150px;height:150px;border:1px solid #ffffff30;border-radius:50%;animation:orbit 8s linear infinite}
+.hero:before{left:-55px;top:-65px}
+.hero:after{right:-45px;bottom:-90px;animation-direction:reverse}
+.hero-title{position:relative;z-index:1;font-size:clamp(26px,6vw,42px);font-weight:900;line-height:1.25}
+.hero-sub{position:relative;z-index:1}
+@keyframes orbit{to{transform:rotate(360deg)}}
+
+/* FIXED ASSESSMENT DASHBOARD */
+.topbar{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  width:100%;
+  z-index:999;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  background:white;
+  padding:12px max(12px, calc((100vw - 926px)/2));
+  border:1px solid var(--border);
+  border-radius:0 0 12px 12px;
+  box-shadow:0 4px 15px #30101d18;
+  min-width:0;
+  margin:0;
+}
+#exam{padding-top:100px}
+#exam .question{scroll-margin-top:180px;min-width:0;overflow-wrap:anywhere}
+
+.timer{font-size:22px;font-weight:bold;font-variant-numeric:tabular-nums;color:var(--maroon)}
+.timer.red{color:var(--red);animation:pulse .8s infinite}
+@keyframes pulse{50%{opacity:.5}}
+.progress-track{height:8px;background:#e5ebf5;border-radius:10px;overflow:hidden;margin:9px 0 17px}
+.progress-fill{height:100%;width:0;background:var(--maroon);transition:width .2s}
+.question{background:white;padding:19px;margin-bottom:14px;border:1px solid var(--border);border-radius:13px;scroll-margin-top:120px;min-width:0;overflow-wrap:anywhere}
+.question h3{font-size:16px;line-height:1.5;color:var(--maroon)}
+.q-number{font-size:12px;color:var(--maroon);font-weight:bold;text-transform:uppercase}
+.option{display:flex;align-items:flex-start;gap:10px;padding:11px;margin:8px 0;border:1px solid var(--border);border-radius:9px;cursor:pointer;font-weight:normal;min-width:0}
+.option:has(input:checked){border-color:var(--maroon);background:#f9edf2}
+.option input{margin:4px 0 0;flex-shrink:0;accent-color:var(--maroon)}
+.option span{min-width:0;overflow-wrap:anywhere}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.score{font-size:42px;font-weight:bold;color:var(--maroon);margin:8px 0}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:20px 0}
+.stat{background:#f8f1f4;padding:13px;border-radius:10px;overflow-wrap:anywhere;min-width:0}
+.stat strong{display:block;font-size:22px}
+.remark{padding:12px;margin:9px 0;background:#f8f1f4;border-left:4px solid var(--maroon);border-radius:7px}
+.review-item{padding:15px 0;border-bottom:1px solid var(--border);overflow-wrap:anywhere}
+.correct{color:var(--green);font-weight:bold}
+.incorrect{color:var(--red);font-weight:bold}
+.badge{display:inline-block;background:#f3e4eb;padding:4px 9px;border-radius:7px;font-size:12px;margin:3px}
+.chem-structure{font-family:"Courier New",monospace;white-space:pre-wrap;background:#f8f1f4;border:1px solid #ead6df;border-radius:8px;padding:12px;margin:10px 0;overflow-wrap:anywhere;font-size:14px}
+.register-table-wrap{width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;border:1px solid var(--border);border-radius:8px}
+.register-table-wrap table{width:100%;min-width:760px;border-collapse:collapse;table-layout:auto}
+.register-table-wrap th,.register-table-wrap td{text-align:left;padding:9px 7px;border-bottom:1px solid var(--border);font-size:12px;overflow-wrap:anywhere;vertical-align:top}
+.register-table-wrap th{background:#f8f1f4}
+.register-table-wrap tbody tr:last-child td{border-bottom:0}
+.register-hint{font-size:12px;color:#63728b;margin-top:7px}
+footer{text-align:center;padding:20px;color:#63728b;font-size:12px}
+
+.modal-backdrop{position:fixed;inset:0;z-index:1000;background:rgba(16,18,32,.68);display:flex;align-items:center;justify-content:center;padding:18px}
+.modal{width:min(440px,100%);background:white;border-radius:18px;padding:24px;box-shadow:0 20px 70px #0004;animation:modalIn .18s ease-out}
+@keyframes modalIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.modal-icon{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:#f7e8ee;color:var(--maroon);font-size:27px;margin-bottom:14px}
+.modal h2{margin-bottom:7px}
+.modal p{margin:8px 0}
+.modal-summary{padding:13px;background:#f8f1f4;border-radius:10px;margin:16px 0}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.modal-actions button{flex:1 1 130px}
+body.modal-open{overflow:hidden}
+
+@media(max-width:500px){
+  header h1{font-size:20px}
+  .card{padding:16px}
+  .question{padding:14px}
+  .score{font-size:36px}
+  .hero{padding:25px 8px}
+  .container{width:94%;margin:14px auto}
+  .topbar{padding:9px 12px;gap:6px}
+  #exam{padding-top:125px}
+  #exam .topbar strong{font-size:13px;overflow-wrap:anywhere}
+  #exam .topbar .small{font-size:11px}
+  #exam .timer{font-size:19px}
+  #exam .question{scroll-margin-top:200px}
+  .timer{font-size:20px}
+  .stats{gap:8px}
+  .stat{padding:10px}
+  .stat strong{font-size:19px}
+  button{max-width:100%}
+  .actions button{flex:1 1 auto}
+  .register-table-wrap table{min-width:760px}
+  .modal{padding:20px}
+}
+@media print{
+  body{background:white;color:black;font-size:11px}
+  header{background:white!important;color:black;padding:8px}
+  header h1{font-size:18px}
+  .container{width:100%;max-width:100%;margin:0}
+  #setup,#exam,footer,.no-print,.modal-backdrop{display:none!important}
+  #results{display:block!important}
+  #results .card{box-shadow:none;border:1px solid #bbb;padding:12px;margin:8px 0;break-inside:auto}
+  #results .review-item{break-inside:avoid}
+  #results button{display:none!important}
+  .score{font-size:25px}
+  .stats{gap:5px;margin:8px 0}
+  .stat{padding:6px}
+  .remark,.notice,.warning{background:white!important;color:black!important}
+  .review-item{padding:8px 0}
+  h2{font-size:16px}
+  .register-table-wrap{overflow:visible;border:0}
+  .register-table-wrap table{min-width:0;width:100%;table-layout:fixed}
+  .register-table-wrap th,.register-table-wrap td{font-size:8px;padding:4px 2px;overflow-wrap:anywhere}
+  .register-hint{display:none}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>🧪 Organic Chemistry</h1>
+  <p>PHARMILY31 · Bachelor of Pharmacy · Year 1</p>
+  <p>Structure and Bonding · Alkanes · Cycloalkanes · Alkenes</p>
+</header>
+
+<main class="container">
+<section id="setup" class="card">
+  <div class="hero">
+    <div class="hero-title">⚗️ ORGANIC CHEMISTRY ARENA ⚗️</div>
+    <p class="hero-sub">Understand the structure. Predict the reaction. Explain the mechanism.</p>
+    <p class="hero-sub">University-level assessment · Two assessment modes</p>
+  </div>
+
+  <h2>🧪 Assessment Centre</h2>
+  <p>Test your understanding of chemical bonding, nomenclature, stereochemistry, alkene stability, reactions, and synthesis.</p>
+  <div id="identityBox" class="notice">Checking verified student session…</div>
+
+  <div class="notice">
+    <strong>Assessment rules</strong>
+    <ul>
+      <li><strong>MCQ Challenge:</strong> 30 questions, 30 marks, 15-minute target.</li>
+      <li>The MCQ timer turns red at 15:00. At 16:00, the assessment auto-submits and a 5-mark penalty is applied.</li>
+      <li><strong>Structured Challenge:</strong> 30 structured short-answer questions, 40 minutes, 30 marks.</li>
+      <li>There are no essay questions. Questions may display chemical structures for identification, naming, comparison, or reaction prediction.</li>
+      <li>You will not be asked to draw chemical structures. Answer in words, names, formulas, or reaction products.</li>
+      <li>Structured answers use automated keyword rubrics for partial credit. Automated marking is an educational estimate.</li>
+      <li>Blank answers receive zero. Review your answers before submission.</li>
+    </ul>
+  </div>
+
+  <h3>Choose your assessment</h3>
+  <div class="card">
+    <h3>📝 Option A: MCQ Challenge</h3>
+    <p>30 questions · A–E choices · 15-minute target · 30 marks</p>
+    <button id="mcqStart" onclick="startTest('mcq')" disabled>Start MCQ Assessment</button>
+  </div>
+  <div class="card">
+    <h3>✍️ Option B: Structured Short-Answer Challenge</h3>
+    <p>30 structured questions · 40 minutes · 30 marks</p>
+    <p class="small">Questions include guided prompts, displayed chemical structures, and concise written responses. No essays or drawing tasks.</p>
+    <button id="openStart" class="purple" onclick="startTest('open')" disabled>Start Structured Assessment</button>
+  </div>
+  <p class="small">Student identity is read from the verified session created by index.html. Results are stored separately in this browser on this device.</p>
+</section>
+
+<section id="exam" class="hidden">
+  <div class="topbar">
+    <div>
+      <strong id="studentLabel"></strong>
+      <div class="small" id="modeLabel"></div>
+      <div class="small" id="progressText">0 answered</div>
+    </div>
+    <div>
+      <div class="small" id="timerLabel">Elapsed time</div>
+      <div id="timer" class="timer">00:00</div>
+    </div>
+  </div>
+  <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+  <div id="questionList"></div>
+  <div class="card">
+    <p id="unansweredNotice" class="small"></p>
+    <div class="actions">
+      <button class="maroon" onclick="requestSubmit(false)">Submit Assessment</button>
+      <button class="secondary" onclick="goToTop()">Back to Top ↑</button>
+    </div>
+  </div>
+</section>
+
+<section id="results" class="hidden">
+  <div class="card">
+    <h2>🏆 Assessment Results</h2>
+    <p id="resultName"></p>
+    <p id="resultMode"></p>
+    <div id="scoreDisplay" class="score">0/30</div>
+    <p id="percentageDisplay"></p>
+    <div class="stats">
+      <div class="stat"><span class="small">Raw score</span><strong id="rawScore">0</strong></div>
+      <div class="stat"><span class="small">Penalty</span><strong id="penalty">0</strong></div>
+      <div class="stat"><span class="small">Questions answered</span><strong id="answeredCount">0</strong></div>
+      <div class="stat"><span class="small">Questions blank</span><strong id="unansweredCount">0</strong></div>
+    </div>
+    <div id="overallRemark" class="notice"></div>
+    <div id="timeRemark"></div>
+  </div>
+
+  <div class="card">
+    <h2>📊 Performance Bands</h2>
+    <div id="intervalRemarks"></div>
+  </div>
+
+  <div class="card">
+    <h2>📋 Student Results Register</h2>
+    <p class="small">Organic Chemistry attempts are saved locally in this browser.</p>
+    <div id="register"></div>
+    <p class="register-hint">On mobile, swipe the register left or right to view all columns.</p>
+    <div class="actions no-print">
+      <button class="maroon" onclick="printResults()">Print / Save as PDF</button>
+      <button class="secondary" onclick="showRegister()">View Register</button>
+    </div>
+    <p class="small no-print">Choose Print, then select Save as PDF if available in your browser.</p>
+  </div>
+
+  <div class="card">
+    <h2>📚 Answers, Marking Feedback &amp; Explanations</h2>
+    <p class="small">Structured-answer scores are estimates based on detected concepts. Review the model answers even if your wording was not recognised.</p>
+    <div id="reviewList"></div>
+  </div>
+
+  <div class="card no-print">
+    <h2>Next Step</h2>
+    <p id="nextMessage"></p>
+    <button class="maroon" onclick="backHome()">Return to Assessment Centre</button>
+  </div>
+</section>
+</main>
+
+<div id="submitModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+  <div class="modal">
+    <div class="modal-icon">📝</div>
+    <h2 id="modalTitle">Submit your assessment?</h2>
+    <p id="modalDescription">Please review your progress before submitting.</p>
+    <div id="modalSummary" class="modal-summary"></div>
+    <p class="small">Once submitted, your answers will be marked and your result saved. You cannot change answers for this attempt.</p>
+    <div class="modal-actions">
+      <button class="secondary" onclick="closeSubmitModal()">Continue Reviewing</button>
+      <button id="confirmSubmitButton" class="maroon" onclick="confirmSubmit()">Submit Now</button>
+    </div>
+  </div>
+</div>
+
+<footer>PHARMILY31 · Organic Chemistry Revision Arena</footer>
+
+<script>
+"use strict";
+
+const SESSION_KEY="pharmily31Student";
+const STORAGE_KEY="pharmily31OrganicChemistryResults_v1";
+let student=null,mode="",currentQuestions=[],answers=[],startTime=0;
+let timerInterval=null,submitted=false,results=[],currentResult=null;
+let previousFocus=null;
+
+function getIdentity(){
+  try{
+    const raw=sessionStorage.getItem(SESSION_KEY);
+    if(!raw)return null;
+    const d=JSON.parse(raw);
+    if(!d||typeof d!=="object")return null;
+    const name=d.name||d.fullName||d.studentName||d.student||d.full_name||"";
+    const admission=d.admissionNumber||d.admission_number||d.admission||d.regNo||d.registrationNumber||d.registration_number||"";
+    if(!String(name).trim()||!String(admission).trim())return null;
+    return {name:String(name).trim(),admission:String(admission).trim()};
+  }catch(e){return null}
+}
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function refreshIdentity(){
+  student=getIdentity();
+  const box=document.getElementById("identityBox");
+  const mcq=document.getElementById("mcqStart");
+  const open=document.getElementById("openStart");
+  if(student){
+    box.className="notice";
+    box.innerHTML="<strong>Verified session detected</strong><br>Student: "+escapeHTML(student.name)+"<br>Admission number: "+escapeHTML(student.admission);
+    mcq.disabled=false;open.disabled=false;
+  }else{
+    box.className="warning";
+    box.innerHTML="<strong>Registration verification required</strong><br>Return to index.html, verify your name and admission number, then reopen Organic Chemistry.";
+    mcq.disabled=true;open.disabled=true;
+  }
+}
+function loadResults(){
+  try{
+    const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
+    results=Array.isArray(data)?data:[];
+  }catch(e){results=[]}
+}
+function saveResults(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(results))}
+  catch(e){showNoticeModal("Results could not be saved","Your browser could not save this attempt locally. You can still view and print the result, but it may not remain in the register after closing the page.")}
+}
+function showNoticeModal(title,message){
+  previousFocus=document.activeElement;
+  document.getElementById("modalTitle").textContent=title;
+  document.getElementById("modalDescription").textContent=message;
+  document.getElementById("modalSummary").classList.add("hidden");
+  document.getElementById("confirmSubmitButton").classList.add("hidden");
+  const cancel=document.querySelector(".modal-actions button.secondary");
+  cancel.textContent="Close";cancel.onclick=closeSubmitModal;
+  document.getElementById("submitModal").classList.remove("hidden");
+  document.body.classList.add("modal-open");
+}
+function resetSubmitModal(){
+  document.getElementById("modalSummary").classList.remove("hidden");
+  document.getElementById("confirmSubmitButton").classList.remove("hidden");
+  document.getElementById("confirmSubmitButton").textContent="Submit Now";
+  const cancel=document.querySelector(".modal-actions button.secondary");
+  cancel.textContent="Continue Reviewing";cancel.onclick=closeSubmitModal;
+}
+function closeSubmitModal(){
+  document.getElementById("submitModal").classList.add("hidden");
+  document.body.classList.remove("modal-open");
+  resetSubmitModal();
+  if(previousFocus&&typeof previousFocus.focus==="function")previousFocus.focus();
+}
+function requestSubmit(automatic){
+  if(submitted)return;
+  if(automatic){finishSubmit(true);return}
+  const unanswered=answers.filter(a=>String(a).trim()==="").length;
+  const answered=answers.length-unanswered;
+  previousFocus=document.activeElement;
+  document.getElementById("modalTitle").textContent="Submit your assessment?";
+  document.getElementById("modalDescription").textContent="Please confirm that you are ready to finish this assessment.";
+  document.getElementById("modalSummary").innerHTML="<strong>Assessment summary</strong><br>"+escapeHTML(mode==="mcq"?"MCQ Challenge":"Structured Short-Answer Challenge")+"<br>"+answered+" of "+answers.length+" questions answered<br>"+unanswered+" unanswered question(s)";
+  const modal=document.getElementById("submitModal");
+  modal.classList.remove("hidden");document.body.classList.add("modal-open");
+  resetSubmitModal();document.getElementById("confirmSubmitButton").focus();
+}
+function confirmSubmit(){if(submitted)return;closeSubmitModal();finishSubmit(false)}
+
+/* ---------------- MCQ BANK: 30 QUESTIONS ---------------- */
+const mcqs=[
+{q:"Which statement best describes carbon hybridisation and geometry?",o:["Hybridisation changes the atomic number","sp³ carbon typically has tetrahedral geometry","sp² carbon has four equivalent hybrid orbitals","sp carbon is always tetrahedral","Hybridisation determines only molecular mass"],a:1,e:"An sp³ carbon has four hybrid orbitals arranged approximately tetrahedrally, with bond angles near 109.5°."},
+{q:"Which statement distinguishes sigma and pi bonds?",o:["Sigma bonds form only by sideways overlap","Pi bonds permit unrestricted rotation","A sigma bond has electron density along the internuclear axis; a pi bond forms by sideways overlap","Pi bonds are always stronger than sigma bonds","Sigma bonds occur only between identical atoms"],a:2,e:"Sigma bonds result from head-on overlap. Pi bonds result from sideways overlap and restrict rotation in a double bond."},
+{q:"Which molecule has trigonal-planar carbon atoms?",o:["Methane","Ethane","Ethene","Ethyne","Propane"],a:2,e:"Each carbon in ethene is sp²-hybridised and approximately trigonal planar."},
+{q:"Why is a C=C bond shorter than a C-C single bond?",o:["It contains two sigma bonds","It contains no electrons","It is always ionic","An additional pi bond increases bonding between the carbons","It has fewer bonding interactions"],a:3,e:"A double bond contains one sigma and one pi bond and is generally shorter than a single bond."},
+{q:"Which species is an electrophile?",o:["A species that accepts an electron pair","A species that only donates an electron pair","Every alkane","A species without electrons","Every carbon-containing molecule"],a:0,e:"Electrophiles accept electron pairs; H⁺ is a simple example."},
+{q:"What occurs during homolytic bond cleavage?",o:["Both electrons go to one atom","Only protons are transferred","Two carbocations always form","The electrons disappear","Each atom receives one electron, producing radicals"],a:4,e:"Homolysis splits the bonding pair equally, generating radicals."},
+{q:"Which geometry is expected around carbon in methane?",o:["Linear","Tetrahedral","Trigonal planar","Square planar","Trigonal bipyramidal"],a:1,e:"Four bonding electron domains around carbon give a tetrahedral arrangement."},
+{q:"Which compound is a constitutional isomer of butane?",o:["Propane","Pentane","2-Methylpropane","Cyclobutane","But-1-ene"],a:2,e:"Butane and 2-methylpropane both have formula C₄H₁₀ but different connectivity."},
+{q:"What is the IUPAC name of CH₃CH(CH₃)CH₂CH₃?",o:["Pentane","2-Methylbutane","3-Methylbutane","2-Ethylpropane","Methylpentane"],a:1,e:"The longest chain has four carbons; numbering gives the methyl group locant 2."},
+{q:"Name CH₃CH₂CH(CH₃)CH₂CH₃.",o:["2-Methylpentane","3-Ethylbutane","2-Ethylbutane","3-Methylpentane","Hexane"],a:3,e:"The parent chain has five carbons and the methyl group is on carbon 3."},
+{q:"Which statement about ethane rotation is correct?",o:["Rotation around the C-C sigma bond is possible","Every rotation breaks the sigma bond","Ethane has a pi bond","Only eclipsed conformations exist","Rotation converts ethane into ethene"],a:0,e:"Ethane rotates around its sigma bond. Staggered conformations are lower in energy than eclipsed conformations."},
+{q:"Which ethane conformation is generally most stable?",o:["Fully eclipsed","Partially eclipsed","Fully aligned bonds","Planar only","Staggered"],a:4,e:"The staggered conformation reduces torsional strain."},
+{q:"A typical chiral carbon is attached to:",o:["Four identical groups","A double bond only","Four different substituents","A positive charge in every case","Only cyclic groups"],a:2,e:"A tetrahedral carbon attached to four different groups can be a stereogenic centre."},
+{q:"What is the usual name for a cyclohexane ring with one methyl substituent?",o:["1-Methylcyclohexane is required","Methylcyclohexane","Cyclohexylmethane is the only name","Hexylmethane","Methylhexane"],a:1,e:"The ring is the parent. A locant is unnecessary for a monosubstituted cycloalkane."},
+{q:"Which statement about ring strain is correct?",o:["All rings are strain-free","Ring strain depends only on mass","Cyclohexane is always planar","Angle, torsional, and steric effects may contribute","Only aromatic compounds have ring strain"],a:3,e:"Ring strain can include angle strain, torsional strain, and steric interactions."},
+{q:"Which cyclohexane conformation is generally most stable?",o:["Chair","Planar hexagon","Fully eclipsed","Boat in all cases","Half-chair in all cases"],a:0,e:"The chair minimises angle and torsional strain."},
+{q:"In a cyclohexane chair, axial substituents point approximately:",o:["Around the ring circumference","Only toward the centre","Parallel to every C-C bond","At random angles","Up or down, alternating around the ring"],a:4,e:"Axial positions point approximately up or down and alternate around the chair."},
+{q:"During a cyclohexane chair flip, what remains the same for a substituent?",o:["Its axial/equatorial status","Its up/down orientation","Its attachment to the ring is lost","Its covalent bond breaks","The ring becomes an open chain"],a:1,e:"A chair flip exchanges axial and equatorial positions but preserves up/down orientation."},
+{q:"What does cis/trans describe in a disubstituted cycloalkane?",o:["Whether both groups are axial","Whether both groups are equatorial","Relative orientation on the same or opposite ring faces","Whether structures are identical","Only alkene geometry"],a:2,e:"Cis means the substituents are on the same face; trans means they are on opposite faces."},
+{q:"Why do alkenes undergo electrophilic addition?",o:["The electron-rich pi bond interacts with an electrophile","They contain no bonding electrons","They are always saturated","Only saturated compounds react with electrophiles","Their double bonds cannot react"],a:0,e:"The electron-rich pi bond can attack an electrophile, allowing addition across the double bond."},
+{q:"Considering substitution as the main factor, which alkene is often most stable?",o:["Ethene","A monosubstituted alkene","A comparable disubstituted alkene","A comparable tetrasubstituted alkene","All alkenes have identical stability"],a:3,e:"Alkyl substitution often stabilises alkenes through hyperconjugation and electron-donating effects."},
+{q:"In ordinary ionic addition of HBr to propene, the major product is commonly:",o:["1-Bromopropane","2-Bromopropane","1,2-Dibromopropane","Propanol","Propane"],a:1,e:"Markovnikov addition of HBr to propene commonly gives 2-bromopropane."},
+{q:"Why can carbocation stability affect alkene addition orientation?",o:["Carbocations stop all reactions","All carbocations are equally stable","It proves the reaction is always radical","A carbocation is always the final product","A pathway forming a more stable carbocation may be favoured"],a:4,e:"For many ionic additions, the relative stability of the carbocation intermediate influences the major product."},
+{q:"Which conditions commonly hydrogenate an alkene?",o:["Aqueous NaCl only","HBr and peroxide only","H₂ with Pt, Pd, or Ni catalyst","NaOH only","Aqueous AgNO₃ only"],a:2,e:"Catalytic hydrogenation adds H₂ across the C=C bond."},
+{q:"Which reagent can form a vicinal diol from an alkene under suitable mild conditions?",o:["H₂/Ni only","HBr only","Concentrated H₂SO₄ without work-up","Cold, dilute alkaline KMnO₄","NaCl solution only"],a:3,e:"Cold, dilute alkaline potassium permanganate can oxidise an alkene to a vicinal diol."},
+{q:"Hydrogenation of propene produces:",o:["Propane","Propyne","Propanol","Propanoic acid","Cyclopropane"],a:0,e:"Adding H₂ across propene's double bond gives propane."},
+{q:"Which statement correctly describes Z configuration?",o:["It depends only on hydrogen count","It always means trans","It applies to every single bond","It is assigned by molecular mass only","The higher-priority groups are on the same side"],a:4,e:"CIP priorities are assigned on each alkene carbon. Higher-priority groups on the same side give Z."},
+{q:"Which reaction can synthesise an alkene from a haloalkane?",o:["Hydrogenation","Dehydrohalogenation","Hydration","Combustion","Neutralisation"],a:1,e:"Dehydrohalogenation removes HX from a suitable haloalkane to form a C=C bond."},
+{q:"Dehydration of a suitable alcohol can produce:",o:["An alkane without atom removal","Only an ionic salt","An alkene by elimination of water-derived components","An alkene by hydrogenation","A reaction that cannot occur"],a:2,e:"Suitable alcohols can undergo dehydration to produce alkenes."},
+{q:"Why is a more substituted alkene often favoured in elimination reactions?",o:["It always forms regardless of conditions","Substitution has no effect on stability","Less substituted alkenes lack pi bonds","It is often more stable, though conditions and mechanism matter","All eliminations give one product"],a:3,e:"More substituted alkenes are often more stable, but substrate, base, solvent, temperature, and mechanism also affect product distribution."}
+];
+
+/* ---------------- STRUCTURED BANK: 30 QUESTIONS ---------------- */
+const shortQs=[
+{q:"Identify the hybridisation and geometry of the carbon atom in methane, CH₄.",rubric:[["sp3","sp³"],["tetrahedral"]],model:"The carbon is sp³-hybridised and has tetrahedral geometry.",ex:"The ideal bond angle is approximately 109.5°."},
+{q:"For ethene, H₂C=CH₂, state the hybridisation of each carbon and the number of sigma and pi bonds in the C=C bond.",rubric:[["sp2","sp²"],["one sigma and one pi","1 sigma and 1 pi","sigma bond and pi bond"]],model:"Each carbon is sp²-hybridised. The double bond contains one sigma bond and one pi bond.",ex:"The full ethene molecule contains five sigma bonds and one pi bond."},
+{q:"The structure is H–C≡C–H. Identify the hybridisation and geometry around each carbon.",rubric:[["sp hybridised","sp"],["linear","180 degrees","180°"]],model:"Each carbon is sp-hybridised and has linear geometry with an angle near 180°.",ex:"The triple bond contains one sigma bond and two pi bonds."},
+{q:"Distinguish homolytic from heterolytic cleavage.",rubric:[["one electron to each atom","equal splitting","radicals"],["both electrons to one atom","both bonding electrons","ions"]],model:"Homolytic cleavage gives one bonding electron to each atom, forming radicals. Heterolytic cleavage gives both electrons to one atom, forming ions.",ex:"The two processes differ in how the bonding electron pair is divided."},
+{q:"Define an electrophile and a nucleophile. Give one example of either type.",rubric:[["accepts an electron pair","electron pair acceptor","electrophile"],["donates an electron pair","electron pair donor","nucleophile"]],model:"An electrophile accepts an electron pair; a nucleophile donates an electron pair. Examples include H⁺ and OH⁻, respectively.",ex:"Use the electron-pair definitions rather than defining them only by charge."},
+{q:"Identify the functional class and IUPAC name of CH₃CH₂CH₃.",rubric:[["propane"],["alkane","saturated hydrocarbon"]],model:"The compound is propane, an acyclic alkane.",ex:"It has three carbon atoms and only carbon-carbon single bonds."},
+{q:"Give the general formula for an acyclic alkane and explain what 'saturated' means.",rubric:[["cnh2n+2","c n h 2n+2","cₙh₂ₙ₊₂"],["only carbon carbon single bonds","no carbon carbon double or triple bonds"]],model:"Acyclic alkanes have formula CₙH₂ₙ₊₂ and contain no carbon-carbon double or triple bonds.",ex:"A cycloalkane with one ring has a different hydrogen count."},
+{q:"Name the structure CH₃–CH(CH₃)–CH₂–CH₃.",rubric:[["2 methylbutane","2-methylbutane"],["four carbon parent","butane parent","methyl at carbon 2"]],model:"2-Methylbutane. The longest chain has four carbons and the methyl group receives locant 2.",ex:"Choose the longest chain and number from the end nearest the substituent."},
+{q:"Name the structure CH₃–CH₂–CH(CH₃)–CH₂–CH₃.",rubric:[["3 methylpentane","3-methylpentane"],["five carbon parent","pentane parent","methyl at carbon 3"]],model:"3-Methylpentane. The longest chain contains five carbons and the methyl group is at carbon 3.",ex:"Numbering from either end gives the same locant."},
+{q:"How many constitutional isomers have the molecular formula C₄H₁₀? Name them.",rubric:[["two","2 isomers"],["butane and 2 methylpropane","n butane and 2 methylpropane","butane and isobutane"]],model:"There are two: butane and 2-methylpropane.",ex:"They have the same molecular formula but different carbon connectivity."},
+{q:"Why is staggered ethane more stable than eclipsed ethane?",rubric:[["less torsional strain","lower torsional strain"],["bonds offset","less eclipsing","reduced electron pair repulsion"]],model:"Staggered ethane has lower torsional strain because bonds on adjacent carbons are offset.",ex:"Rotation around the C-C sigma bond interconverts the conformations."},
+{q:"What makes a tetrahedral carbon stereogenic in the common case of a chiral carbon centre?",rubric:[["four different groups","four different substituents"],["non superimposable mirror images","enantiomers","chiral"]],model:"A typical chiral carbon is bonded to four different substituents and can give rise to non-superimposable mirror images.",ex:"Not every carbon atom is a stereogenic centre."},
+{q:"Identify the correct IUPAC name of the displayed structure: CH₃–CH₂–CH₂–CH₂–CH₃.",rubric:[["pentane"],["five carbon","five carbons","straight chain"]],model:"Pentane, a straight-chain alkane containing five carbon atoms.",ex:"Use the longest continuous chain as the parent."},
+{q:"A cyclohexane ring has one –CH₃ substituent. Give its preferred simple name.",rubric:[["methylcyclohexane"],["cyclohexane ring","methyl substituent","monosubstituted"]],model:"Methylcyclohexane.",ex:"A locant is not normally needed for a single substituent on an otherwise unsubstituted ring."},
+{q:"State two sources of ring strain that may occur in cycloalkanes.",rubric:[["angle strain","bond angle strain"],["torsional strain","steric strain","nonbonded repulsion"]],model:"Ring strain can include angle strain and torsional strain; steric interactions may also contribute.",ex:"Small rings often have significant angle strain."},
+{q:"In a cyclohexane chair, explain what happens to a substituent during a chair flip.",rubric:[["axial becomes equatorial","equatorial becomes axial","axial and equatorial exchange"],["up down remains unchanged","up remains up","down remains down"]],model:"Axial and equatorial positions exchange, but the substituent's up/down orientation remains the same.",ex:"A chair flip does not convert a cis relationship into trans."},
+{q:"A bulky group is attached to cyclohexane. Which position is often more stable, and why?",rubric:[["equatorial"],["fewer 1 3 diaxial interactions","less steric crowding","less steric repulsion"]],model:"The equatorial position is often favoured because it reduces 1,3-diaxial interactions and steric crowding.",ex:"The preference is especially important for bulky substituents."},
+{q:"For a disubstituted cycloalkane, define cis and trans using ring-face orientation.",rubric:[["cis same face","cis same side","both up or both down"],["trans opposite faces","trans opposite sides","one up one down"]],model:"Cis substituents are on the same face of the ring; trans substituents are on opposite faces.",ex:"Cis/trans is not the same as axial/equatorial."},
+{q:"For the alkene CH₃–CH=CH₂, state the IUPAC name and the functional group.",rubric:[["propene","prop-1-ene"],["alkene","carbon carbon double bond","c=c"]],model:"Propene, an alkene containing a carbon-carbon double bond.",ex:"The terminal double bond is at carbon 1."},
+{q:"Why is free rotation around a C=C bond restricted?",rubric:[["pi bond","sideways overlap"],["rotation disrupts pi overlap","break pi bond","restricted rotation"]],model:"Rotation would disrupt the sideways overlap that forms the pi bond, so rotation is restricted.",ex:"This can permit E/Z stereoisomerism when both alkene carbons have different substituents."},
+{q:"Assign E or Z to an alkene when the higher-priority group on each double-bond carbon lies on the same side.",rubric:[["z","zusammen"],["same side","higher priority groups on same side","same side of double bond"]],model:"The configuration is Z because the higher-priority groups are on the same side.",ex:"CIP priority rules are used to identify the higher-priority group on each alkene carbon."},
+{q:"In ordinary ionic addition of HBr to propene, name the major product and state the usual orientation.",rubric:[["2 bromopropane","2-bromopropane"],["markovnikov","bromine attaches to more substituted carbon","br on carbon 2"]],model:"The major product is commonly 2-bromopropane, following Markovnikov orientation.",ex:"The usual ionic pathway favours formation of the more stable secondary carbocation."},
+{q:"Name the major product of hydrogenation of but-2-ene.",rubric:[["butane"],["hydrogenation","h2 added","double bond becomes single bond"]],model:"Butane is formed when hydrogen adds across the C=C bond.",ex:"A metal catalyst such as nickel, palladium, or platinum is commonly used."},
+{q:"An alkene reacts with H₂O under suitable acid-catalysed hydration conditions. What functional class is formed?",rubric:[["alcohol"],["hydration","oh group","hydroxyl group"]],model:"An alcohol is formed by adding the elements of water across the alkene double bond.",ex:"The product's exact structure depends on the alkene and reaction conditions."},
+{q:"What product class commonly results when Br₂ adds across a carbon-carbon double bond?",rubric:[["vicinal dibromide","1 2 dibromo","1,2-dibromo"],["two bromine atoms on adjacent carbons","bromine added across double bond"]],model:"A vicinal dibromide forms, with bromine atoms attached to the two formerly double-bonded carbons.",ex:"The exact stereochemical outcome depends on the reaction pathway and substrate."},
+{q:"State the usual product when ethene reacts with cold, dilute alkaline KMnO₄ under suitable conditions.",rubric:[["ethane 1 2 diol","ethane-1,2-diol","ethylene glycol"],["vicinal diol","two hydroxyl groups","oxidation of alkene"]],model:"Ethane-1,2-diol, a vicinal diol, is formed under suitable mild oxidation conditions.",ex:"Stronger oxidative conditions may lead to cleavage rather than simply a diol."},
+{q:"How can a suitable haloalkane be converted into an alkene? Name the reaction type.",rubric:[["dehydrohalogenation","elimination"],["beta hydrogen","loss of hx","forms carbon carbon double bond","forms c=c"]],model:"Dehydrohalogenation eliminates HX: a beta hydrogen and the leaving group are removed, forming an alkene.",ex:"The base, solvent, temperature, and substrate affect the outcome."},
+{q:"How can a suitable alcohol be converted into an alkene? Name the reaction type.",rubric:[["dehydration"],["loss of water","elimination","forms carbon carbon double bond","forms c=c"]],model:"Dehydration eliminates water-derived components from a suitable alcohol, forming an alkene.",ex:"Conditions depend on the alcohol and may influence the product distribution."},
+{q:"Define regioselectivity in alkene addition.",rubric:[["one constitutional isomer favoured","one orientation favoured","preference for one product"],["different possible positions","different connectivity","different orientations of addition"]],model:"Regioselectivity is the preference for one constitutional isomer when addition can occur in more than one orientation.",ex:"Markovnikov orientation is a common example."},
+{q:"Distinguish a carbocation from a free radical.",rubric:[["positive charge","positively charged carbon","carbocation"],["unpaired electron","radical","free radical"]],model:"A carbocation is positively charged; a free radical contains an unpaired electron.",ex:"Carbocations commonly arise from heterolytic cleavage, while radicals may arise from homolytic cleavage."},
+{q:"A student predicts the product of an alkene reaction. State two pieces of information needed for a reliable prediction.",rubric:[["structure of alkene","substrate structure","starting material"],["reagent","conditions","catalyst","solvent","temperature","reaction conditions"]],model:"Identify the alkene structure and the reagent or reaction conditions, including relevant catalyst, solvent, and temperature.",ex:"Different reagents can give different products from the same alkene."}
+];
+
+/* ---------------- TEST ENGINE ---------------- */
+function startTest(selectedMode){
+  refreshIdentity();
+  if(!student){
+    showNoticeModal("Registration verification required","Return to index.html, verify your student registration, and reopen Organic Chemistry.");
+    return;
+  }
+  mode=selectedMode;
+  currentQuestions=mode==="mcq"?mcqs:shortQs;
+  answers=Array(currentQuestions.length).fill("");
+  startTime=Date.now();submitted=false;currentResult=null;
+  document.getElementById("setup").classList.add("hidden");
+  document.getElementById("results").classList.add("hidden");
+  document.getElementById("exam").classList.remove("hidden");
+  document.getElementById("studentLabel").textContent=student.name+" · "+student.admission;
+  document.getElementById("modeLabel").textContent=mode==="mcq"?"MCQ Challenge · 30 marks":"Structured Short-Answer Challenge · 30 marks";
+  document.getElementById("timerLabel").textContent=mode==="mcq"?"Elapsed time / 15:00":"Elapsed time / 40:00";
+  renderQuestions();updateProgress();updateTimer();
+  if(timerInterval)clearInterval(timerInterval);
+  timerInterval=setInterval(updateTimer,250);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function renderQuestions(){
+  const list=document.getElementById("questionList");
+  list.innerHTML="";
+  currentQuestions.forEach((q,i)=>{
+    const section=document.createElement("section");
+    section.className="question";section.id="question-"+i;
+    const num=document.createElement("div");
+    num.className="q-number";
+    num.textContent="Question "+(i+1)+" · 1 mark";
+    const title=document.createElement("h3");
+    title.textContent=q.q;
+    section.append(num,title);
+
+    if(mode==="mcq"){
+      q.o.forEach((choice,j)=>{
+        const label=document.createElement("label");label.className="option";
+        const radio=document.createElement("input");
+        radio.type="radio";radio.name="q"+i;radio.value=j;
+        radio.addEventListener("change",()=>{
+          if(submitted)return;
+          answers[i]=String(j);updateProgress();
+        });
+        const text=document.createElement("span");
+        text.textContent=String.fromCharCode(65+j)+". "+choice;
+        label.append(radio,text);section.appendChild(label);
+      });
+    }else{
+      const ta=document.createElement("textarea");
+      ta.id="answer-"+i;
+      ta.placeholder="Enter a concise answer. Use correct chemical names, terms, or formulas; no drawings are required.";
+      ta.value=answers[i]||"";
+      ta.addEventListener("input",()=>{
+        if(submitted)return;
+        answers[i]=ta.value;updateProgress();
+      });
+      section.appendChild(ta);
+    }
+    list.appendChild(section);
+  });
+}
+function updateProgress(){
+  const count=answers.filter(a=>String(a).trim()!=="").length;
+  document.getElementById("progressText").textContent=count+" of "+currentQuestions.length+" answered";
+  document.getElementById("progressFill").style.width=(count/currentQuestions.length*100)+"%";
+  document.getElementById("unansweredNotice").textContent=count===currentQuestions.length?
+    "All questions have a response. You may submit.":" "+(currentQuestions.length-count)+" unanswered question(s) may receive zero marks.";
+}
+function formatTime(s){
+  return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+}
+function updateTimer(){
+  if(submitted)return;
+  const elapsed=Math.floor((Date.now()-startTime)/1000);
+  document.getElementById("timer").textContent=formatTime(elapsed);
+  const limit=mode==="mcq"?900:2400;
+  const hardLimit=mode==="mcq"?960:2400;
+  document.getElementById("timer").classList.toggle("red",elapsed>=limit);
+  if(elapsed>=hardLimit)requestSubmit(true);
+}
+function goToTop(){window.scrollTo({top:0,behavior:"smooth"})}
+function normalise(s){
+  return String(s||"").toLowerCase()
+    .replace(/β/g," beta ").replace(/α/g," alpha ")
+    .replace(/⁺/g,"+").replace(/⁻/g,"-")
+    .replace(/sp³/g,"sp3").replace(/sp²/g,"sp2")
+    .replace(/c₄h₁₀/g,"c4h10").replace(/cₙh₂ₙ₊₂/g,"cnh2n+2")
+    .replace(/[^a-z0-9+.-]+/g," ").replace(/\s+/g," ").trim();
+}
+function containsAlternative(answer,alternatives){
+  const text=" "+normalise(answer)+" ";
+  return alternatives.some(term=>{
+    const t=normalise(term);
+    return t&&(text.includes(" "+t+" ")||text.includes(t));
+  });
+}
+function markRubric(answer,rubric,pointsEach){
+  const hits=[];let score=0;
+  rubric.forEach(criterion=>{
+    const hit=containsAlternative(answer,criterion);
+    hits.push(hit);if(hit)score+=pointsEach;
+  });
+  return {score,hits};
+}
+function scoreOpenAnswer(q,answer){
+  const marked=markRubric(answer,q.rubric,0.5);
+  return {score:Math.min(1,marked.score),max:1,hits:marked.hits};
+}
+function finishSubmit(automatic){
+  if(submitted)return;
+  submitted=true;
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null}
+  const elapsed=Math.floor((Date.now()-startTime)/1000);
+  let raw=0;const max=30;const marking=[];
+  currentQuestions.forEach((q,i)=>{
+    if(mode==="mcq"){
+      const correct=answers[i]!==""&&Number(answers[i])===q.a;
+      const score=correct?1:0;raw+=score;
+      marking.push({score,max:1,correct,feedback:null});
+    }else{
+      const result=scoreOpenAnswer(q,answers[i]);
+      raw+=result.score;
+      marking.push({score:result.score,max:1,correct:result.score===1,feedback:result.hits});
+    }
+  });
+  const late=mode==="mcq"&&elapsed>=960;
+  const deduction=late?5:0;
+  const finalScore=Math.max(0,raw-deduction);
+  currentResult={
+    name:student.name,admission:student.admission,mode,
+    rawScore:raw,penalty:deduction,finalScore,max,
+    percentage:finalScore/max*100,elapsedSeconds:elapsed,late,
+    answers:[...answers],marking,date:new Date().toLocaleString()
+  };
+  results.push(currentResult);saveResults();
+  document.getElementById("exam").classList.add("hidden");
+  document.getElementById("results").classList.remove("hidden");
+  showResult(currentResult,automatic);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function performanceComment(p){
+  if(p>=90)return"Outstanding performance. You demonstrated excellent command of the assessed concepts.";
+  if(p>=80)return"Excellent performance. Continue practising mechanisms and reaction predictions.";
+  if(p>=70)return"Very good understanding. Review the concepts that cost you marks.";
+  if(p>=60)return"Good progress, but some concepts need more consolidation.";
+  if(p>=50)return"A developing foundation. Revisit nomenclature, stereochemistry, and reaction principles.";
+  if(p>=40)return"More revision is needed. Focus on understanding mechanisms rather than memorising isolated facts.";
+  return"Use this attempt diagnostically. Review foundational concepts, then attempt the assessment again.";
+}
+function bandComment(lower){
+  if(lower===0)return"Revisit foundational terminology and core bonding principles.";
+  if(lower===20)return"Basic knowledge is emerging; practise naming and explaining structures.";
+  if(lower===40)return"Develop a stronger conceptual foundation.";
+  if(lower===60)return"Good progress; practise predicting products and explaining mechanisms.";
+  if(lower===80)return"Strong performance and good conceptual understanding.";
+  return"Excellent to outstanding mastery of the assessed concepts.";
+}
+function showResult(r,automatic){
+  document.getElementById("resultName").textContent="Student: "+r.name+" · Admission number: "+r.admission+" · "+r.date;
+  document.getElementById("resultMode").textContent=r.mode==="mcq"?"MCQ Challenge":"Structured Short-Answer Challenge";
+  document.getElementById("scoreDisplay").textContent=r.finalScore.toFixed(1)+"/"+r.max;
+  document.getElementById("percentageDisplay").textContent="Final percentage: "+r.percentage.toFixed(1)+"%";
+  document.getElementById("rawScore").textContent=r.rawScore.toFixed(1)+"/"+r.max;
+  document.getElementById("penalty").textContent=r.penalty+" marks";
+  document.getElementById("answeredCount").textContent=r.answers.filter(a=>String(a).trim()!=="").length;
+  document.getElementById("unansweredCount").textContent=r.answers.filter(a=>String(a).trim()==="").length;
+  document.getElementById("overallRemark").innerHTML="<strong>Overall feedback</strong><br>"+escapeHTML(performanceComment(r.percentage));
+  let timeText="Time used: "+formatTime(r.elapsedSeconds)+". ";
+  if(r.mode==="mcq"){
+    timeText+=r.late?"The 16-minute limit was reached and a 5-mark penalty was applied.":r.elapsedSeconds>=900?"The 15-minute target was exceeded, but the penalty threshold was not reached.":"Completed within the 15-minute target.";
+  }else{
+    timeText+=r.elapsedSeconds>=2400?"The 40-minute time limit was reached.":"Completed within the 40-minute time limit.";
+  }
+  if(automatic)timeText+=" Assessment submitted automatically.";
+  document.getElementById("timeRemark").innerHTML="<div class='"+(r.late?"warning":"notice")+"'>"+escapeHTML(timeText)+"</div>";
+
+  const bands=document.getElementById("intervalRemarks");bands.innerHTML="";
+  for(let lower=0;lower<=80;lower+=20){
+    const upper=lower+19.99;
+    const reached=r.percentage>=lower&&(lower===80?r.percentage<=100:r.percentage<=upper);
+    const div=document.createElement("div");div.className="remark";
+    div.innerHTML="<strong>"+lower+"–"+(lower===80?100:upper.toFixed(0))+"%</strong> — "+escapeHTML(bandComment(lower))+(reached?" <strong>← Your band</strong>":"");
+    bands.appendChild(div);
+  }
+  renderReview(r);renderRegister();
+  document.getElementById("nextMessage").textContent=r.percentage>=70?
+    "Good work. Challenge yourself by explaining the reaction principles behind any questions you missed.":
+    "Review the model answers, practise nomenclature and reaction prediction, then try another assessment.";
+}
+function renderReview(r){
+  const box=document.getElementById("reviewList");box.innerHTML="";
+  currentQuestions.forEach((q,i)=>{
+    const m=r.marking[i];const div=document.createElement("div");div.className="review-item";
+    let html="<strong>Q"+(i+1)+". "+escapeHTML(q.q)+"</strong><br>";
+    html+="<span class='"+(m.correct?"correct":"incorrect")+"'>"+(m.correct?"✓ Full marks":"Score: "+m.score.toFixed(1)+"/"+m.max)+"</span><br>";
+    if(r.mode==="mcq"){
+      const yours=r.answers[i]===""?"Not answered":String.fromCharCode(65+Number(r.answers[i]))+". "+q.o[Number(r.answers[i])];
+      const key=String.fromCharCode(65+q.a)+". "+q.o[q.a];
+      html+="<span class='small'>Your answer: "+escapeHTML(yours)+"</span><br>";
+      html+="<span class='correct'>Correct answer: "+escapeHTML(key)+"</span><br><p>"+escapeHTML(q.e)+"</p>";
+    }else{
+      html+="<p><strong>Your response:</strong><br>"+escapeHTML(r.answers[i]||"Not answered").replace(/\n/g,"<br>")+"</p>";
+      html+="<p><strong>Model answer:</strong><br>"+escapeHTML(q.model)+"</p>";
+      html+="<p>"+escapeHTML(q.ex)+"</p><p><strong>Rubric detected:</strong> ";
+      html+=(m.feedback||[]).map((hit,j)=>"<span class='badge'>"+(hit?"✓":"○")+" Criterion "+(j+1)+"</span>").join(" ");
+      html+="</p>";
+    }
+    div.innerHTML=html;box.appendChild(div);
+  });
+}
+function renderRegister(){
+  const box=document.getElementById("register");box.innerHTML="";
+  if(!results.length){box.textContent="No completed attempts yet.";return}
+  const wrap=document.createElement("div");wrap.className="register-table-wrap";
+  const table=document.createElement("table");
+  const thead=document.createElement("thead");const head=document.createElement("tr");
+  ["Student","Admission No.","Mode","Date","Raw","Penalty","Final","%","Time"].forEach(t=>{
+    const th=document.createElement("th");th.textContent=t;head.appendChild(th);
+  });
+  thead.appendChild(head);table.appendChild(thead);
+  const body=document.createElement("tbody");
+  results.forEach(r=>{
+    const tr=document.createElement("tr");
+    [r.name,r.admission,r.mode==="mcq"?"MCQ":"Structured",r.date,r.rawScore.toFixed(1)+"/"+r.max,"-"+r.penalty,r.finalScore.toFixed(1)+"/"+r.max,r.percentage.toFixed(1)+"%",formatTime(r.elapsedSeconds)].forEach(value=>{
+      const td=document.createElement("td");td.textContent=value;tr.appendChild(td);
+    });
+    body.appendChild(tr);
+  });
+  table.appendChild(body);wrap.appendChild(table);box.appendChild(wrap);
+}
+function printResults(){window.print()}
+function showRegister(){document.getElementById("register").scrollIntoView({behavior:"smooth"})}
+function backHome(){
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null}
+  document.getElementById("results").classList.add("hidden");
+  document.getElementById("exam").classList.add("hidden");
+  document.getElementById("setup").classList.remove("hidden");
+  refreshIdentity();window.scrollTo({top:0,behavior:"smooth"});
+}
+document.addEventListener("keydown",event=>{
+  const modal=document.getElementById("submitModal");
+  if(event.key==="Escape"&&!modal.classList.contains("hidden"))closeSubmitModal();
+});
+loadResults();refreshIdentity();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,870 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#11834c">
+<title>Human Anatomy | PHARMILY31</title>
+<style>
+:root{
+  --blue:#1769e0;--navy:#101c36;--purple:#773be8;
+  --green:#11834c;--light-green:#72c982;--red:#d92332;
+  --bg:#f1f5fc;--border:#dce5f1;--dashboard-height:150px;
+}
+*{box-sizing:border-box}
+html,body{max-width:100%;overflow-x:hidden}
+html{scroll-padding-top:calc(var(--dashboard-height) + 18px)}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--navy);line-height:1.6}
+header{background:linear-gradient(135deg,#101c36,#11663f,#1769e0);color:white;text-align:center;padding:26px 14px}
+header h1{margin:0;font-size:24px}
+header p{margin:5px 0}
+.container{width:min(950px,94%);max-width:100%;margin:22px auto}
+.card{background:white;padding:22px;border:1px solid var(--border);border-radius:16px;margin-bottom:18px;box-shadow:0 4px 18px #10213b0b;min-width:0}
+h2,h3{margin-top:0}
+.small{color:#63728b;font-size:13px}
+label.field{display:block;font-weight:bold;margin:12px 0 6px}
+input[type=text],select,textarea{width:100%;max-width:100%;padding:12px;border:1px solid #bac8dc;border-radius:9px;font-size:15px;font-family:inherit;background:white;color:var(--navy)}
+textarea{min-height:100px;resize:vertical;line-height:1.55}
+button{border:0;border-radius:9px;background:var(--blue);color:white;padding:13px 17px;font-size:15px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.secondary{background:#e8effa;color:var(--navy)}
+button.purple{background:var(--purple)}
+button.green{background:var(--green)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #91baff;outline-offset:3px}
+.hidden{display:none!important}
+.notice{background:#edf5ff;border-left:4px solid var(--blue);padding:13px;border-radius:9px;margin:13px 0}
+.warning{background:#fff0f0;color:#9c1824;padding:13px;border-radius:9px;margin:13px 0}
+.hero{position:relative;overflow:hidden;border-radius:17px;padding:27px 15px;text-align:center;color:white;background:linear-gradient(135deg,#101c36,#11663f,#1769e0);margin-bottom:18px}
+.hero:before,.hero:after{content:"";position:absolute;width:150px;height:150px;border:1px solid #ffffff30;border-radius:50%;animation:orbit 8s linear infinite}
+.hero:before{left:-55px;top:-65px}
+.hero:after{right:-45px;bottom:-90px;animation-direction:reverse}
+.hero-title{position:relative;z-index:1;font-size:clamp(26px,6vw,42px);font-weight:900;line-height:1.25}
+.hero-sub{position:relative;z-index:1}
+@keyframes orbit{to{transform:rotate(360deg)}}
+
+/* FIXED ASSESSMENT DASHBOARD */
+.assessment-sticky{
+  position:fixed;top:0;left:0;right:0;width:100%;z-index:999;
+  background:var(--bg);padding:8px max(3%,calc((100% - 950px)/2));
+  margin:0;isolation:isolate;box-shadow:0 5px 18px #10213b14;
+  border-bottom:1px solid var(--border)
+}
+.topbar{position:relative;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;background:white;padding:10px 12px;border:1px solid var(--border);border-radius:12px;margin-bottom:7px;min-width:0;box-shadow:0 4px 16px #10213b0b}
+#studentLabel{display:block;font-weight:800;overflow-wrap:anywhere;line-height:1.35}
+#modeLabel,#progressText{line-height:1.4}
+.timer{font-size:22px;font-weight:bold;font-variant-numeric:tabular-nums;color:var(--green)}
+.timer.red{color:var(--red);animation:pulse .8s infinite}
+@keyframes pulse{50%{opacity:.5}}
+.progress-track{height:8px;background:#e5ebf5;border-radius:10px;overflow:hidden;margin:0}
+.progress-fill{height:100%;width:0;background:var(--light-green);transition:width .2s}
+#exam{padding-top:calc(var(--dashboard-height) + 15px)}
+.question{background:white;padding:19px;margin-bottom:14px;border:1px solid var(--border);border-radius:13px;scroll-margin-top:calc(var(--dashboard-height) + 20px);min-width:0;overflow-wrap:anywhere}
+.question h3{font-size:16px;line-height:1.5;color:var(--light-green)}
+.q-number{font-size:12px;color:var(--green);font-weight:bold;text-transform:uppercase}
+.option{display:flex;align-items:flex-start;gap:10px;padding:11px;margin:8px 0;border:1px solid var(--border);border-radius:9px;cursor:pointer;font-weight:normal;min-width:0}
+.option:has(input:checked){border-color:var(--light-green);background:#effaf0}
+.option input{margin:4px 0 0;flex-shrink:0;accent-color:var(--green)}
+.option span{min-width:0;overflow-wrap:anywhere}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.score{font-size:42px;font-weight:bold;color:var(--blue);margin:8px 0}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:20px 0}
+.stat{background:#f3f7fd;padding:13px;border-radius:10px;overflow-wrap:anywhere;min-width:0}
+.stat strong{display:block;font-size:22px}
+.remark{padding:12px;margin:9px 0;background:#f3f7fd;border-left:4px solid var(--blue);border-radius:7px}
+.review-item{padding:15px 0;border-bottom:1px solid var(--border);overflow-wrap:anywhere}
+.correct{color:var(--green);font-weight:bold}
+.incorrect{color:var(--red);font-weight:bold}
+.badge{display:inline-block;background:#e8effa;padding:4px 9px;border-radius:7px;font-size:12px;margin:3px}
+#register{width:100%;max-width:100%;min-width:0}
+.register-table-wrap{width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;border:1px solid var(--border);border-radius:8px}
+.register-table-wrap table{width:100%;min-width:760px;border-collapse:collapse;table-layout:auto}
+.register-table-wrap th,.register-table-wrap td{text-align:left;padding:9px 7px;border-bottom:1px solid var(--border);font-size:12px;overflow-wrap:anywhere;vertical-align:top}
+.register-table-wrap th{background:#f3f7fd}
+.register-table-wrap tbody tr:last-child td{border-bottom:0}
+.register-hint{font-size:12px;color:#63728b;margin-top:7px}
+footer{text-align:center;padding:20px;color:#63728b;font-size:12px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:8px 5px;border-bottom:1px solid var(--border);font-size:12px}
+
+/* SUBMISSION MODAL */
+.submit-modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(9,20,40,.72);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.submit-modal.hidden{display:none!important}
+.submit-dialog{width:min(440px,100%);max-height:90vh;max-height:90dvh;overflow-y:auto;background:white;color:var(--navy);border:1px solid var(--border);border-radius:20px;padding:25px;box-shadow:0 24px 80px #00000030;animation:modalEnter .2s ease-out}
+@keyframes modalEnter{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.submit-icon{display:grid;place-items:center;width:56px;height:56px;margin:0 auto 12px;border-radius:16px;background:#e8f5ee;font-size:27px}
+.submit-eyebrow{text-align:center;color:var(--green);font-size:11px;font-weight:800;letter-spacing:1.2px;margin:0 0 8px}
+.submit-dialog h2{text-align:center;font-size:24px;margin:0 0 10px}
+#submitModalMessage{text-align:center;color:#63728b;font-size:14px;margin:0 0 20px}
+.submit-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:15px}
+.submit-summary>div{background:#f3f7fd;border:1px solid var(--border);border-radius:12px;padding:13px;text-align:center}
+.submit-summary span{display:block;color:#63728b;font-size:12px}
+.submit-summary strong{display:block;font-size:25px;margin-top:4px}
+#modalUnanswered{color:var(--red)}
+.submit-warning{background:#fff0f0;color:#9c1824;padding:11px;border-radius:9px;font-size:13px;margin:0 0 15px}
+.submit-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.submit-actions button{width:100%;min-height:46px;padding:11px;font-size:13px}
+.submit-footer{text-align:center;color:#63728b;font-size:11px;margin:16px 0 0}
+@media(max-width:500px){
+ header h1{font-size:20px}.card{padding:16px}.question{padding:14px}.score{font-size:36px}
+ .hero{padding:25px 8px}.container{width:94%;margin:14px auto}
+ .assessment-sticky{padding:5px 3% 7px}.topbar{padding:8px;gap:6px;border-radius:10px}
+ #studentLabel{font-size:13px}.topbar .small{font-size:11px}.timer{font-size:19px}
+ .progress-track{height:7px}.stats{gap:8px}.stat{padding:10px}.stat strong{font-size:19px}
+ button{max-width:100%}.actions button{flex:1 1 auto}
+ .register-table-wrap table{min-width:760px}.submit-dialog{padding:19px}
+ .submit-dialog h2{font-size:21px}.submit-actions{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+ .submit-dialog{animation:none}.hero:before,.hero:after,.timer.red{animation:none}
+}
+@media print{
+ body{background:white;color:black;font-size:11px}
+ header{background:white!important;color:black;padding:8px}
+ header h1{font-size:18px}.container{width:100%;max-width:100%;margin:0}
+ #setup,#exam,footer,.no-print,.submit-modal{display:none!important}
+ #results{display:block!important}
+ #results .card{box-shadow:none;border:1px solid #bbb;padding:12px;margin:8px 0;break-inside:auto}
+ #results .review-item{break-inside:avoid}
+ #results button{display:none!important}.score{font-size:25px}
+ .stats{gap:5px;margin:8px 0}.stat{padding:6px}
+ .remark,.notice,.warning{background:white!important;color:black!important}
+ .review-item{padding:8px 0}h2{font-size:16px}
+ .register-table-wrap{overflow:visible;border:0}
+ .register-table-wrap table{min-width:0;width:100%;table-layout:fixed}
+ .register-table-wrap th,.register-table-wrap td{font-size:8px;padding:4px 2px;overflow-wrap:anywhere}
+ .register-hint{display:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>🦴 Human Anatomy</h1>
+  <p>PHARMILY31 · Bachelor of Pharmacy · Year 1</p>
+  <p>General Anatomy · Histology · Gametogenesis · Pregnancy &amp; Development</p>
+</header>
+
+<main class="container">
+<section id="setup" class="card">
+  <div class="hero">
+    <div class="hero-title">💚 ANATOMY ARENA 💚</div>
+    <p class="hero-sub">Understand the structure. Connect form to function. Master human development.</p>
+    <p class="hero-sub">University-level assessment · Two assessment modes</p>
+  </div>
+  <h2>🦴 Assessment Centre</h2>
+  <p>Challenge your knowledge of introductory and general anatomy, anatomical terminology, tissues and histology, gametogenesis, the ovarian cycle, pregnancy, embryology, and human development.</p>
+  <div id="identityBox" class="notice">Checking verified student session…</div>
+  <div class="notice">
+    <strong>Assessment rules</strong>
+    <ul>
+      <li><strong>MCQ Challenge:</strong> 30 questions, 30 marks, 15-minute target.</li>
+      <li>The MCQ timer turns red at 15:00. At 16:00, the assessment auto-submits and a 5-mark penalty is applied.</li>
+      <li><strong>Open-Ended Challenge:</strong> 30 questions in 30 minutes: 25 short-answer questions and 5 essays.</li>
+      <li>Short answers are marked flexibly using alternative terms, synonyms, and key anatomical concepts.</li>
+      <li>Essays receive partial credit for relevant scientific points included in the response.</li>
+      <li>Blank answers receive zero. Review your answers before submission.</li>
+      <li>Automatic marking is an educational estimate, not a substitute for lecturer marking.</li>
+    </ul>
+  </div>
+  <h3>Choose your assessment</h3>
+  <div class="card">
+    <h3>📝 Option A: MCQ Challenge</h3>
+    <p>30 questions · A–E choices · 15-minute target · 30 marks</p>
+    <button id="mcqStart" onclick="startTest('mcq')" disabled>Start MCQ Assessment</button>
+  </div>
+  <div class="card">
+    <h3>✍️ Option B: Open-Ended Challenge</h3>
+    <p>25 short answers + 5 essays · 30 minutes · 50 marks</p>
+    <p class="small">Short answers: 1 mark each. Essays: 5 marks each. Partial credit is available.</p>
+    <button id="openStart" class="purple" onclick="startTest('open')" disabled>Start Open-Ended Assessment</button>
+  </div>
+  <p class="small">Student identity is read from the verified session created by index.html. Results are stored locally in this browser on this device.</p>
+</section>
+
+<section id="exam" class="hidden">
+  <div class="assessment-sticky" id="assessmentDashboard">
+    <div class="topbar">
+      <div style="flex:1;min-width:0">
+        <strong id="studentLabel"></strong>
+        <div class="small" id="modeLabel"></div>
+        <div class="small" id="progressText">0 answered</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div class="small" id="timerLabel">Elapsed time</div>
+        <div id="timer" class="timer">00:00</div>
+      </div>
+    </div>
+    <div class="progress-track" aria-label="Assessment progress">
+      <div id="progressFill" class="progress-fill"></div>
+    </div>
+  </div>
+  <div id="questionList"></div>
+  <div class="card">
+    <p id="unansweredNotice" class="small"></p>
+    <div class="actions">
+      <button onclick="submitTest(false)">Submit Assessment</button>
+      <button class="secondary" onclick="goToTop()">Back to Top ↑</button>
+    </div>
+  </div>
+</section>
+
+<section id="results" class="hidden">
+  <div class="card">
+    <h2>🏆 Assessment Results</h2>
+    <p id="resultName"></p>
+    <p id="resultMode"></p>
+    <div id="scoreDisplay" class="score">0/30</div>
+    <p id="percentageDisplay"></p>
+    <div class="stats">
+      <div class="stat"><span class="small">Raw score</span><strong id="rawScore">0</strong></div>
+      <div class="stat"><span class="small">Penalty</span><strong id="penalty">0</strong></div>
+      <div class="stat"><span class="small">Questions answered</span><strong id="answeredCount">0</strong></div>
+      <div class="stat"><span class="small">Questions blank</span><strong id="unansweredCount">0</strong></div>
+    </div>
+    <div id="overallRemark" class="notice"></div>
+    <div id="timeRemark"></div>
+  </div>
+  <div class="card">
+    <h2>📊 Performance Bands</h2>
+    <div id="intervalRemarks"></div>
+  </div>
+  <div class="card">
+    <h2>📋 Student Results Register</h2>
+    <p class="small">Attempt records are saved locally in this browser.</p>
+    <div id="register"></div>
+    <p class="register-hint">On a mobile phone, swipe the register left or right to view all columns.</p>
+    <div class="actions no-print">
+      <button onclick="printResults()">Print / Save as PDF</button>
+      <button class="secondary" onclick="showRegister()">View Register</button>
+    </div>
+    <p class="small no-print">Choose Print, then select Save as PDF if that option is available in your browser.</p>
+  </div>
+  <div class="card">
+    <h2>📚 Answers, Marking Feedback &amp; Explanations</h2>
+    <p class="small">For open-ended questions, the marking feedback shows which expected concepts were detected. Equivalent correct answers may still be missed by automated matching.</p>
+    <div id="reviewList"></div>
+  </div>
+  <div class="card no-print">
+    <h2>Next Step</h2>
+    <p id="nextMessage"></p>
+    <button onclick="backHome()">Return to Assessment Centre</button>
+  </div>
+</section>
+</main>
+
+<div id="submitModal" class="submit-modal hidden" role="dialog"
+     aria-modal="true" aria-labelledby="submitModalTitle"
+     aria-describedby="submitModalMessage">
+  <div class="submit-dialog">
+    <div class="submit-icon">📝</div>
+    <p class="submit-eyebrow">PHARMILY31 · ASSESSMENT CENTRE</p>
+    <h2 id="submitModalTitle">Submit Assessment?</h2>
+    <p id="submitModalMessage">Are you ready to submit your assessment?</p>
+    <div class="submit-summary">
+      <div><span>Answered</span><strong id="modalAnswered">0</strong></div>
+      <div><span>Unanswered</span><strong id="modalUnanswered">0</strong></div>
+    </div>
+    <p id="modalWarning" class="submit-warning hidden"></p>
+    <div class="submit-actions">
+      <button type="button" id="cancelSubmit" class="secondary">Review Answers</button>
+      <button type="button" id="confirmSubmit" class="green">Confirm Submission</button>
+    </div>
+    <p class="submit-footer">Please review your responses before final submission.</p>
+  </div>
+</div>
+
+<footer>PHARMILY31 · Human Anatomy Revision Arena</footer>
+
+<script>
+"use strict";
+
+const SESSION_KEY = "pharmily31Student";
+const STORAGE_KEY = "pharmily31AnatomyResults_v1";
+let student = null;
+
+function getIdentity(){
+  try{
+    const raw=sessionStorage.getItem(SESSION_KEY);
+    if(!raw)return null;
+    const d=JSON.parse(raw);
+    if(!d||typeof d!=="object")return null;
+    const name=d.name||d.fullName||d.studentName||d.student||d.full_name||"";
+    const admission=d.admissionNumber||d.admission_number||d.admission||d.regNo||d.registrationNumber||d.registration_number||"";
+    if(!String(name).trim()||!String(admission).trim())return null;
+    return {name:String(name).trim(),admission:String(admission).trim()};
+  }catch(e){return null}
+}
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+function refreshIdentity(){
+  student=getIdentity();
+  const box=document.getElementById("identityBox");
+  const mcq=document.getElementById("mcqStart");
+  const open=document.getElementById("openStart");
+  if(student){
+    box.className="notice";
+    box.innerHTML="<strong>Verified session detected</strong><br>Student: "+
+      escapeHTML(student.name)+"<br>Admission number: "+escapeHTML(student.admission);
+    mcq.disabled=false;
+    open.disabled=false;
+  }else{
+    box.className="warning";
+    box.innerHTML="<strong>Registration verification required</strong><br>Your verified student session could not be found. Return to index.html, verify your name and admission number, then open Anatomy again.";
+    mcq.disabled=true;
+    open.disabled=true;
+  }
+}
+
+function syncDashboardSpace(){
+  const dashboard=document.getElementById("assessmentDashboard");
+  const exam=document.getElementById("exam");
+  if(!dashboard||!exam||exam.classList.contains("hidden"))return;
+  const height=Math.ceil(dashboard.getBoundingClientRect().height);
+  document.documentElement.style.setProperty("--dashboard-height",height+"px");
+}
+window.addEventListener("resize",syncDashboardSpace);
+window.addEventListener("orientationchange",()=>setTimeout(syncDashboardSpace,150));
+
+/* MCQ BANK: 30 QUESTIONS */
+const mcqs = [
+{q:"Which anatomical plane divides the body into equal right and left halves?",o:["Coronal plane","Transverse plane","Median sagittal plane","Oblique plane","Horizontal plane"],a:2,e:"The median sagittal, or midsagittal, plane divides the body into equal right and left halves. A sagittal plane that is off the midline divides the body into unequal portions."},
+{q:"In the standard anatomical position, the palms face:",o:["Posteriorly","Anteriorly","Medially","Inferiorly","Towards the thighs"],a:1,e:"In the standard anatomical position, the body is upright, the head and eyes face forward, the upper limbs are at the sides, and the palms face anteriorly."},
+{q:"Which directional term means nearer to the point of attachment of a limb?",o:["Distal","Superficial","Lateral","Proximal","Inferior"],a:3,e:"Proximal means nearer to the trunk or point of origin/attachment. Distal means farther from that point."},
+{q:"Which body cavity contains the heart and lungs?",o:["Abdominopelvic cavity","Cranial cavity","Vertebral cavity","Pelvic cavity","Thoracic cavity"],a:4,e:"The thoracic cavity contains the pleural cavities housing the lungs and the mediastinum, which includes the pericardial cavity and heart."},
+{q:"Which serous membrane directly covers the surface of the lung?",o:["Parietal pleura","Visceral pleura","Parietal peritoneum","Visceral peritoneum","Pericardium"],a:1,e:"The visceral pleura adheres to the lung surface. The parietal pleura lines the thoracic wall and other boundaries of the pleural cavity."},
+{q:"Which of the following is an example of a long bone?",o:["Scapula","Patella","Femur","Carpal bone","Vertebra"],a:2,e:"The femur is a long bone with a shaft and two ends. Bone classification is based mainly on shape, not absolute size."},
+{q:"Which type of joint permits the greatest range of movement in multiple directions?",o:["Fibrous suture","Cartilaginous symphysis","Plane synovial joint","Ball-and-socket synovial joint","Gomphosis"],a:3,e:"Ball-and-socket joints, such as the shoulder and hip, permit movement in multiple axes, including flexion, extension, abduction, adduction, rotation, and circumduction."},
+{q:"Which tissue type lines body surfaces, forms glands, and commonly exhibits closely packed cells?",o:["Epithelial tissue","Nervous tissue","Skeletal muscle","Dense regular connective tissue","Adipose tissue"],a:0,e:"Epithelial tissue covers surfaces, lines cavities, and forms glands. It has closely packed cells, polarity, a basement membrane, and little extracellular matrix."},
+{q:"Which epithelial type is best adapted for rapid diffusion in pulmonary alveoli?",o:["Stratified squamous epithelium","Simple cuboidal epithelium","Transitional epithelium","Pseudostratified columnar epithelium","Simple squamous epithelium"],a:4,e:"Simple squamous epithelium is thin and facilitates diffusion and filtration. Type I alveolar cells form most of the alveolar gas-exchange surface."},
+{q:"Which epithelium commonly lines much of the urinary bladder and can stretch as the bladder fills?",o:["Simple columnar epithelium","Transitional epithelium","Simple squamous epithelium","Keratinised stratified squamous epithelium","Simple cuboidal epithelium"],a:1,e:"Transitional epithelium, also called urothelium, changes its appearance as the urinary tract expands and provides a protective barrier against urine."},
+{q:"Which connective tissue cell is principally responsible for producing collagen-rich extracellular matrix?",o:["Neutrophil","Erythrocyte","Fibroblast","Neuron","Osteoclast"],a:2,e:"Fibroblasts synthesise and maintain much of the extracellular matrix of connective tissue, including collagen fibres and ground-substance components."},
+{q:"Which cartilage type is found in the external ear and contains abundant elastic fibres?",o:["Hyaline cartilage","Fibrocartilage","Calcified cartilage only","Elastic cartilage","Articular bone"],a:3,e:"Elastic cartilage provides flexible support and is found in structures such as the auricle of the external ear and the epiglottis."},
+{q:"Which blood component is primarily responsible for oxygen transport?",o:["Erythrocytes","Platelets","Neutrophils","Plasma albumin","Lymphocytes"],a:0,e:"Erythrocytes contain haemoglobin, which binds and transports most oxygen in the blood."},
+{q:"Which muscle tissue is striated, involuntary, and characterised by intercalated discs?",o:["Smooth muscle","Skeletal muscle","Dense connective tissue","Myofibroblasts","Cardiac muscle"],a:4,e:"Cardiac muscle is striated and involuntary. Intercalated discs contain specialised junctions that support mechanical and electrical coupling between cardiomyocytes."},
+{q:"Which organelle is particularly abundant in cells with high energy demands because it produces most cellular ATP aerobically?",o:["Lysosome","Mitochondrion","Golgi apparatus","Nucleolus","Peroxisome"],a:1,e:"Mitochondria generate much of the ATP used by aerobic cells through oxidative phosphorylation and also participate in other metabolic processes."},
+{q:"Meiosis is important in gametogenesis primarily because it:",o:["Doubles the chromosome number in gametes","Produces genetically identical diploid cells only","Reduces chromosome number and contributes to genetic variation","Prevents recombination","Occurs only after fertilisation"],a:2,e:"Meiosis reduces the chromosome number from diploid to haploid and generates genetic variation through crossing over and independent assortment."},
+{q:"In human males, spermatogenesis occurs primarily within the:",o:["Epididymal duct","Prostate gland","Seminal vesicles","Seminiferous tubules","Vas deferens"],a:3,e:"Spermatogenesis takes place in the seminiferous tubules of the testes. Sertoli cells support developing germ cells, while Leydig cells produce testosterone."},
+{q:"Which pituitary hormone acts on Leydig cells to stimulate testosterone production?",o:["Luteinising hormone","Follicle-stimulating hormone","Prolactin","Oxytocin","Thyroid-stimulating hormone"],a:0,e:"LH stimulates Leydig cells to synthesise testosterone. FSH acts primarily on Sertoli cells and supports spermatogenesis."},
+{q:"During oogenesis, the primary oocyte normally remains arrested in:",o:["Metaphase II from birth until puberty","Prophase I from fetal life until resumption before ovulation","Anaphase I throughout pregnancy","Telophase II until fertilisation","Mitotic metaphase until menopause"],a:1,e:"Primary oocytes begin meiosis during fetal development and remain arrested in prophase I. Selected oocytes resume meiosis during ovarian cycles."},
+{q:"The cell normally released at ovulation in humans is a:",o:["Primary oocyte arrested in prophase I","Mature ovum that has completed meiosis II","Polar body only","Secondary oocyte arrested in metaphase II","Zygote"],a:3,e:"Ovulation normally releases a secondary oocyte arrested in metaphase II. Meiosis II is completed if fertilisation occurs."},
+{q:"Which hormonal event most directly triggers ovulation in a typical menstrual cycle?",o:["A sustained fall in FSH to zero","A progesterone surge from the placenta","A sudden fall in all ovarian hormones","A prolactin surge","The mid-cycle luteinising hormone surge"],a:4,e:"The mid-cycle LH surge, supported by sustained high oestradiol before ovulation, triggers the processes leading to follicular rupture and ovulation."},
+{q:"Which hormone is the principal product of the corpus luteum during the luteal phase?",o:["Human chorionic gonadotropin","Progesterone","Oxytocin","Thyroxine","Parathyroid hormone"],a:1,e:"The corpus luteum secretes progesterone, which supports the secretory endometrium and helps prepare it for implantation. It also produces oestrogens."},
+{q:"If pregnancy does not occur, the corpus luteum typically regresses because:",o:["LH remains permanently elevated","The placenta immediately removes all progesterone","There is no sustained embryonic hCG signal to maintain it","FSH permanently stops secretion","The oocyte becomes a blastocyst"],a:2,e:"Without a sustained hCG signal from the developing conceptus, the corpus luteum regresses, progesterone and oestrogen levels fall, and menstruation follows."},
+{q:"Fertilisation most commonly occurs in which part of the uterine tube?",o:["Ampulla","Cervical canal","Uterine fundus","Vagina","Isthmus of the cervix"],a:0,e:"Fertilisation most commonly occurs in the ampulla of the uterine tube, although the precise location can vary."},
+{q:"Which sequence correctly describes early development after fertilisation?",o:["Gastrula → zygote → morula → blastocyst","Blastocyst → zygote → cleavage → morula","Morula → zygote → gastrula → cleavage","Zygote → cleavage → morula → blastocyst","Zygote → gastrula → spermatozoon → blastocyst"],a:3,e:"After fertilisation, the zygote undergoes cleavage divisions, forms a morula, and then develops into a blastocyst before implantation."},
+{q:"Which part of the blastocyst primarily gives rise to the embryo proper?",o:["Zona pellucida","Trophoblast only","Amniotic fluid","Corpus luteum","Embryoblast (inner cell mass)"],a:4,e:"The embryoblast, or inner cell mass, gives rise to the embryo proper and some associated extraembryonic tissues. The trophoblast contributes substantially to the fetal component of the placenta."},
+{q:"Implantation of the human blastocyst normally begins approximately:",o:["Within minutes of fertilisation","Around 6–7 days after fertilisation","At the end of the second trimester","Only after organogenesis is complete","At the time of birth"],a:1,e:"Implantation generally begins around day 6–7 after fertilisation, as the blastocyst attaches to and begins to invade the endometrium."},
+{q:"Gastrulation is especially important because it:",o:["Produces mature sperm in the testes","Forms the corpus luteum","Establishes the three primary germ layers","Initiates menstruation","Completes fetal lung maturation"],a:2,e:"Gastrulation establishes the ectoderm, mesoderm, and endoderm, which contribute to the tissues and organs of the developing body."},
+{q:"Which germ layer gives rise to the epidermis of the skin and much of the nervous system?",o:["Ectoderm","Mesoderm","Endoderm","Trophoblast only","Extraembryonic mesoderm only"],a:0,e:"The ectoderm forms the epidermis and nervous system, among other structures. The mesoderm contributes to muscle, bone, connective tissues, and much of the cardiovascular system."},
+{q:"Which statement best describes the placenta?",o:["It is formed exclusively from maternal tissue","It prevents all substances from crossing between maternal and fetal blood","It is a permanent maternal organ that produces no hormones","It is a fetomaternal organ involved in exchange and endocrine support","It directly mixes maternal and fetal blood under normal conditions"],a:3,e:"The placenta has fetal and maternal components and supports gas, nutrient, and waste exchange and hormone production. Maternal and fetal blood are normally separated by a placental barrier rather than freely mixing."}
+];
+
+/* OPEN-ENDED BANK: 25 SHORT ANSWERS */
+const shortQs = [
+{q:"Define human anatomy and distinguish it from physiology.",rubric:[["study of body structure","structures of the body","anatomy studies structure"],["physiology studies function","how the body works","function of body parts"]],model:"Anatomy is the study of the structure and organisation of the body. Physiology is the study of how body parts function and how their functions are regulated.",ex:"Structure and function are closely related, but they are distinct areas of study."},
+{q:"State the standard anatomical position and name two anatomical directional terms with their meanings.",rubric:[["standing upright","standing erect","body upright"],["face forward","eyes forward","palms face anteriorly","palms forward"],["superior means above","inferior means below","proximal means nearer","distal means farther","medial means toward midline","lateral means away from midline","anterior means front","posterior means back"]],model:"In anatomical position, the person stands upright, faces forward, keeps the upper limbs at the sides, and faces the palms forward. Directional terms include superior/inferior, medial/lateral, proximal/distal, and anterior/posterior.",ex:"Any two correctly defined directional terms can earn credit."},
+{q:"Name the three anatomical planes and describe how each divides the body.",rubric:[["sagittal plane","right and left"],["coronal plane","frontal plane","anterior and posterior"],["transverse plane","horizontal plane","superior and inferior"]],model:"The sagittal plane divides the body into right and left portions; the coronal or frontal plane divides anterior and posterior portions; the transverse plane divides superior and inferior portions.",ex:"The midsagittal plane divides the body into equal right and left halves."},
+{q:"Name the four major primary tissue types in the human body.",rubric:[["epithelial"],["connective"],["muscle"],["nervous"]],model:"The four major tissue types are epithelial, connective, muscle, and nervous tissue.",ex:"These tissues combine to form organs and organ systems."},
+{q:"Define histology and state one function of a basement membrane.",rubric:[["microscopic study of tissues","study of tissues under a microscope","microscopic anatomy of tissues"],["supports epithelium","anchors epithelium","separates epithelium from connective tissue","selective filtration","basement membrane"]],model:"Histology is the microscopic study of tissues. A basement membrane supports and anchors epithelium, separates it from underlying connective tissue, and can contribute to filtration and cell signalling.",ex:"A complete answer includes the meaning of histology and one valid basement-membrane function."},
+{q:"Distinguish simple epithelium from stratified epithelium.",rubric:[["one cell layer","single layer"],["multiple cell layers","more than one layer","several layers"]],model:"Simple epithelium consists of one cell layer, whereas stratified epithelium consists of two or more layers. Simple epithelia commonly support absorption, secretion, and diffusion; stratified epithelia often provide protection.",ex:"Classification depends on the number of cell layers, not the overall thickness alone."},
+{q:"Name the three major types of muscle tissue and give one characteristic of each.",rubric:[["skeletal muscle","voluntary","striated skeletal"],["cardiac muscle","intercalated discs","involuntary striated"],["smooth muscle","non striated","involuntary","visceral walls"]],model:"Skeletal muscle is striated and generally voluntary; cardiac muscle is striated, involuntary, and has intercalated discs; smooth muscle is non-striated and involuntary.",ex:"Award credit for naming each type and providing a relevant characteristic."},
+{q:"What is the function of fibroblasts in connective tissue?",rubric:[["synthesise collagen","produce collagen","collagen fibres"],["extracellular matrix","produce matrix","ground substance","maintain connective tissue"]],model:"Fibroblasts synthesise and maintain connective-tissue extracellular matrix, including collagen fibres and ground substance.",ex:"Fibroblasts are important for tissue maintenance and repair."},
+{q:"Define gametogenesis and name the male and female forms.",rubric:[["formation of gametes","production of sex cells","development of gametes"],["spermatogenesis","formation of sperm","male gamete"],["oogenesis","formation of oocytes","female gamete"]],model:"Gametogenesis is the production and maturation of gametes. Spermatogenesis produces sperm in the testes, while oogenesis is the development of female gametes in the ovaries.",ex:"Both processes involve meiosis, but their timing and products differ."},
+{q:"Differentiate spermatogenesis from oogenesis in terms of their products.",rubric:[["four haploid sperm","four sperm","four functional gametes","spermatogenesis"],["one functional ovum or oocyte","one large functional gamete","polar bodies","unequal cytokinesis","oogenesis"]],model:"One primary spermatocyte typically produces four haploid spermatids that mature into sperm. One primary oocyte generally produces one large functional gamete and small polar bodies through unequal cytokinesis.",ex:"The precise number of polar bodies can vary; the key difference is the unequal allocation of cytoplasm in oogenesis."},
+{q:"What is the role of Sertoli cells and Leydig cells in the testes?",rubric:[["support developing germ cells","nourish sperm cells","blood testis barrier","sertoli cells"],["produce testosterone","testosterone secretion","androgen production","leydig cells"]],model:"Sertoli cells support developing germ cells, contribute to the blood-testis barrier, and regulate the seminiferous environment. Leydig cells produce testosterone in response to LH.",ex:"The two cell types have distinct but complementary roles in male reproduction."},
+{q:"Define ovulation and identify the hormone surge that triggers it.",rubric:[["release of secondary oocyte","oocyte released from follicle","rupture of mature follicle"],["lh surge","luteinising hormone surge","luteinizing hormone surge"]],model:"Ovulation is the release of a secondary oocyte from a mature ovarian follicle. It is triggered primarily by the mid-cycle luteinising hormone (LH) surge.",ex:"The oocyte is normally arrested in metaphase II when released."},
+{q:"Describe the main events of the ovarian cycle.",rubric:[["follicular phase","follicle growth","follicular development"],["ovulation","lh surge","release of secondary oocyte"],["luteal phase","corpus luteum","progesterone secretion"]],model:"The ovarian cycle comprises the follicular phase, ovulation, and luteal phase. Follicles develop before ovulation; afterwards the corpus luteum forms and secretes progesterone and oestrogens.",ex:"Ovarian events are coordinated with changes in the endometrium during the menstrual cycle."},
+{q:"State the principal functions of FSH and LH in the female reproductive cycle.",rubric:[["fsh stimulates follicular growth","follicle development","granulosa cells"],["lh surge triggers ovulation","lh causes ovulation","corpus luteum formation","luteinisation","progesterone from corpus luteum"]],model:"FSH supports ovarian follicular development and granulosa-cell activity. LH supports theca-cell androgen production, triggers ovulation through its mid-cycle surge, and promotes corpus luteum formation.",ex:"Oestrogen and inhibin provide feedback regulation of the hypothalamic-pituitary-ovarian axis."},
+{q:"Differentiate the follicular phase from the luteal phase of the ovarian cycle.",rubric:[["before ovulation","follicle develops","follicular phase"],["after ovulation","corpus luteum forms","luteal phase"],["progesterone predominates in luteal phase","corpus luteum secretes progesterone","progesterone prepares endometrium"]],model:"The follicular phase extends from the start of the cycle to ovulation and involves follicular development and rising oestrogen. The luteal phase follows ovulation and is characterised by the corpus luteum and increased progesterone.",ex:"The luteal phase is relatively more consistent in length than the follicular phase."},
+{q:"What is fertilisation, and where does it most commonly occur?",rubric:[["fusion of sperm and oocyte","fusion of male and female gametes","formation of zygote"],["ampulla","ampulla of uterine tube","fallopian tube ampulla"]],model:"Fertilisation is the fusion of a sperm and an oocyte, leading to formation of a zygote. It most commonly occurs in the ampulla of the uterine tube.",ex:"Fertilisation restores the diploid chromosome number."},
+{q:"Define implantation and state approximately when it begins after fertilisation.",rubric:[["blastocyst attaches to endometrium","attachment of blastocyst","blastocyst invades uterine lining"],["six to seven days","day 6","day 7","about one week after fertilisation"]],model:"Implantation is attachment and subsequent embedding of the blastocyst in the endometrium. It generally begins about 6–7 days after fertilisation.",ex:"Successful implantation supports continuation of pregnancy and development of placental tissues."},
+{q:"Name the main stages from zygote to blastocyst.",rubric:[["zygote"],["cleavage","blastomeres"],["morula"],["blastocyst"]],model:"The zygote undergoes cleavage to produce blastomeres, forms a morula, and then develops into a blastocyst.",ex:"The blastocyst contains an embryoblast, trophoblast, and fluid-filled cavity."},
+{q:"Name the three primary germ layers formed during gastrulation.",rubric:[["ectoderm"],["mesoderm"],["endoderm"]],model:"The three primary germ layers are ectoderm, mesoderm, and endoderm.",ex:"These layers give rise to the tissues and organs of the developing embryo."},
+{q:"Give one major derivative of each of the three primary germ layers.",rubric:[["ectoderm","epidermis","nervous system","neural tissue"],["mesoderm","muscle","bone","connective tissue","cardiovascular"],["endoderm","epithelial lining of gut","gut lining","respiratory epithelium","liver","pancreas"]],model:"Ectoderm gives rise to the epidermis and nervous system; mesoderm forms structures including muscle, bone, connective tissue, and much of the cardiovascular system; endoderm forms much of the epithelial lining of the digestive and respiratory tracts and organs such as the liver and pancreas.",ex:"Many organs have contributions from more than one germ layer."},
+{q:"What is neurulation, and which embryonic structure gives rise to the neural tube?",rubric:[["formation of neural tube","neural tube forms","neurulation"],["neural plate","ectoderm","neuroectoderm folds","neural folds fuse"]],model:"Neurulation is the process by which the neural plate folds and closes to form the neural tube. The neural plate is derived from specialised ectoderm, or neuroectoderm.",ex:"The neural tube develops into the brain and spinal cord."},
+{q:"State two important functions of the placenta.",rubric:[["oxygen and carbon dioxide exchange","gas exchange","oxygen supply"],["nutrient transfer","waste removal","hormone production","immune protection","maternal fetal exchange"]],model:"The placenta facilitates gas and nutrient exchange, removes fetal waste, produces hormones that support pregnancy, and contributes to immunological interactions between mother and fetus.",ex:"Any two distinct, valid functions earn credit."},
+{q:"What is the function of human chorionic gonadotropin (hCG) in early pregnancy?",rubric:[["maintains corpus luteum","prevents early corpus luteum regression"],["supports progesterone production","maintains progesterone","supports early pregnancy"]],model:"hCG from trophoblastic tissue maintains the corpus luteum in early pregnancy, allowing continued progesterone production until placental hormone production becomes sufficient.",ex:"hCG is also the hormone detected by most pregnancy tests."},
+{q:"Distinguish the embryonic period from the fetal period.",rubric:[["embryonic period first eight weeks","organogenesis","early organ formation"],["fetal period from ninth week to birth","growth and maturation","increases in size and functional maturation"]],model:"The embryonic period extends through the first eight weeks after fertilisation and includes major body-plan formation and organogenesis. The fetal period begins in the ninth week and is characterised by growth and functional maturation.",ex:"Clinical gestational age is usually counted from the last menstrual period, approximately two weeks before fertilisation."},
+{q:"Define teratogen and give one example of a factor that can disrupt prenatal development.",rubric:[["agent that causes developmental abnormality","factor that disrupts embryonic development","causes congenital anomalies"],["alcohol","certain medications","some infections","ionising radiation","maternal diabetes","tobacco","teratogen"]],model:"A teratogen is an environmental, chemical, infectious, or physical factor that can disturb prenatal development and cause developmental abnormalities. Examples include alcohol, certain medications, some infections, and ionising radiation.",ex:"Effects depend on the exposure, dose, timing, and susceptibility of the developing embryo or fetus."}
+];
+
+/* ESSAY BANK: 5 QUESTIONS */
+const essays = [
+{q:"Essay 1: Describe the standard anatomical position, anatomical planes, directional terms, body regions, and major body cavities. Explain why standardised anatomical terminology is important.",rubric:[
+["standing upright and facing forward","palms face anteriorly","standard anatomical position"],
+["sagittal plane","coronal or frontal plane","transverse plane"],
+["superior and inferior","anterior and posterior","medial and lateral","proximal and distal"],
+["axial and appendicular regions","head neck trunk limbs","body regions"],
+["cranial thoracic abdominal pelvic cavities","organ location","standardised communication","clinical description"]
+],model:"A strong answer defines the standard anatomical position; explains sagittal, coronal, and transverse planes; correctly uses directional terms; describes the axial and appendicular regions; and identifies major body cavities and their contents. Standard terminology reduces ambiguity in clinical communication.",ex:"One mark per rubric category. Correct equivalent terminology earns credit."},
+{q:"Essay 2: Explain the four primary tissue types and describe how epithelial tissue is classified. Include examples of epithelial types and their locations or functions.",rubric:[
+["epithelial tissue covers surfaces and lines cavities","glandular epithelium"],
+["connective tissue support binding matrix","collagen or extracellular matrix"],
+["muscle tissue contracts","skeletal cardiac smooth muscle"],
+["nervous tissue neurons and glia","electrical signalling"],
+["simple versus stratified","squamous cuboidal columnar","transitional or pseudostratified","location and function examples"]
+],model:"A complete answer explains epithelial, connective, muscle, and nervous tissue. It describes epithelial classification by cell layers and cell shape and links examples to function: simple squamous for diffusion, simple cuboidal for secretion/absorption, columnar in digestive surfaces, stratified squamous for protection, and transitional epithelium in the urinary tract.",ex:"One mark per category. Include at least one accurate structure-function relationship."},
+{q:"Essay 3: Compare spermatogenesis and oogenesis, including sites, major stages, hormonal regulation, chromosome reduction, and the differences in their mature products.",rubric:[
+["spermatogenesis occurs in seminiferous tubules","oogenesis occurs in ovaries"],
+["spermatogonia primary spermatocytes meiosis spermatids sperm","oogonia primary oocytes secondary oocyte polar bodies"],
+["meiosis reduces diploid to haploid","genetic variation","haploid gametes"],
+["four functional sperm from one primary spermatocyte","one large functional female gamete","unequal cytokinesis"],
+["FSH Sertoli cells","LH Leydig testosterone","LH FSH ovarian function","oocyte meiotic arrest"]
+],model:"A complete answer compares the testicular and ovarian sites, the stages of both processes, meiotic reduction and genetic variation, the production of four sperm versus one large functional female gamete with polar bodies, and the hormonal roles of FSH and LH.",ex:"One mark per rubric category. Distinguish the secondary oocyte released at ovulation from an ovum that has completed meiosis II."},
+{q:"Essay 4: Describe the ovarian cycle and explain the hormonal changes during the follicular phase, ovulation, and luteal phase. Relate the ovarian cycle to changes in the endometrium.",rubric:[
+["FSH supports follicular development","follicular phase"],
+["growing follicles secrete oestrogen","endometrial proliferative phase"],
+["sustained high oestrogen positive feedback","LH surge triggers ovulation"],
+["corpus luteum secretes progesterone","luteal phase"],
+["progesterone supports secretory endometrium","no pregnancy corpus luteum regresses","hormones fall and menstruation occurs"]
+],model:"Explain follicular growth under FSH, rising oestrogen and endometrial proliferation, positive feedback leading to the LH surge and ovulation, corpus luteum formation and progesterone secretion, and the hormonal decline and menstruation that follow if pregnancy does not occur.",ex:"One mark per rubric category. Include the relationship between ovarian hormone levels and endometrial changes."},
+{q:"Essay 5: Explain early human development from fertilisation through implantation, gastrulation, neurulation, and the beginning of organogenesis. Include the germ layers, placenta, and the importance of prenatal development.",rubric:[
+["fertilisation forms diploid zygote","cleavage morula blastocyst"],
+["blastocyst implantation in endometrium","embryoblast and trophoblast"],
+["gastrulation forms ectoderm mesoderm endoderm"],
+["neurulation forms neural tube","organogenesis during embryonic period"],
+["placenta exchange and hormone production","hCG supports corpus luteum","teratogens can disrupt development"]
+],model:"A strong answer follows fertilisation and cleavage through the morula and blastocyst, explains implantation and embryoblast/trophoblast roles, describes gastrulation and the three germ layers, explains neural-tube formation and organogenesis, and outlines placental functions and the importance of avoiding developmental hazards.",ex:"One mark per rubric category. Developmental timing should be described in the context of fertilisation unless gestational age is specifically stated."}
+];
+
+/* STATE AND HELPERS */
+let mode="",currentQuestions=[],answers=[],startTime=0;
+let timerInterval=null,submitted=false,results=[],currentResult=null;
+let pendingAutomatic=false;
+
+function loadResults(){
+  try{
+    const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
+    results=Array.isArray(data)?data:[];
+  }catch(e){results=[]}
+}
+function saveResults(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(results))}
+  catch(e){alert("Your browser could not save the results. You can still print this report.")}
+}
+
+function startTest(selectedMode){
+  refreshIdentity();
+  if(!student){
+    alert("Please verify your registration on index.html first.");
+    return;
+  }
+  mode=selectedMode;
+  currentQuestions=mode==="mcq"?mcqs:shortQs.concat(essays);
+  answers=Array(currentQuestions.length).fill("");
+  startTime=Date.now();
+  submitted=false;
+  currentResult=null;
+  pendingAutomatic=false;
+
+  document.getElementById("setup").classList.add("hidden");
+  document.getElementById("results").classList.add("hidden");
+  document.getElementById("exam").classList.remove("hidden");
+  document.getElementById("studentLabel").textContent=
+    student.name+" | Admission No: "+student.admission;
+  document.getElementById("modeLabel").textContent=
+    mode==="mcq"?"MCQ Challenge · 30 marks":"Open-Ended Challenge · 50 marks";
+  document.getElementById("timerLabel").textContent=
+    mode==="mcq"?"Elapsed time · target 15:00":"Elapsed time · limit 30:00";
+
+  renderQuestions();
+  updateProgress();
+  requestAnimationFrame(()=>{
+    syncDashboardSpace();
+    window.scrollTo({top:0,behavior:"instant"});
+  });
+  updateTimer();
+  if(timerInterval)clearInterval(timerInterval);
+  timerInterval=setInterval(updateTimer,250);
+}
+
+function renderQuestions(){
+  const list=document.getElementById("questionList");
+  list.innerHTML="";
+  currentQuestions.forEach((q,i)=>{
+    const section=document.createElement("section");
+    section.className="question";
+    section.id="question-"+i;
+    const num=document.createElement("div");
+    num.className="q-number";
+    num.textContent=mode==="mcq"
+      ?"Question "+(i+1)+" · 1 mark"
+      :i<25?"Short Answer "+(i+1)+" · 1 mark":"Essay "+(i-24)+" · 5 marks";
+    const title=document.createElement("h3");
+    title.textContent=q.q;
+    section.append(num,title);
+
+    if(mode==="mcq"){
+      q.o.forEach((choice,j)=>{
+        const label=document.createElement("label");
+        label.className="option";
+        const radio=document.createElement("input");
+        radio.type="radio";radio.name="q"+i;radio.value=j;
+        radio.addEventListener("change",()=>{
+          if(submitted)return;
+          answers[i]=String(j);
+          updateProgress();
+        });
+        const text=document.createElement("span");
+        text.textContent=String.fromCharCode(65+j)+". "+choice;
+        label.append(radio,text);
+        section.appendChild(label);
+      });
+    }else{
+      const ta=document.createElement("textarea");
+      ta.id="answer-"+i;
+      ta.placeholder=i<25
+        ?"Write your short answer using relevant anatomical terms…"
+        :"Develop a structured answer using relevant anatomical and developmental concepts…";
+      ta.value=answers[i]||"";
+      ta.addEventListener("input",()=>{
+        if(submitted)return;
+        answers[i]=ta.value;
+        updateProgress();
+      });
+      section.appendChild(ta);
+      if(i>=25){
+        const note=document.createElement("p");
+        note.className="small";
+        note.textContent="Essay marking: 5 rubric points available. Relevant key concepts earn partial credit.";
+        section.appendChild(note);
+      }
+    }
+    list.appendChild(section);
+  });
+}
+
+function updateProgress(){
+  const count=answers.filter(a=>String(a).trim()!=="").length;
+  document.getElementById("progressText").textContent=
+    count+" of "+currentQuestions.length+" answered";
+  document.getElementById("progressFill").style.width=
+    (count/currentQuestions.length*100)+"%";
+  document.getElementById("unansweredNotice").textContent=
+    count===currentQuestions.length
+      ?"All questions have a response. You may submit."
+      :(currentQuestions.length-count)+" unanswered question(s) may receive zero marks.";
+}
+function formatTime(s){
+  return String(Math.floor(s/60)).padStart(2,"0")+":"+
+    String(s%60).padStart(2,"0");
+}
+function updateTimer(){
+  if(submitted)return;
+  const elapsed=Math.floor((Date.now()-startTime)/1000);
+  document.getElementById("timer").textContent=formatTime(elapsed);
+  const limit=mode==="mcq"?900:1800;
+  const hardLimit=mode==="mcq"?960:1800;
+  document.getElementById("timer").classList.toggle("red",elapsed>=limit);
+  if(elapsed>=hardLimit)submitTest(true,true);
+}
+function goToTop(){window.scrollTo({top:0,behavior:"smooth"})}
+
+function normalise(s){
+  return String(s||"").toLowerCase()
+    .replace(/β/g," beta ").replace(/α/g," alpha ")
+    .replace(/γ/g," gamma ").replace(/δ/g," delta ")
+    .replace(/⁺/g,"+").replace(/⁻/g,"-")
+    .replace(/na\+/g," sodium ").replace(/k\+/g," potassium ")
+    .replace(/ca2\+/g," calcium ").replace(/ca\+\+/g," calcium ")
+    .replace(/atpase/g," atpase ")
+    .replace(/[^a-z0-9+.-]+/g," ").replace(/\s+/g," ").trim();
+}
+function containsAlternative(answer,alternatives){
+  const text=" "+normalise(answer)+" ";
+  return alternatives.some(term=>{
+    const t=normalise(term);
+    if(!t)return false;
+    return text.includes(" "+t+" ")||text.includes(t);
+  });
+}
+function markRubric(answer,rubric,pointsEach){
+  const hits=[];let score=0;
+  rubric.forEach(criterion=>{
+    const hit=containsAlternative(answer,criterion);
+    hits.push(hit);
+    if(hit)score+=pointsEach;
+  });
+  return {score,hits};
+}
+function scoreOpenAnswer(q,index,answer){
+  const essay=index>=25;
+  const marked=markRubric(answer,q.rubric,essay?1:0.5);
+  const max=essay?5:1;
+  return {score:Math.min(max,marked.score),max,hits:marked.hits};
+}
+
+/* SUBMISSION CONFIRMATION MODAL */
+function openSubmitModal(automatic=false){
+  if(submitted)return;
+  pendingAutomatic=automatic;
+  const answered=answers.filter(a=>String(a).trim()!=="").length;
+  const unanswered=answers.length-answered;
+  const modal=document.getElementById("submitModal");
+  const message=document.getElementById("submitModalMessage");
+  const warning=document.getElementById("modalWarning");
+  const cancel=document.getElementById("cancelSubmit");
+  const confirmButton=document.getElementById("confirmSubmit");
+
+  document.getElementById("modalAnswered").textContent=answered;
+  document.getElementById("modalUnanswered").textContent=unanswered;
+
+  if(automatic){
+    document.getElementById("submitModalTitle").textContent="Time Limit Reached";
+    message.textContent="Your assessment time has ended. Your responses will now be submitted automatically.";
+    warning.textContent=mode==="mcq"
+      ?"The 16-minute limit was reached. A 5-mark penalty will be applied."
+      :"The 30-minute time limit was reached.";
+    warning.classList.remove("hidden");
+    cancel.classList.add("hidden");
+    confirmButton.textContent="View Results";
+  }else{
+    document.getElementById("submitModalTitle").textContent="Submit Assessment?";
+    message.textContent=unanswered>0
+      ?"You still have unanswered questions. You can return to your assessment or submit your current responses."
+      :"You have answered every question. Are you ready to submit your assessment?";
+    if(unanswered>0){
+      warning.textContent=unanswered+" question(s) are blank and will receive zero marks.";
+      warning.classList.remove("hidden");
+    }else{
+      warning.classList.add("hidden");
+    }
+    cancel.classList.remove("hidden");
+    confirmButton.textContent="Confirm Submission";
+  }
+  modal.classList.remove("hidden");
+  document.body.style.overflow="hidden";
+  confirmButton.focus();
+}
+function closeSubmitModal(){
+  document.getElementById("submitModal").classList.add("hidden");
+  document.body.style.overflow="";
+}
+document.getElementById("cancelSubmit").addEventListener("click",closeSubmitModal);
+document.getElementById("confirmSubmit").addEventListener("click",()=>{
+  const automatic=pendingAutomatic;
+  closeSubmitModal();
+  submitTest(automatic,true);
+});
+document.getElementById("submitModal").addEventListener("click",event=>{
+  if(event.target.id==="submitModal"&&!pendingAutomatic)closeSubmitModal();
+});
+document.addEventListener("keydown",event=>{
+  const modal=document.getElementById("submitModal");
+  if(event.key==="Escape"&&!modal.classList.contains("hidden")&&!pendingAutomatic)
+    closeSubmitModal();
+});
+
+function submitTest(automatic=false,confirmed=false){
+  if(submitted)return;
+  if(!automatic&&!confirmed){
+    openSubmitModal(false);
+    return;
+  }
+  const elapsed=Math.floor((Date.now()-startTime)/1000);
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null}
+  submitted=true;
+  closeSubmitModal();
+
+  let raw=0;
+  const max=mode==="mcq"?30:50;
+  const marking=[];
+  currentQuestions.forEach((q,i)=>{
+    if(mode==="mcq"){
+      const correct=answers[i]!==""&&Number(answers[i])===q.a;
+      const score=correct?1:0;
+      raw+=score;
+      marking.push({score,max:1,correct,feedback:null});
+    }else{
+      const result=scoreOpenAnswer(q,i,answers[i]);
+      raw+=result.score;
+      marking.push({score:result.score,max:result.max,correct:result.score===result.max,feedback:result.hits});
+    }
+  });
+
+  const late=mode==="mcq"&&elapsed>=960;
+  const deduction=late?5:0;
+  const finalScore=Math.max(0,raw-deduction);
+  currentResult={
+    name:student.name,admission:student.admission,mode,
+    rawScore:raw,penalty:deduction,finalScore,max,
+    percentage:finalScore/max*100,elapsedSeconds:elapsed,late,
+    answers:[...answers],marking,date:new Date().toLocaleString()
+  };
+  results.push(currentResult);
+  saveResults();
+
+  document.getElementById("exam").classList.add("hidden");
+  document.getElementById("results").classList.remove("hidden");
+  document.documentElement.style.setProperty("--dashboard-height","0px");
+  showResult(currentResult,automatic);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function performanceComment(p){
+  if(p>=90)return"Outstanding performance. You demonstrated excellent command of the assessed concepts.";
+  if(p>=80)return"Excellent performance. Continue practising anatomical and developmental applications.";
+  if(p>=70)return"Very good understanding. Review the concepts that cost you marks.";
+  if(p>=60)return"Good progress, but some concepts need more consolidation.";
+  if(p>=50)return"A developing foundation. Revisit the explanations and practise retrieval.";
+  if(p>=40)return"More revision is needed. Focus on understanding structures, tissue types, and developmental mechanisms.";
+  return"Use this attempt diagnostically. Review foundational concepts, then attempt the assessment again.";
+}
+function bandComment(lower){
+  if(lower===0)return"Revisit foundational terminology and core concepts.";
+  if(lower===20)return"Basic knowledge is emerging; practise explaining structure and function.";
+  if(lower===40)return"Develop a stronger conceptual foundation.";
+  if(lower===60)return"Good progress; practise applying concepts to new situations.";
+  if(lower===80)return"Strong performance and a good level of conceptual understanding.";
+  return"Excellent to outstanding mastery of the assessed concepts.";
+}
+
+function showResult(r,automatic){
+  document.getElementById("resultName").textContent=
+    "Student: "+r.name+" · Admission number: "+r.admission+" · "+r.date;
+  document.getElementById("resultMode").textContent=
+    r.mode==="mcq"?"MCQ Challenge":"Open-Ended Challenge";
+  document.getElementById("scoreDisplay").textContent=
+    r.finalScore.toFixed(1)+"/"+r.max;
+  document.getElementById("percentageDisplay").textContent=
+    "Final percentage: "+r.percentage.toFixed(1)+"%";
+  document.getElementById("rawScore").textContent=r.rawScore.toFixed(1)+"/"+r.max;
+  document.getElementById("penalty").textContent=r.penalty+" marks";
+  document.getElementById("answeredCount").textContent=
+    r.answers.filter(a=>String(a).trim()!=="").length;
+  document.getElementById("unansweredCount").textContent=
+    r.answers.filter(a=>String(a).trim()==="").length;
+  document.getElementById("overallRemark").innerHTML=
+    "<strong>Overall feedback</strong><br>"+escapeHTML(performanceComment(r.percentage));
+
+  let timeText="Time used: "+formatTime(r.elapsedSeconds)+". ";
+  if(r.mode==="mcq"){
+    timeText+=r.late
+      ?"The 16-minute limit was reached and a 5-mark penalty was applied."
+      :r.elapsedSeconds>=900
+        ?"The 15-minute target was exceeded, but the 16-minute penalty threshold was not reached."
+        :"Completed within the 15-minute target.";
+  }else{
+    timeText+=r.elapsedSeconds>=1800
+      ?"The 30-minute time limit was reached."
+      :"Completed within the 30-minute time limit.";
+  }
+  if(automatic)timeText+=" Assessment submitted automatically.";
+  document.getElementById("timeRemark").innerHTML=
+    "<div class='"+(r.late?"warning":"notice")+"'>"+escapeHTML(timeText)+"</div>";
+
+  const bands=document.getElementById("intervalRemarks");
+  bands.innerHTML="";
+  for(let lower=0;lower<=80;lower+=20){
+    const upper=lower+19.99;
+    const reached=r.percentage>=lower&&
+      (lower===80?r.percentage<=100:r.percentage<=upper);
+    const div=document.createElement("div");
+    div.className="remark";
+    div.innerHTML="<strong>"+lower+"–"+(lower===80?100:upper.toFixed(0))+
+      "%</strong> — "+escapeHTML(bandComment(lower))+
+      (reached?" <strong>← Your band</strong>":"");
+    bands.appendChild(div);
+  }
+  renderReview(r);
+  renderRegister();
+}
+
+function renderReview(r){
+  const box=document.getElementById("reviewList");
+  box.innerHTML="";
+  currentQuestions.forEach((q,i)=>{
+    const m=r.marking[i];
+    const div=document.createElement("div");
+    div.className="review-item";
+    let html="<strong>Q"+(i+1)+". "+escapeHTML(q.q)+"</strong><br>";
+    html+="<span class='"+(m.correct?"correct":"incorrect")+"'>"+
+      (m.correct?"✓ Full marks":"Score: "+m.score.toFixed(1)+"/"+m.max)+
+      "</span><br>";
+
+    if(r.mode==="mcq"){
+      const yours=r.answers[i]===""
+        ?"Not answered"
+        :String.fromCharCode(65+Number(r.answers[i]))+". "+q.o[Number(r.answers[i])];
+      const key=String.fromCharCode(65+q.a)+". "+q.o[q.a];
+      html+="<span class='small'>Your answer: "+escapeHTML(yours)+"</span><br>";
+      html+="<span class='correct'>Correct answer: "+escapeHTML(key)+"</span><br>";
+      html+="<p>"+escapeHTML(q.e)+"</p>";
+    }else{
+      html+="<p><strong>Your response:</strong><br>"+
+        escapeHTML(r.answers[i]||"Not answered").replace(/\n/g,"<br>")+"</p>";
+      html+="<p><strong>Model answer:</strong><br>"+escapeHTML(q.model)+"</p>";
+      html+="<p>"+escapeHTML(q.ex)+"</p>";
+      html+="<p><strong>Rubric detected:</strong> ";
+      html+=(m.feedback||[]).map((hit,j)=>
+        "<span class='badge'>"+(hit?"✓":"○")+" Criterion "+(j+1)+"</span>"
+      ).join(" ");
+      html+="</p>";
+    }
+    div.innerHTML=html;
+    box.appendChild(div);
+  });
+}
+
+function renderRegister(){
+  const box=document.getElementById("register");
+  box.innerHTML="";
+  if(!results.length){
+    box.textContent="No completed attempts yet.";
+    return;
+  }
+  const wrap=document.createElement("div");
+  wrap.className="register-table-wrap";
+  const table=document.createElement("table");
+  const thead=document.createElement("thead");
+  const head=document.createElement("tr");
+  ["Student","Admission No.","Mode","Date","Raw","Penalty","Final","%","Time"].forEach(t=>{
+    const th=document.createElement("th");
+    th.textContent=t;
+    head.appendChild(th);
+  });
+  thead.appendChild(head);
+  table.appendChild(thead);
+  const body=document.createElement("tbody");
+  results.forEach(r=>{
+    const tr=document.createElement("tr");
+    [
+      r.name,r.admission,r.mode==="mcq"?"MCQ":"Open",r.date,
+      r.rawScore.toFixed(1)+"/"+r.max,"-"+r.penalty,
+      r.finalScore.toFixed(1)+"/"+r.max,r.percentage.toFixed(1)+"%",
+      formatTime(r.elapsedSeconds)
+    ].forEach(value=>{
+      const td=document.createElement("td");
+      td.textContent=value;
+      tr.appendChild(td);
+    });
+    body.appendChild(tr);
+  });
+  table.appendChild(body);
+  wrap.appendChild(table);
+  box.appendChild(wrap);
+}
+function printResults(){window.print()}
+function showRegister(){document.getElementById("register").scrollIntoView({behavior:"smooth"})}
+function backHome(){
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null}
+  closeSubmitModal();
+  document.getElementById("results").classList.add("hidden");
+  document.getElementById("exam").classList.add("hidden");
+  document.getElementById("setup").classList.remove("hidden");
+  document.documentElement.style.setProperty("--dashboard-height","0px");
+  refreshIdentity();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+loadResults();
+refreshIdentity();
+</script>
+</body>
+</html>
+

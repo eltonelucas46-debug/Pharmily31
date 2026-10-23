@@ -1,0 +1,1003 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102b25">
+<meta name="description" content="PHARMILY31 — BPharm Year 1 revision and assessment portal.">
+<title>PHARMILY31 | Student Portal</title>
+
+<style>
+:root{
+  --bg:#f2f8f4;
+  --surface:#fff;
+  --green:#167653;
+  --green2:#20a875;
+  --mint:#dff8eb;
+  --navy:#102b25;
+  --text:#19352c;
+  --muted:#71847b;
+  --border:#dce9e1;
+  --red:#b42332;
+  --shadow:0 12px 35px rgba(16,43,37,.08);
+  --ease:cubic-bezier(.2,.75,.25,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.6;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible{
+  outline:3px solid #61dba0;outline-offset:3px
+}
+button:disabled{opacity:.6;cursor:not-allowed}
+header{
+  background:rgba(16,43,37,.97);color:#fff;
+  position:sticky;top:0;z-index:20;
+  box-shadow:0 4px 20px #102b2515;
+  backdrop-filter:blur(16px);
+}
+.nav{
+  max-width:1200px;margin:auto;padding:12px 20px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand-logo{
+  width:44px;height:44px;border-radius:14px;
+  background:linear-gradient(135deg,#63edb4,#20a875);
+  display:grid;place-items:center;color:#082c20;
+  font-size:25px;font-weight:900;flex-shrink:0;
+  box-shadow:0 0 20px #20a87530;
+}
+.brand-name{font-size:18px;font-weight:950;letter-spacing:.7px}
+.brand-sub{font-size:11px;color:#c1d9cd}
+.nav-right{display:flex;align-items:center;gap:14px}
+.clock{text-align:right;font-size:11px;color:#c1d9cd}
+.clock strong{display:block;color:#fff;font-size:14px}
+.menu-wrap{position:relative}
+.menu-button{
+  width:43px;height:43px;border:1px solid #ffffff30;
+  background:#ffffff12;color:#fff;border-radius:13px;
+  font-size:25px;transition:.2s;
+}
+.menu-button:hover{background:#ffffff25;transform:scale(1.04)}
+.dropdown{
+  position:absolute;right:0;top:53px;width:min(340px,90vw);
+  background:#fff;color:var(--text);border:1px solid var(--border);
+  border-radius:17px;box-shadow:var(--shadow);padding:9px;
+  max-height:75vh;overflow:auto;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateY(-8px) scale(.98);
+  transform-origin:top right;
+  transition:opacity .2s,transform .2s,visibility .2s;
+}
+.dropdown.open{
+  opacity:1;visibility:visible;pointer-events:auto;
+  transform:translateY(0) scale(1);
+}
+.dropdown-title{
+  padding:9px 10px;color:var(--muted);font-size:10px;
+  font-weight:900;letter-spacing:1px;text-transform:uppercase;
+}
+.subject-link{
+  width:100%;display:flex;align-items:center;gap:12px;
+  text-align:left;padding:10px;border:0;background:#fff;
+  border-radius:11px;color:var(--text);font-weight:750;
+  transition:background .2s,transform .2s;
+}
+.subject-link:hover{background:var(--mint);transform:translateX(3px)}
+.subject-icon{
+  width:40px;height:40px;display:grid;place-items:center;
+  background:#e8f8ef;border-radius:12px;font-size:20px;flex-shrink:0;
+}
+.subject-link small{display:block;font-size:11px;color:var(--muted);font-weight:500}
+main{max-width:1200px;margin:auto;padding:25px 20px 55px}
+.hero{
+  overflow:hidden;position:relative;border-radius:27px;
+  padding:clamp(26px,5vw,55px);
+  background:linear-gradient(125deg,#102b25,#176b4d 67%,#20a875);
+  color:#fff;box-shadow:var(--shadow);
+  isolation:isolate;
+}
+.hero:before,.hero:after{content:"";position:absolute;pointer-events:none;z-index:-1}
+.hero:before{
+  width:250px;height:250px;border-radius:50%;
+  right:-50px;bottom:-135px;
+  border:1px solid #ffffff30;
+  box-shadow:0 0 0 25px #ffffff08,0 0 0 55px #ffffff06;
+  animation:orbit 14s ease-in-out infinite alternate;
+}
+.hero:after{
+  content:"Rx";right:5%;top:-42px;
+  font-size:clamp(120px,20vw,220px);font-weight:950;
+  line-height:1;color:#ffffff0b;
+  animation:float 7s ease-in-out infinite alternate;
+}
+.hero-content{max-width:720px}
+.eyebrow{
+  display:inline-flex;gap:8px;align-items:center;
+  padding:6px 12px;border-radius:30px;background:#ffffff16;
+  border:1px solid #ffffff30;font-size:11px;font-weight:850;
+  letter-spacing:.6px;
+}
+.live-dot{
+  width:7px;height:7px;border-radius:50%;background:#6ef0ae;
+  box-shadow:0 0 0 4px #6ef0ae20;
+  animation:pulse 2s infinite;
+}
+.hero h1{
+  font-size:clamp(31px,5.5vw,52px);line-height:1.1;
+  max-width:690px;margin:20px 0 15px;letter-spacing:-1.4px;
+}
+.hero p{max-width:630px;color:#e0f2e8;margin:0;font-size:15px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
+.hero-meta span{
+  border:1px solid #ffffff30;background:#ffffff10;
+  padding:7px 11px;border-radius:10px;font-size:12px;
+}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.light-button,.outline-button{
+  padding:11px 16px;border-radius:12px;font-weight:800;
+  border:1px solid #ffffff35;transition:.2s;
+}
+.light-button{background:#fff;color:var(--green)}
+.outline-button{background:#ffffff10;color:#fff}
+.light-button:hover,.outline-button:hover{transform:translateY(-2px)}
+.section-heading{
+  display:flex;justify-content:space-between;align-items:end;
+  gap:12px;margin:31px 0 15px;
+}
+.section-heading h2{margin:0;font-size:22px;letter-spacing:-.5px}
+.section-heading p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.panel{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:21px;padding:clamp(18px,4vw,29px);
+  box-shadow:0 5px 20px #102b2505;
+}
+.verify-layout{
+  display:grid;grid-template-columns:1fr .9fr;
+  gap:25px;align-items:center;
+}
+.verify-info h3{margin:0 0 8px;font-size:21px}
+.verify-info p{margin:0;color:var(--muted);font-size:14px}
+.lock-note{
+  margin-top:17px;padding:12px 14px;border-radius:12px;
+  background:#fff8e8;color:#7b5711;font-size:12px;
+}
+.form-label{display:block;font-size:13px;font-weight:850;margin-bottom:8px}
+.input-row{display:flex;gap:9px}
+input{
+  min-width:0;width:100%;padding:13px 14px;border-radius:12px;
+  border:1px solid #cddbd2;background:#fbfdfb;color:var(--text);
+}
+input:focus{border-color:var(--green)}
+.primary-button{
+  border:0;border-radius:12px;background:var(--green);color:#fff;
+  padding:12px 18px;font-weight:850;white-space:nowrap;
+  transition:background .2s,transform .2s,box-shadow .2s;
+}
+.primary-button:hover{background:#105d40;box-shadow:0 5px 15px #16765325}
+.primary-button:active{transform:scale(.97)}
+.message{
+  display:none;margin-top:13px;padding:12px 14px;
+  border-radius:12px;font-size:13px;
+}
+.message.error,.message.success{display:block;animation:reveal .3s both}
+.message.error{background:#fff0f0;color:var(--red);border:1px solid #ffd1d5}
+.message.success{background:#e8fbf0;color:#11653e;border:1px solid #bcebd0}
+.student-card{
+  display:none;margin-top:15px;padding:16px;
+  border:1px solid #bcebd0;border-radius:15px;background:#f0fcf5;
+}
+.student-card.visible{display:block;animation:reveal .4s var(--ease) both}
+.verified{
+  font-size:10px;color:var(--green);font-weight:950;
+  text-transform:uppercase;letter-spacing:.8px;
+}
+.student-card h3{margin:5px 0 2px;font-size:19px}
+.student-card p{margin:0;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+.status-pill{
+  display:inline-block;margin-top:10px;padding:5px 10px;
+  background:#d9f6e6;color:#126540;border-radius:20px;
+  font-size:11px;font-weight:850;
+}
+
+/* Dashboard */
+.dashboard{display:none;margin-top:28px}
+.dashboard.visible{display:block;animation:reveal .5s var(--ease) both}
+.dashboard-top{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;margin-bottom:16px;
+}
+.dashboard-top h2{margin:0;font-size:24px;letter-spacing:-.6px}
+.dashboard-top p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.dashboard-label{
+  background:#dff8eb;color:#126540;padding:6px 10px;
+  border-radius:20px;font-size:11px;font-weight:850;
+}
+.stats-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;
+}
+.stat-card{
+  padding:17px;background:#fff;border:1px solid var(--border);
+  border-radius:17px;transition:transform .2s,box-shadow .2s;
+}
+.stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.stat-icon{
+  width:40px;height:40px;border-radius:12px;
+  display:grid;place-items:center;background:var(--mint);font-size:20px;
+}
+.stat-value{font-size:25px;font-weight:900;margin-top:11px;line-height:1.2}
+.stat-name{font-size:12px;color:var(--muted);margin-top:5px}
+.stat-note{font-size:10px;color:var(--muted);margin-top:6px}
+.dashboard-note{
+  background:#edf8f1;border:1px solid #d5eddf;color:#466c58;
+  border-radius:12px;padding:11px 13px;font-size:12px;margin-top:14px;
+}
+
+/* Subject cards */
+.subject-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;
+}
+.subject-card{
+  text-align:left;width:100%;position:relative;min-width:0;
+  min-height:190px;padding:20px;border:1px solid var(--border);
+  border-radius:19px;background:#fff;color:var(--text);
+  box-shadow:0 4px 16px #102b2504;
+  transition:transform .24s var(--ease),border-color .24s,box-shadow .24s;
+  animation:cardEnter .55s var(--ease) both;
+}
+.subject-card:nth-child(2){animation-delay:60ms}
+.subject-card:nth-child(3){animation-delay:120ms}
+.subject-card:nth-child(4){animation-delay:180ms}
+.subject-card:nth-child(5){animation-delay:240ms}
+.subject-card:nth-child(6){animation-delay:300ms}
+.subject-card:hover,.subject-card:focus-visible{
+  transform:translateY(-5px);border-color:#81cba5;
+  box-shadow:0 12px 28px #16765316;
+}
+.subject-card:active{transform:scale(.99)}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card-icon{
+  width:47px;height:47px;display:grid;place-items:center;
+  border-radius:14px;background:var(--mint);font-size:24px;
+  transition:transform .25s var(--ease);
+}
+.subject-card:hover .card-icon{transform:scale(1.08) rotate(-4deg)}
+.lock-icon{font-size:16px;color:var(--muted)}
+.subject-card h3{font-size:15px;margin:16px 0 4px}
+.subject-card p{font-size:12px;color:var(--muted);margin:0}
+.card-action{display:block;margin-top:13px;color:var(--green);font-size:12px;font-weight:900}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.info-card{
+  padding:19px;background:#fff;border:1px solid var(--border);
+  border-radius:17px;transition:transform .22s,box-shadow .22s;
+}
+.info-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.info-card .icon{font-size:25px}
+.info-card h3{font-size:14px;margin:7px 0 3px}
+.info-card p{font-size:12px;color:var(--muted);margin:0}
+footer{
+  background:var(--navy);color:#d6e8de;text-align:center;
+  padding:29px 18px;font-size:12px;
+}
+footer strong{color:#fff}
+footer p{margin:5px auto;max-width:720px}
+.footer-links{display:flex;justify-content:center;flex-wrap:wrap;gap:14px;margin:14px 0}
+.footer-links button{border:0;background:none;color:#c1d9cd;font-size:12px}
+.footer-links button:hover{color:#fff;text-decoration:underline}
+
+/* Modal */
+.modal-backdrop{
+  display:none;position:fixed;inset:0;z-index:50;
+  background:#061d16b5;padding:20px;align-items:center;justify-content:center;
+  backdrop-filter:blur(5px);
+}
+.modal-backdrop.show{display:flex}
+.modal{
+  width:min(430px,100%);background:#fff;padding:27px;
+  border-radius:22px;box-shadow:0 20px 70px #0004;text-align:center;
+  animation:modalEnter .3s var(--ease) both;
+}
+.modal-icon{font-size:39px}
+.modal h2{font-size:21px;margin:10px 0}
+.modal p{font-size:14px;color:var(--muted);margin:0 0 20px}
+.modal .primary-button{width:100%}
+.modal .secondary-button{
+  width:100%;margin-top:9px;border:1px solid var(--border);
+  border-radius:12px;background:#fff;padding:11px;color:var(--text);font-weight:750;
+}
+
+/* Back-to-top */
+.back-top{
+  position:fixed;right:18px;bottom:18px;z-index:15;
+  width:44px;height:44px;border:0;border-radius:14px;
+  background:var(--green);color:white;font-size:20px;
+  box-shadow:0 5px 18px #102b2530;
+  opacity:0;visibility:hidden;transform:translateY(10px);
+  transition:.2s;
+}
+.back-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
+.back-top:hover{background:#105d40;transform:translateY(-3px)}
+
+@keyframes reveal{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes cardEnter{
+  from{opacity:0;transform:translateY(13px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes modalEnter{
+  from{opacity:0;transform:translateY(12px) scale(.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes float{
+  from{transform:translateY(-5px) rotate(-3deg)}
+  to{transform:translateY(13px) rotate(3deg)}
+}
+@keyframes orbit{
+  from{transform:translate(-5px,0)}
+  to{transform:translate(12px,-10px)}
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 4px #6ef0ae20}
+  50%{box-shadow:0 0 0 8px #6ef0ae08}
+}
+
+@media(max-width:850px){
+  .verify-layout{grid-template-columns:1fr}
+  .subject-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .info-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .nav{padding:10px 12px}
+  main{padding:17px 12px 35px}
+  .brand-logo{width:38px;height:38px}
+  .brand-name{font-size:16px}
+  .brand-sub{font-size:9px}
+  .clock{display:none}
+  .hero{border-radius:21px;padding:25px 20px}
+  .hero h1{font-size:34px}
+  .hero p{font-size:14px}
+  .hero-meta span{font-size:10px}
+  .section-heading h2{font-size:20px}
+  .subject-card{padding:15px;min-height:178px}
+  .subject-card h3{font-size:14px}
+  .input-row{flex-direction:column}
+  .input-row .primary-button{width:100%}
+  .stats-grid{gap:9px}
+  .stat-card{padding:13px}
+  .stat-value{font-size:22px}
+  .dashboard-top h2{font-size:21px}
+}
+@media(hover:none){
+  .subject-card:hover,.info-card:hover,.stat-card:hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="nav">
+    <div class="brand">
+      <div class="brand-logo">℞</div>
+      <div>
+        <div class="brand-name">PHARMILY31</div>
+        <div class="brand-sub">BPharm Year 1 Revision Portal</div>
+      </div>
+    </div>
+
+    <div class="nav-right">
+      <div class="clock">
+        <strong id="clock">--:--:--</strong>
+        <span id="date">Loading date...</span>
+      </div>
+      <div class="menu-wrap">
+        <button class="menu-button" id="menuButton"
+          aria-label="Open subject menu" aria-expanded="false"
+          aria-controls="subjectMenu">⋮</button>
+        <nav class="dropdown" id="subjectMenu" aria-label="Subject navigation">
+          <div class="dropdown-title">Learning centre · Six subjects</div>
+          <div id="menuSubjects"></div>
+          <div style="padding:9px">
+            <button class="subject-link" id="menuVerify">
+              <span class="subject-icon">🔐</span>
+              <span>Student verification<small>Confirm registration</small></span>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <span class="eyebrow"><span class="live-dot"></span> LEARN · PRACTISE · EXCEL</span>
+      <h1>Your Pharmacy Journey Starts Here.</h1>
+      <p>
+        Welcome to your Year 1 revision centre. Strengthen your understanding,
+        practise university-level questions and prepare for assessments
+        across your core subjects.
+      </p>
+      <div class="hero-meta">
+        <span>🎓 BPharm · Year 1</span>
+        <span>📚 Six learning areas</span>
+        <span>🔐 Registration verification</span>
+      </div>
+      <div class="hero-actions">
+        <button class="light-button" id="heroVerify">Verify registration →</button>
+        <button class="outline-button" id="heroExplore">Explore subjects ↓</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-heading" id="verification">
+    <div>
+      <h2>Student verification</h2>
+      <p>Use your registered admission number to continue.</p>
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="verify-layout">
+      <div class="verify-info">
+        <h3>Confirm your registration</h3>
+        <p>
+          Enter your official admission number exactly as issued.
+          If it matches the register included in this prototype,
+          your registered name will appear.
+        </p>
+        <div class="lock-note">
+          🔒 Subjects remain locked until registration is verified.
+        </div>
+      </div>
+
+      <div>
+        <form id="verifyForm">
+          <label class="form-label" for="admissionNumber">Admission number</label>
+          <div class="input-row">
+            <input id="admissionNumber" name="admissionNumber"
+              type="text" placeholder="e.g. KBP/00019/026"
+              autocomplete="off" autocapitalize="characters"
+              spellcheck="false" required>
+            <button class="primary-button" id="verifyButton" type="submit">Verify</button>
+          </div>
+        </form>
+
+        <div id="message" class="message" role="status" aria-live="polite"></div>
+
+        <div id="studentCard" class="student-card" aria-live="polite">
+          <div class="verified">✓ Registration verified</div>
+          <h3 id="studentName"></h3>
+          <p>Admission No.: <strong id="studentAdmission"></strong></p>
+          <span class="status-pill">✓ Access enabled for this session</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dashboard" id="dashboard" aria-live="polite">
+    <div class="dashboard-top">
+      <div>
+        <h2 id="welcomeHeading">Welcome to PHARMILY31 👋</h2>
+        <p>Your personal revision overview.</p>
+      </div>
+      <span class="dashboard-label">🎓 YEAR 1 STUDENT</span>
+    </div>
+
+    <div class="stats-grid">
+      <article class="stat-card">
+        <div class="stat-icon">📚</div>
+        <div class="stat-value">06</div>
+        <div class="stat-name">Core subjects</div>
+        <div class="stat-note">Available in the portal</div>
+      </article>
+      <article class="stat-card">
+        <div class="stat-icon">📝</div>
+        <div class="stat-value">—</div>
+        <div class="stat-name">Assessments completed</div>
+        <div class="stat-note">Assessment tracking not connected</div>
+      </article>
+      <article class="stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-value">—</div>
+        <div class="stat-name">Average score</div>
+        <div class="stat-note">Real assessment data required</div>
+      </article>
+      <article class="stat-card">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-value">—</div>
+        <div class="stat-name">Study streak</div>
+        <div class="stat-note">Study tracking not connected</div>
+      </article>
+    </div>
+
+    <div class="dashboard-note">
+      ℹ️ Your dashboard is active. Assessment scores, study streaks and
+      progress will appear when a real assessment and progress-recording
+      system is connected.
+    </div>
+  </section>
+
+  <div class="section-heading" id="learningCentre">
+    <div>
+      <h2>Your learning centre</h2>
+      <p id="subjectInstruction">Verify your registration to unlock the subjects.</p>
+    </div>
+  </div>
+
+  <section class="subject-grid" id="subjectGrid" aria-label="Revision subjects"></section>
+
+  <div class="section-heading">
+    <div>
+      <h2>Designed for your progress</h2>
+      <p>A focused space for consistent university revision.</p>
+    </div>
+  </div>
+
+  <section class="info-grid">
+    <article class="info-card">
+      <div class="icon">🧠</div>
+      <h3>Build understanding</h3>
+      <p>Strengthen core concepts through structured practice.</p>
+    </article>
+    <article class="info-card">
+      <div class="icon">📝</div>
+      <h3>Prepare for assessments</h3>
+      <p>Practise questions and review your performance as features become available.</p>
+    </article>
+    <article class="info-card">
+      <div class="icon">🎯</div>
+      <h3>Keep improving</h3>
+      <p>Make revision a regular habit throughout your first year.</p>
+    </article>
+  </section>
+</main>
+
+<footer>
+  <p><strong>PHARMILY31</strong> · BPharm Year 1 Revision Portal</p>
+  <p>Built to support learning, revision and academic progress.</p>
+  <div class="footer-links">
+    <button type="button" id="footerHome">Home</button>
+    <button type="button" id="footerVerify">Student verification</button>
+    <button type="button" id="footerSubjects">Learning centre</button>
+  </div>
+  <p>This is an independent educational project and is not an official Maseno University website.</p>
+  <p>© <span id="year"></span> PHARMILY31 · Learn with purpose. Practise with discipline.</p>
+</footer>
+
+<button class="back-top" id="backTop" aria-label="Back to top" title="Back to top">↑</button>
+
+<div class="modal-backdrop" id="modalBackdrop" role="dialog"
+  aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalText">
+  <div class="modal">
+    <div class="modal-icon" id="modalIcon">🔒</div>
+    <h2 id="modalTitle">Registration required</h2>
+    <p id="modalText">Please verify your admission number first.</p>
+    <button class="primary-button" id="modalClose">Return to verification</button>
+    <button class="secondary-button" id="modalDismiss">Close message</button>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/*
+ PHARMILY31 — FRONT-END PROTOTYPE
+
+ IMPORTANT:
+ The register is embedded in public JavaScript.
+ This is not secure authentication.
+ Use a backend and database security rules before
+ relying on student identity or assessment results.
+*/
+
+const STUDENTS = {
+  "KBP/00005/026":"MARTIN MAINA MAITHA",
+  "KBP/00023/026":"CLARE VUGUZA",
+  "KBP/00021/026":"SALOME MWANGI",
+  "KBP/00010/026":"BERNARDI MARIO",
+  "KBP/00044/026":"JACK WELLINGTONE OBANDA",
+  "KBP/00011/026":"VELDONE ODHIAMBO",
+  "KBP/03005/026":"PROSSY KERUBO",
+  "KBP/00026/026":"SANDRA BABRA NANDI",
+  "KBP/00016/026":"KARANJA JOAN WAIRIMU",
+  "KBP/00015/026":"VALERIE NICOLE NKATHA",
+  "KBP/00025/026":"STEPHEN MURIMI MURITHI",
+  "KBP/00027/026":"YVETTE AIMEE MUKHAYI",
+  "KBP/00013/026":"VINCENT OMEMU",
+  "KBP/00043/026":"GLORIA AIDA",
+  "KBP/00003/026":"FIDEL OCHIENG MUGELE",
+  "KBP/00038/026":"RAPHAEL NYANG'A UNSONMBI",
+  "KBP/03003/026":"ROLEX OKANG'A AGER",
+  "KBP/00019/026":"ELTONE LUCAS",
+  "KBP/00040/026":"ALVAN NGARI WANJIKU",
+  "KBP/03001/026":"NICODEMUS JEAN",
+  "KBP/00045/026":"LEWIS WACHIRA KAGEMA",
+  "KBP/00046/026":"MICHAEL MAENDE BABUKOSIA",
+  "KBP/00022/026":"LEWIS TORIOTICH",
+  "KBP/00007/026":"GRAHAM JEREMY JUMA",
+  "KBP/00035/026":"ODHIAMBO WINNIE ATIENO",
+  "KBP/00006/026":"EUGENE OYARO",
+  "KBP/00004/026":"PASCAL KIPRUTO",
+  "KBP/00002/026":"BRENDA KATHURE",
+  "KBP/03007/026":"ODEO JULIA NANDECHA",
+  "KBP/00033/026":"ELIJAH IRUNGU NJOKI",
+  "KBP/00034/026":"BEATRICE FAIDA",
+  "KBP/00028/026":"WANDERA OMONDI LAMECK",
+  "KBP/00017/026":"MICHAEL MASIGA",
+  "KBP/03006/026":"MARK KIPRUTO CHERUIYOT",
+  "KBP/00041/026":"DENIS MUTURI MBUTHA",
+  "KBP/00030/026":"RISPER AWUOR OTHOL",
+  "KBP/00037/026":"VIVIAN SYDNEY",
+  "KBP/00047/026":"PETER NYAKUNDI",
+  "KBP/00051/026":"MORGAN ONG'ERA",
+  "KBP/00042/026":"OMASETE IVARN",
+  "KBP/00036/026":"FELISTA MUTUKU",
+  "KBP/00039/026":"SHARON JEMUTAI",
+  "KBP/00032/026":"VINCENT MWANZA",
+  "KBP/00014/026":"VINCENT BUKHEBI",
+  "KBP/00009/026":"EMMANUEL MATUMBUBUFU",
+  "KBP/00012/026":"HELCAH AMOYO",
+  "KBP/03004/026":"YVANNAH DIANA",
+  "KBP/00018/026":"SHARON MBAIZI",
+  "KBP/00024/026":"GIDEON KIMUTAI BORE",
+  "KBP/00031/026":"JONATHAN CHIMITA",
+  "KBP/00048/026":"JAMES KIMTAI",
+  "KBP/00008/026":"OORO COLLINS OCHIENG"
+};
+
+const SUBJECTS = [
+  {
+    name:"Medical Physiology",
+    icon:"🫀",
+    description:"Understand how the human body functions.",
+    file:"physiology.html"
+  },
+  {
+    name:"Medical Biochemistry",
+    icon:"🧬",
+    description:"Explore biomolecules and biochemical processes.",
+    file:"biochemistry.html"
+  },
+  {
+    name:"Human Anatomy",
+    icon:"🦴",
+    description:"Study the structure of the human body.",
+    file:"anatomy.html"
+  },
+  {
+    name:"Organic Chemistry",
+    icon:"⚗️",
+    description:"Explore organic structures, reactions and mechanisms.",
+    file:"organic-chemistry.html"
+  },
+  {
+    name:"Inorganic Chemistry",
+    icon:"🧪",
+    description:"Study elements, compounds and chemical principles.",
+    file:"inorganic-chemistry.html"
+  },
+  {
+    name:"Mathematics",
+    icon:"📐",
+    description:"Practise mathematical methods and problem-solving.",
+    file:"mathematics.html"
+  }
+];
+
+const $ = id => document.getElementById(id);
+let verifiedStudent = null;
+let previousFocus = null;
+
+function normalizeAdmission(value){
+  return value.trim().toUpperCase().replace(/\s+/g,"");
+}
+
+function showMessage(text,type){
+  const box=$("message");
+  box.textContent=text;
+  box.className="message "+type;
+}
+
+function hideMessage(){
+  $("message").textContent="";
+  $("message").className="message";
+}
+
+function showModal(title,text,icon="🔒"){
+  previousFocus=document.activeElement;
+  $("modalTitle").textContent=title;
+  $("modalText").textContent=text;
+  $("modalIcon").textContent=icon;
+  $("modalBackdrop").classList.add("show");
+  $("modalClose").focus();
+}
+
+function closeModal(){
+  $("modalBackdrop").classList.remove("show");
+  if(previousFocus && typeof previousFocus.focus==="function"){
+    previousFocus.focus();
+  }else{
+    $("admissionNumber").focus();
+  }
+}
+
+function closeMenu(){
+  $("subjectMenu").classList.remove("open");
+  $("menuButton").setAttribute("aria-expanded","false");
+}
+
+$("modalClose").addEventListener("click",()=>{
+  closeModal();
+  $("admissionNumber").focus();
+});
+
+$("modalDismiss").addEventListener("click",closeModal);
+
+$("modalBackdrop").addEventListener("click",event=>{
+  if(event.target===$("modalBackdrop"))closeModal();
+});
+
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"){
+    if($("modalBackdrop").classList.contains("show"))closeModal();
+    closeMenu();
+  }
+});
+
+function scrollToElement(id){
+  closeMenu();
+  $(id).scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+$("heroVerify").addEventListener("click",()=>scrollToElement("verification"));
+$("heroExplore").addEventListener("click",()=>scrollToElement("learningCentre"));
+$("menuVerify").addEventListener("click",()=>scrollToElement("verification"));
+$("footerHome").addEventListener("click",()=>scrollToElement("home"));
+$("footerVerify").addEventListener("click",()=>scrollToElement("verification"));
+$("footerSubjects").addEventListener("click",()=>scrollToElement("learningCentre"));
+
+function renderSubjects(){
+  $("menuSubjects").replaceChildren();
+  $("subjectGrid").replaceChildren();
+
+  SUBJECTS.forEach(subject=>{
+    const menuItem=document.createElement("button");
+    menuItem.type="button";
+    menuItem.className="subject-link";
+
+    const menuIcon=document.createElement("span");
+    menuIcon.className="subject-icon";
+    menuIcon.textContent=subject.icon;
+
+    const menuText=document.createElement("span");
+    menuText.append(document.createTextNode(subject.name));
+
+    const small=document.createElement("small");
+    small.textContent="Open revision subject";
+    menuText.appendChild(small);
+
+    menuItem.append(menuIcon,menuText);
+    menuItem.addEventListener("click",()=>openSubject(subject));
+    $("menuSubjects").appendChild(menuItem);
+
+    const card=document.createElement("button");
+    card.type="button";
+    card.className="subject-card locked";
+    card.dataset.subject=subject.name;
+    card.setAttribute("aria-label",subject.name+", registration required");
+
+    const top=document.createElement("div");
+    top.className="card-top";
+
+    const icon=document.createElement("span");
+    icon.className="card-icon";
+    icon.textContent=subject.icon;
+
+    const lock=document.createElement("span");
+    lock.className="lock-icon";
+    lock.textContent="🔒";
+    lock.setAttribute("aria-hidden","true");
+
+    top.append(icon,lock);
+
+    const heading=document.createElement("h3");
+    heading.textContent=subject.name;
+
+    const description=document.createElement("p");
+    description.textContent=subject.description;
+
+    const action=document.createElement("span");
+    action.className="card-action";
+    action.textContent="Verify to unlock →";
+
+    card.append(top,heading,description,action);
+    card.addEventListener("click",()=>openSubject(subject));
+    $("subjectGrid").appendChild(card);
+  });
+}
+
+function updateAccessUI(){
+  document.querySelectorAll(".subject-card").forEach(card=>{
+    const lock=card.querySelector(".lock-icon");
+    const action=card.querySelector(".card-action");
+    const unlocked=Boolean(verifiedStudent);
+
+    card.classList.toggle("locked",!unlocked);
+    lock.textContent=unlocked?"✓":"🔒";
+    action.textContent=unlocked?"Open subject →":"Verify to unlock →";
+    card.setAttribute(
+      "aria-label",
+      card.dataset.subject+(unlocked?", open subject":", registration required")
+    );
+  });
+
+  $("subjectInstruction").textContent=verifiedStudent
+    ?"Welcome, "+verifiedStudent.name+". Choose a subject to begin."
+    :"Verify your registration to unlock the subjects.";
+
+  $("dashboard").classList.toggle("visible",Boolean(verifiedStudent));
+
+  if(verifiedStudent){
+    const hour=Number(new Intl.DateTimeFormat("en-KE",{
+      timeZone:"Africa/Nairobi",hour:"2-digit",hour12:false
+    }).format(new Date()));
+
+    let greeting="Good evening";
+    if(hour>=5 && hour<12)greeting="Good morning";
+    else if(hour>=12 && hour<17)greeting="Good afternoon";
+
+    $("welcomeHeading").textContent=greeting+", "+verifiedStudent.name.split(" ")[0]+" 👋";
+  }
+}
+
+function openSubject(subject){
+  closeMenu();
+
+  if(!verifiedStudent){
+    showModal(
+      "Registration not verified",
+      "Please verify your admission number before accessing "+subject.name+
+      ". Enter your registered admission number in the Student Verification section.",
+      "🔐"
+    );
+    return;
+  }
+
+  /*
+    sessionStorage only passes the identity to the subject page.
+    It is not secure authentication and must not be trusted by a
+    backend when calculating or recording official results.
+  */
+  try{
+    sessionStorage.setItem("pharmily31Student",JSON.stringify({
+      admissionNumber:verifiedStudent.admissionNumber,
+      name:verifiedStudent.name
+    }));
+  }catch(error){
+    showModal(
+      "Browser session unavailable",
+      "Your browser could not save the student session. Enable site storage and try again.",
+      "⚠️"
+    );
+    return;
+  }
+
+  window.location.href=subject.file;
+}
+
+$("verifyForm").addEventListener("submit",event=>{
+  event.preventDefault();
+
+  const entered=normalizeAdmission($("admissionNumber").value);
+  const matchedKey=Object.keys(STUDENTS).find(
+    key=>normalizeAdmission(key)===entered
+  );
+
+  if(!entered || !matchedKey){
+    verifiedStudent=null;
+
+    try{
+      sessionStorage.removeItem("pharmily31Student");
+    }catch(error){}
+
+    $("studentCard").classList.remove("visible");
+    updateAccessUI();
+
+    showMessage(
+      "Admission number not registered. Check the number and try again. If you believe this is an error, contact the portal administrator.",
+      "error"
+    );
+    return;
+  }
+
+  verifiedStudent={
+    admissionNumber:matchedKey,
+    name:STUDENTS[matchedKey]
+  };
+
+  $("studentName").textContent=verifiedStudent.name;
+  $("studentAdmission").textContent=verifiedStudent.admissionNumber;
+  $("studentCard").classList.add("visible");
+
+  hideMessage();
+  showMessage(
+    "Registration verified successfully. Welcome, "+verifiedStudent.name+"!",
+    "success"
+  );
+
+  updateAccessUI();
+
+  try{
+    sessionStorage.setItem(
+      "pharmily31Student",
+      JSON.stringify(verifiedStudent)
+    );
+  }catch(error){
+    // The identity will still be available during this page session.
+  }
+
+  $("studentCard").scrollIntoView({behavior:"smooth",block:"nearest"});
+});
+
+$("menuButton").addEventListener("click",()=>{
+  const isOpen=$("subjectMenu").classList.toggle("open");
+  $("menuButton").setAttribute("aria-expanded",String(isOpen));
+});
+
+document.addEventListener("click",event=>{
+  if(!event.target.closest(".menu-wrap"))closeMenu();
+});
+
+function updateClock(){
+  const now=new Date();
+
+  $("clock").textContent=new Intl.DateTimeFormat("en-KE",{
+    timeZone:"Africa/Nairobi",
+    hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:true
+  }).format(now);
+
+  $("date").textContent=new Intl.DateTimeFormat("en-KE",{
+    timeZone:"Africa/Nairobi",
+    weekday:"short",day:"numeric",month:"short",year:"numeric"
+  }).format(now);
+}
+
+const backTop=$("backTop");
+
+window.addEventListener("scroll",()=>{
+  backTop.classList.toggle("visible",window.scrollY>350);
+},{passive:true});
+
+backTop.addEventListener("click",()=>{
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+
+$("year").textContent=new Date().getFullYear();
+
+renderSubjects();
+updateAccessUI();
+updateClock();
+setInterval(updateClock,1000);
+</script>
+</body>
+</html>
+
