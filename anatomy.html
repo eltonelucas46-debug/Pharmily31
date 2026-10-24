@@ -1,870 +1,403 @@
-﻿
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#11834c">
-<title>Human Anatomy | PHARMILY31</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#146c43">
+<title>Human Anatomy Arena | PHARMILY31</title>
 <style>
-:root{
-  --blue:#1769e0;--navy:#101c36;--purple:#773be8;
-  --green:#11834c;--light-green:#72c982;--red:#d92332;
-  --bg:#f1f5fc;--border:#dce5f1;--dashboard-height:150px;
-}
-*{box-sizing:border-box}
-html,body{max-width:100%;overflow-x:hidden}
-html{scroll-padding-top:calc(var(--dashboard-height) + 18px)}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--navy);line-height:1.6}
-header{background:linear-gradient(135deg,#101c36,#11663f,#1769e0);color:white;text-align:center;padding:26px 14px}
-header h1{margin:0;font-size:24px}
-header p{margin:5px 0}
-.container{width:min(950px,94%);max-width:100%;margin:22px auto}
-.card{background:white;padding:22px;border:1px solid var(--border);border-radius:16px;margin-bottom:18px;box-shadow:0 4px 18px #10213b0b;min-width:0}
-h2,h3{margin-top:0}
-.small{color:#63728b;font-size:13px}
-label.field{display:block;font-weight:bold;margin:12px 0 6px}
-input[type=text],select,textarea{width:100%;max-width:100%;padding:12px;border:1px solid #bac8dc;border-radius:9px;font-size:15px;font-family:inherit;background:white;color:var(--navy)}
-textarea{min-height:100px;resize:vertical;line-height:1.55}
-button{border:0;border-radius:9px;background:var(--blue);color:white;padding:13px 17px;font-size:15px;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.4;cursor:not-allowed}
-button.secondary{background:#e8effa;color:var(--navy)}
-button.purple{background:var(--purple)}
-button.green{background:var(--green)}
-button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #91baff;outline-offset:3px}
-.hidden{display:none!important}
-.notice{background:#edf5ff;border-left:4px solid var(--blue);padding:13px;border-radius:9px;margin:13px 0}
-.warning{background:#fff0f0;color:#9c1824;padding:13px;border-radius:9px;margin:13px 0}
-.hero{position:relative;overflow:hidden;border-radius:17px;padding:27px 15px;text-align:center;color:white;background:linear-gradient(135deg,#101c36,#11663f,#1769e0);margin-bottom:18px}
-.hero:before,.hero:after{content:"";position:absolute;width:150px;height:150px;border:1px solid #ffffff30;border-radius:50%;animation:orbit 8s linear infinite}
-.hero:before{left:-55px;top:-65px}
-.hero:after{right:-45px;bottom:-90px;animation-direction:reverse}
-.hero-title{position:relative;z-index:1;font-size:clamp(26px,6vw,42px);font-weight:900;line-height:1.25}
-.hero-sub{position:relative;z-index:1}
-@keyframes orbit{to{transform:rotate(360deg)}}
-
-/* FIXED ASSESSMENT DASHBOARD */
-.assessment-sticky{
-  position:fixed;top:0;left:0;right:0;width:100%;z-index:999;
-  background:var(--bg);padding:8px max(3%,calc((100% - 950px)/2));
-  margin:0;isolation:isolate;box-shadow:0 5px 18px #10213b14;
-  border-bottom:1px solid var(--border)
-}
-.topbar{position:relative;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;background:white;padding:10px 12px;border:1px solid var(--border);border-radius:12px;margin-bottom:7px;min-width:0;box-shadow:0 4px 16px #10213b0b}
-#studentLabel{display:block;font-weight:800;overflow-wrap:anywhere;line-height:1.35}
-#modeLabel,#progressText{line-height:1.4}
-.timer{font-size:22px;font-weight:bold;font-variant-numeric:tabular-nums;color:var(--green)}
-.timer.red{color:var(--red);animation:pulse .8s infinite}
-@keyframes pulse{50%{opacity:.5}}
-.progress-track{height:8px;background:#e5ebf5;border-radius:10px;overflow:hidden;margin:0}
-.progress-fill{height:100%;width:0;background:var(--light-green);transition:width .2s}
-#exam{padding-top:calc(var(--dashboard-height) + 15px)}
-.question{background:white;padding:19px;margin-bottom:14px;border:1px solid var(--border);border-radius:13px;scroll-margin-top:calc(var(--dashboard-height) + 20px);min-width:0;overflow-wrap:anywhere}
-.question h3{font-size:16px;line-height:1.5;color:var(--light-green)}
-.q-number{font-size:12px;color:var(--green);font-weight:bold;text-transform:uppercase}
-.option{display:flex;align-items:flex-start;gap:10px;padding:11px;margin:8px 0;border:1px solid var(--border);border-radius:9px;cursor:pointer;font-weight:normal;min-width:0}
-.option:has(input:checked){border-color:var(--light-green);background:#effaf0}
-.option input{margin:4px 0 0;flex-shrink:0;accent-color:var(--green)}
-.option span{min-width:0;overflow-wrap:anywhere}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
-.score{font-size:42px;font-weight:bold;color:var(--blue);margin:8px 0}
-.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:20px 0}
-.stat{background:#f3f7fd;padding:13px;border-radius:10px;overflow-wrap:anywhere;min-width:0}
-.stat strong{display:block;font-size:22px}
-.remark{padding:12px;margin:9px 0;background:#f3f7fd;border-left:4px solid var(--blue);border-radius:7px}
-.review-item{padding:15px 0;border-bottom:1px solid var(--border);overflow-wrap:anywhere}
-.correct{color:var(--green);font-weight:bold}
-.incorrect{color:var(--red);font-weight:bold}
-.badge{display:inline-block;background:#e8effa;padding:4px 9px;border-radius:7px;font-size:12px;margin:3px}
-#register{width:100%;max-width:100%;min-width:0}
-.register-table-wrap{width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;border:1px solid var(--border);border-radius:8px}
-.register-table-wrap table{width:100%;min-width:760px;border-collapse:collapse;table-layout:auto}
-.register-table-wrap th,.register-table-wrap td{text-align:left;padding:9px 7px;border-bottom:1px solid var(--border);font-size:12px;overflow-wrap:anywhere;vertical-align:top}
-.register-table-wrap th{background:#f3f7fd}
-.register-table-wrap tbody tr:last-child td{border-bottom:0}
-.register-hint{font-size:12px;color:#63728b;margin-top:7px}
-footer{text-align:center;padding:20px;color:#63728b;font-size:12px}
-table{width:100%;border-collapse:collapse}
-th,td{text-align:left;padding:8px 5px;border-bottom:1px solid var(--border);font-size:12px}
-
-/* SUBMISSION MODAL */
-.submit-modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(9,20,40,.72);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
-.submit-modal.hidden{display:none!important}
-.submit-dialog{width:min(440px,100%);max-height:90vh;max-height:90dvh;overflow-y:auto;background:white;color:var(--navy);border:1px solid var(--border);border-radius:20px;padding:25px;box-shadow:0 24px 80px #00000030;animation:modalEnter .2s ease-out}
-@keyframes modalEnter{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-.submit-icon{display:grid;place-items:center;width:56px;height:56px;margin:0 auto 12px;border-radius:16px;background:#e8f5ee;font-size:27px}
-.submit-eyebrow{text-align:center;color:var(--green);font-size:11px;font-weight:800;letter-spacing:1.2px;margin:0 0 8px}
-.submit-dialog h2{text-align:center;font-size:24px;margin:0 0 10px}
-#submitModalMessage{text-align:center;color:#63728b;font-size:14px;margin:0 0 20px}
-.submit-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:15px}
-.submit-summary>div{background:#f3f7fd;border:1px solid var(--border);border-radius:12px;padding:13px;text-align:center}
-.submit-summary span{display:block;color:#63728b;font-size:12px}
-.submit-summary strong{display:block;font-size:25px;margin-top:4px}
-#modalUnanswered{color:var(--red)}
-.submit-warning{background:#fff0f0;color:#9c1824;padding:11px;border-radius:9px;font-size:13px;margin:0 0 15px}
-.submit-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.submit-actions button{width:100%;min-height:46px;padding:11px;font-size:13px}
-.submit-footer{text-align:center;color:#63728b;font-size:11px;margin:16px 0 0}
-@media(max-width:500px){
- header h1{font-size:20px}.card{padding:16px}.question{padding:14px}.score{font-size:36px}
- .hero{padding:25px 8px}.container{width:94%;margin:14px auto}
- .assessment-sticky{padding:5px 3% 7px}.topbar{padding:8px;gap:6px;border-radius:10px}
- #studentLabel{font-size:13px}.topbar .small{font-size:11px}.timer{font-size:19px}
- .progress-track{height:7px}.stats{gap:8px}.stat{padding:10px}.stat strong{font-size:19px}
- button{max-width:100%}.actions button{flex:1 1 auto}
- .register-table-wrap table{min-width:760px}.submit-dialog{padding:19px}
- .submit-dialog h2{font-size:21px}.submit-actions{grid-template-columns:1fr}
-}
-@media(prefers-reduced-motion:reduce){
- .submit-dialog{animation:none}.hero:before,.hero:after,.timer.red{animation:none}
-}
-@media print{
- body{background:white;color:black;font-size:11px}
- header{background:white!important;color:black;padding:8px}
- header h1{font-size:18px}.container{width:100%;max-width:100%;margin:0}
- #setup,#exam,footer,.no-print,.submit-modal{display:none!important}
- #results{display:block!important}
- #results .card{box-shadow:none;border:1px solid #bbb;padding:12px;margin:8px 0;break-inside:auto}
- #results .review-item{break-inside:avoid}
- #results button{display:none!important}.score{font-size:25px}
- .stats{gap:5px;margin:8px 0}.stat{padding:6px}
- .remark,.notice,.warning{background:white!important;color:black!important}
- .review-item{padding:8px 0}h2{font-size:16px}
- .register-table-wrap{overflow:visible;border:0}
- .register-table-wrap table{min-width:0;width:100%;table-layout:fixed}
- .register-table-wrap th,.register-table-wrap td{font-size:8px;padding:4px 2px;overflow-wrap:anywhere}
- .register-hint{display:none}
-}
+:root{--green:#146c43;--green2:#198754;--mint:#e9f7ef;--blue:#155eef;--ink:#17332a;--muted:#63766d;--paper:#f4f8f5;--line:#dce8df;--red:#c62828;--dashboard-height:0px}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
+header{background:linear-gradient(120deg,#105c39,#1677a5);color:white;padding:25px 16px 28px;text-align:center}header .brand{font-weight:900;letter-spacing:2px;font-size:.82rem;opacity:.9}header h1{margin:7px 0;font-size:clamp(1.7rem,5vw,2.5rem);line-height:1.15}header p{margin:8px auto 0;max-width:720px;color:#e5f5ee}
+main{max-width:1000px;margin:22px auto;padding:0 14px 50px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,25px);margin-bottom:17px;box-shadow:0 7px 24px #163d2b0b}.card h2{margin:0 0 10px;font-size:1.28rem}.muted,.small{color:var(--muted);font-size:.91rem}.notice,.warning{border-radius:12px;padding:13px 15px;margin:12px 0;background:var(--mint);border:1px solid #c5e8d2}.warning{background:#fff4e5;border-color:#f1d5a7;color:#774c0b}.hidden{display:none!important}
+button,.button{font:inherit;font-weight:750;border:0;border-radius:11px;padding:12px 17px;cursor:pointer;background:var(--green);color:white;min-height:45px;transition:transform .12s,opacity .12s}button:hover{filter:brightness(1.04)}button:active{transform:scale(.99)}button:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#e9f0ec;color:#204b37}.blue{background:var(--blue)}.danger{background:#b42318}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
+.field{display:block;font-weight:750;margin:12px 0 6px}input[type=text],select,textarea{font:inherit;width:100%;border:1px solid #cbd9cf;border-radius:11px;padding:12px;background:#fff;color:var(--ink)}input:focus,select:focus,textarea:focus{outline:3px solid #19875424;border-color:var(--green2)}
+.mode-grid,.topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}.topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.pick{display:flex;gap:12px;align-items:flex-start;text-align:left;padding:15px;background:#fff;color:var(--ink);border:1.5px solid var(--line);border-radius:14px;min-height:90px}.pick .emoji{font-size:1.7rem;line-height:1.2}.pick small{display:block;color:var(--muted);font-weight:500;margin-top:4px}.pick.selected{border-color:var(--green2);background:#edfaf2;box-shadow:0 0 0 2px #19875416}
+.steps{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 15px}.step{font-size:.83rem;padding:6px 10px;border-radius:99px;background:#edf2ee;color:#53645a}.step.active{background:#d9f3e3;color:#116139;font-weight:800}
+.dashboard{position:sticky;top:0;z-index:5;background:#fff;border:1px solid var(--line);border-radius:0 0 15px 15px;padding:12px 15px;box-shadow:0 6px 20px #17332a12;margin:-1px 0 18px}.dashrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.timer{font-size:1.3rem;font-weight:900;font-variant-numeric:tabular-nums;color:var(--green)}.timer.red{color:var(--red)}.progress{height:8px;background:#e8eee9;border-radius:99px;overflow:hidden;margin-top:10px}.progress span{height:100%;width:0;display:block;background:linear-gradient(90deg,#198754,#39a96b);transition:width .2s}
+.question{padding:18px 0;border-bottom:1px solid var(--line);scroll-margin-top:160px}.question:last-child{border-bottom:0}.q-number{color:var(--green);font-size:.82rem;font-weight:850;text-transform:uppercase;letter-spacing:.04em}.question h3{font-size:1.04rem;line-height:1.45;margin:5px 0 13px}.option{display:flex;gap:10px;align-items:flex-start;border:1px solid #e1e9e3;border-radius:10px;padding:10px 12px;margin:8px 0;cursor:pointer}.option:has(input:checked){border-color:var(--green2);background:#effaf3}.option input{margin-top:5px;accent-color:var(--green2)}textarea{min-height:110px;resize:vertical}.essay-note{font-size:.85rem;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}.stat{background:#f2f7f3;border:1px solid var(--line);border-radius:12px;padding:12px}.stat span{display:block;color:var(--muted);font-size:.82rem}.stat strong{font-size:1.3rem}.score{font-size:2.5rem;font-weight:950;color:var(--green);line-height:1.2}.review-item{padding:15px 0;border-bottom:1px solid var(--line)}.review-item:last-child{border:0}.correct{color:#167447;font-weight:800}.incorrect{color:#b42318;font-weight:800}.feedback{background:#f4f8f5;border-radius:10px;padding:10px 12px;margin-top:8px;font-size:.92rem}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{text-align:left;border-bottom:1px solid var(--line);padding:9px;white-space:nowrap}th{background:#eff6f1}footer{text-align:center;color:var(--muted);padding:22px 12px;font-size:.86rem}
+.modal{position:fixed;inset:0;background:#092318b8;z-index:20;display:grid;place-items:center;padding:16px}.dialog{background:white;border-radius:18px;padding:23px;max-width:440px;width:100%;box-shadow:0 20px 70px #0003}.dialog h2{margin-top:0}.dialog .actions{justify-content:flex-end}
+@media(max-width:600px){.mode-grid,.topic-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}header{padding-top:21px}.dashboard{margin-left:-14px;margin-right:-14px;top:0;border-radius:0 0 14px 14px}.pick{min-height:75px}}
+@media print{body{background:#fff;font-size:11pt}header{background:#fff!important;color:#000;padding:10px}.no-print,button,.dashboard,#setup{display:none!important}main{max-width:none;margin:0;padding:0}.card{box-shadow:none;border:0;padding:8px;margin:0 0 10px;break-inside:avoid}.question{break-inside:avoid}textarea{border:0;min-height:50px}.review-item{break-inside:avoid}#results{display:block!important}}
 </style>
 </head>
 <body>
-<header>
-  <h1>🦴 Human Anatomy</h1>
-  <p>PHARMILY31 · Bachelor of Pharmacy · Year 1</p>
-  <p>General Anatomy · Histology · Gametogenesis · Pregnancy &amp; Development</p>
-</header>
-
-<main class="container">
-<section id="setup" class="card">
-  <div class="hero">
-    <div class="hero-title">💚 ANATOMY ARENA 💚</div>
-    <p class="hero-sub">Understand the structure. Connect form to function. Master human development.</p>
-    <p class="hero-sub">University-level assessment · Two assessment modes</p>
+<header><div class="brand">PHARMILY31 · YEAR 1 PHARMACY</div><h1>🧠 Human Anatomy Arena</h1><p>Choose your topic, challenge your understanding, and review your progress.</p></header>
+<main>
+<section id="setup">
+ <div class="card">
+  <div class="steps"><span class="step active" id="step1">1 · Student verification</span><span class="step" id="step2">2 · Assessment mode</span><span class="step" id="step3">3 · Topic</span></div>
+  <h2>🔐 Student registration</h2><p class="muted">Your verified student session is checked before an assessment starts.</p>
+  <div id="identityBox" class="warning">Checking registration…</div>
+  <p class="small">If verification is missing, return to the PHARMILY31 registration page, verify your details, then reopen this page.</p>
+ </div>
+ <div class="card">
+  <h2>📝 Choose assessment mode</h2><p class="muted">Select the format you want to practise.</p>
+  <div class="mode-grid">
+   <button type="button" class="pick" id="modeMcq" onclick="chooseMode('mcq')"><span class="emoji">🔠</span><span><strong>MCQ Challenge</strong><small>Multiple choice · 15-minute target</small></span></button>
+   <button type="button" class="pick" id="modeOpen" onclick="chooseMode('open')"><span class="emoji">✍️</span><span><strong>Open-Ended Challenge</strong><small>Short answers · 30-minute limit</small></span></button>
   </div>
-  <h2>🦴 Assessment Centre</h2>
-  <p>Challenge your knowledge of introductory and general anatomy, anatomical terminology, tissues and histology, gametogenesis, the ovarian cycle, pregnancy, embryology, and human development.</p>
-  <div id="identityBox" class="notice">Checking verified student session…</div>
-  <div class="notice">
-    <strong>Assessment rules</strong>
-    <ul>
-      <li><strong>MCQ Challenge:</strong> 30 questions, 30 marks, 15-minute target.</li>
-      <li>The MCQ timer turns red at 15:00. At 16:00, the assessment auto-submits and a 5-mark penalty is applied.</li>
-      <li><strong>Open-Ended Challenge:</strong> 30 questions in 30 minutes: 25 short-answer questions and 5 essays.</li>
-      <li>Short answers are marked flexibly using alternative terms, synonyms, and key anatomical concepts.</li>
-      <li>Essays receive partial credit for relevant scientific points included in the response.</li>
-      <li>Blank answers receive zero. Review your answers before submission.</li>
-      <li>Automatic marking is an educational estimate, not a substitute for lecturer marking.</li>
-    </ul>
+ </div>
+ <div class="card">
+  <h2>📚 Select a topic</h2><p class="muted">Each topic has its own question bank. Select one topic per assessment.</p>
+  <div class="topic-grid" id="topicGrid">
+   <button type="button" class="pick" data-topic="general" onclick="chooseTopic('general')"><span class="emoji">🧍</span><span><strong>General Anatomy</strong><small>Planes, positions, regions, cavities and terminology</small></span></button>
+   <button type="button" class="pick" data-topic="cell" onclick="chooseTopic('cell')"><span class="emoji">🧫</span><span><strong>Cell Biology</strong><small>Organelles, membranes, division and genetics</small></span></button>
+   <button type="button" class="pick" data-topic="histology" onclick="chooseTopic('histology')"><span class="emoji">🔬</span><span><strong>Histology &amp; Tissues</strong><small>Epithelial, connective, muscle and nervous tissue</small></span></button>
+   <button type="button" class="pick" data-topic="skeletal" onclick="chooseTopic('skeletal')"><span class="emoji">🦴</span><span><strong>Skeletal &amp; Muscular Anatomy</strong><small>Bones, muscle, movement and joints</small></span></button>
+   <button type="button" class="pick" data-topic="development" onclick="chooseTopic('development')"><span class="emoji">🧬</span><span><strong>Development &amp; Embryology</strong><small>Gametes, fertilisation and prenatal development</small></span></button>
   </div>
-  <h3>Choose your assessment</h3>
-  <div class="card">
-    <h3>📝 Option A: MCQ Challenge</h3>
-    <p>30 questions · A–E choices · 15-minute target · 30 marks</p>
-    <button id="mcqStart" onclick="startTest('mcq')" disabled>Start MCQ Assessment</button>
-  </div>
-  <div class="card">
-    <h3>✍️ Option B: Open-Ended Challenge</h3>
-    <p>25 short answers + 5 essays · 30 minutes · 50 marks</p>
-    <p class="small">Short answers: 1 mark each. Essays: 5 marks each. Partial credit is available.</p>
-    <button id="openStart" class="purple" onclick="startTest('open')" disabled>Start Open-Ended Assessment</button>
-  </div>
-  <p class="small">Student identity is read from the verified session created by index.html. Results are stored locally in this browser on this device.</p>
+  <div class="notice" id="selectionSummary">Choose an assessment mode and a topic to continue.</div>
+  <div class="actions"><button id="startButton" onclick="startTest()" disabled>Start Assessment →</button></div>
+ </div>
 </section>
 
 <section id="exam" class="hidden">
-  <div class="assessment-sticky" id="assessmentDashboard">
-    <div class="topbar">
-      <div style="flex:1;min-width:0">
-        <strong id="studentLabel"></strong>
-        <div class="small" id="modeLabel"></div>
-        <div class="small" id="progressText">0 answered</div>
-      </div>
-      <div style="text-align:right;flex-shrink:0">
-        <div class="small" id="timerLabel">Elapsed time</div>
-        <div id="timer" class="timer">00:00</div>
-      </div>
-    </div>
-    <div class="progress-track" aria-label="Assessment progress">
-      <div id="progressFill" class="progress-fill"></div>
-    </div>
-  </div>
-  <div id="questionList"></div>
-  <div class="card">
-    <p id="unansweredNotice" class="small"></p>
-    <div class="actions">
-      <button onclick="submitTest(false)">Submit Assessment</button>
-      <button class="secondary" onclick="goToTop()">Back to Top ↑</button>
-    </div>
-  </div>
+ <div class="dashboard no-print" id="assessmentDashboard">
+  <div class="dashrow"><div><strong id="studentLabel"></strong><div class="small" id="modeLabel"></div></div><div><div class="small" id="timerLabel">Time remaining</div><div class="timer" id="timer">15:00</div></div></div>
+  <div class="dashrow" style="margin-top:8px"><span class="small" id="progressText">0 answered</span><span class="small" id="unansweredNotice"></span></div><div class="progress"><span id="progressFill"></span></div>
+ </div>
+ <div class="card"><h2 id="examHeading">Assessment</h2><p class="muted" id="examInstructions"></p><div id="questionList"></div><div class="actions no-print"><button class="danger" onclick="openSubmitModal()">Submit Assessment</button><button class="secondary" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to top ↑</button></div></div>
 </section>
 
 <section id="results" class="hidden">
-  <div class="card">
-    <h2>🏆 Assessment Results</h2>
-    <p id="resultName"></p>
-    <p id="resultMode"></p>
-    <div id="scoreDisplay" class="score">0/30</div>
-    <p id="percentageDisplay"></p>
-    <div class="stats">
-      <div class="stat"><span class="small">Raw score</span><strong id="rawScore">0</strong></div>
-      <div class="stat"><span class="small">Penalty</span><strong id="penalty">0</strong></div>
-      <div class="stat"><span class="small">Questions answered</span><strong id="answeredCount">0</strong></div>
-      <div class="stat"><span class="small">Questions blank</span><strong id="unansweredCount">0</strong></div>
-    </div>
-    <div id="overallRemark" class="notice"></div>
-    <div id="timeRemark"></div>
-  </div>
-  <div class="card">
-    <h2>📊 Performance Bands</h2>
-    <div id="intervalRemarks"></div>
-  </div>
-  <div class="card">
-    <h2>📋 Student Results Register</h2>
-    <p class="small">Attempt records are saved locally in this browser.</p>
-    <div id="register"></div>
-    <p class="register-hint">On a mobile phone, swipe the register left or right to view all columns.</p>
-    <div class="actions no-print">
-      <button onclick="printResults()">Print / Save as PDF</button>
-      <button class="secondary" onclick="showRegister()">View Register</button>
-    </div>
-    <p class="small no-print">Choose Print, then select Save as PDF if that option is available in your browser.</p>
-  </div>
-  <div class="card">
-    <h2>📚 Answers, Marking Feedback &amp; Explanations</h2>
-    <p class="small">For open-ended questions, the marking feedback shows which expected concepts were detected. Equivalent correct answers may still be missed by automated matching.</p>
-    <div id="reviewList"></div>
-  </div>
-  <div class="card no-print">
-    <h2>Next Step</h2>
-    <p id="nextMessage"></p>
-    <button onclick="backHome()">Return to Assessment Centre</button>
-  </div>
+ <div class="card"><h2>🏆 Assessment Results</h2><p id="resultName"></p><p id="resultMode"></p><div class="score" id="scoreDisplay">0/30</div><p id="percentageDisplay"></p>
+ <div class="stats"><div class="stat"><span>Raw score</span><strong id="rawScore">0</strong></div><div class="stat"><span>Penalty</span><strong id="penalty">0</strong></div><div class="stat"><span>Answered</span><strong id="answeredCount">0</strong></div><div class="stat"><span>Blank</span><strong id="unansweredCount">0</strong></div></div><div id="overallRemark" class="notice"></div><div id="timeRemark" class="small"></div></div>
+ <div class="card"><h2>📊 Performance history on this device</h2><p class="small">These records are stored locally in this browser, not sent to a central server.</p><div class="table-wrap" id="register"></div><div class="actions no-print"><button onclick="window.print()">Print / Save as PDF</button><button class="secondary" onclick="backHome()">New assessment</button></div></div>
+ <div class="card"><h2>📖 Answers &amp; feedback</h2><p class="small">Automated open-ended marking checks key concepts. It may not recognise every valid alternative answer, so use the model answers for revision.</p><div id="reviewList"></div></div>
+ <div class="card no-print"><button onclick="backHome()">← Return to Assessment Centre</button></div>
 </section>
 </main>
-
-<div id="submitModal" class="submit-modal hidden" role="dialog"
-     aria-modal="true" aria-labelledby="submitModalTitle"
-     aria-describedby="submitModalMessage">
-  <div class="submit-dialog">
-    <div class="submit-icon">📝</div>
-    <p class="submit-eyebrow">PHARMILY31 · ASSESSMENT CENTRE</p>
-    <h2 id="submitModalTitle">Submit Assessment?</h2>
-    <p id="submitModalMessage">Are you ready to submit your assessment?</p>
-    <div class="submit-summary">
-      <div><span>Answered</span><strong id="modalAnswered">0</strong></div>
-      <div><span>Unanswered</span><strong id="modalUnanswered">0</strong></div>
-    </div>
-    <p id="modalWarning" class="submit-warning hidden"></p>
-    <div class="submit-actions">
-      <button type="button" id="cancelSubmit" class="secondary">Review Answers</button>
-      <button type="button" id="confirmSubmit" class="green">Confirm Submission</button>
-    </div>
-    <p class="submit-footer">Please review your responses before final submission.</p>
-  </div>
-</div>
-
+<div id="submitModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="dialog"><h2 id="modalTitle">Submit assessment?</h2><p id="modalMessage"></p><p id="modalCounts"></p><div class="actions"><button class="secondary" onclick="closeSubmitModal()">Review answers</button><button class="danger" onclick="confirmSubmit()">Confirm submission</button></div></div></div>
 <footer>PHARMILY31 · Human Anatomy Revision Arena</footer>
 
 <script>
 "use strict";
-
-const SESSION_KEY = "pharmily31Student";
-const STORAGE_KEY = "pharmily31AnatomyResults_v1";
-let student = null;
-
-function getIdentity(){
-  try{
-    const raw=sessionStorage.getItem(SESSION_KEY);
-    if(!raw)return null;
-    const d=JSON.parse(raw);
-    if(!d||typeof d!=="object")return null;
-    const name=d.name||d.fullName||d.studentName||d.student||d.full_name||"";
-    const admission=d.admissionNumber||d.admission_number||d.admission||d.regNo||d.registrationNumber||d.registration_number||"";
-    if(!String(name).trim()||!String(admission).trim())return null;
-    return {name:String(name).trim(),admission:String(admission).trim()};
-  }catch(e){return null}
-}
-
-function escapeHTML(value){
-  return String(value).replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  })[c]);
-}
-
-function refreshIdentity(){
-  student=getIdentity();
-  const box=document.getElementById("identityBox");
-  const mcq=document.getElementById("mcqStart");
-  const open=document.getElementById("openStart");
-  if(student){
-    box.className="notice";
-    box.innerHTML="<strong>Verified session detected</strong><br>Student: "+
-      escapeHTML(student.name)+"<br>Admission number: "+escapeHTML(student.admission);
-    mcq.disabled=false;
-    open.disabled=false;
-  }else{
-    box.className="warning";
-    box.innerHTML="<strong>Registration verification required</strong><br>Your verified student session could not be found. Return to index.html, verify your name and admission number, then open Anatomy again.";
-    mcq.disabled=true;
-    open.disabled=true;
-  }
-}
-
-function syncDashboardSpace(){
-  const dashboard=document.getElementById("assessmentDashboard");
-  const exam=document.getElementById("exam");
-  if(!dashboard||!exam||exam.classList.contains("hidden"))return;
-  const height=Math.ceil(dashboard.getBoundingClientRect().height);
-  document.documentElement.style.setProperty("--dashboard-height",height+"px");
-}
-window.addEventListener("resize",syncDashboardSpace);
-window.addEventListener("orientationchange",()=>setTimeout(syncDashboardSpace,150));
-
-/* MCQ BANK: 30 QUESTIONS */
-const mcqs = [
-{q:"Which anatomical plane divides the body into equal right and left halves?",o:["Coronal plane","Transverse plane","Median sagittal plane","Oblique plane","Horizontal plane"],a:2,e:"The median sagittal, or midsagittal, plane divides the body into equal right and left halves. A sagittal plane that is off the midline divides the body into unequal portions."},
-{q:"In the standard anatomical position, the palms face:",o:["Posteriorly","Anteriorly","Medially","Inferiorly","Towards the thighs"],a:1,e:"In the standard anatomical position, the body is upright, the head and eyes face forward, the upper limbs are at the sides, and the palms face anteriorly."},
-{q:"Which directional term means nearer to the point of attachment of a limb?",o:["Distal","Superficial","Lateral","Proximal","Inferior"],a:3,e:"Proximal means nearer to the trunk or point of origin/attachment. Distal means farther from that point."},
-{q:"Which body cavity contains the heart and lungs?",o:["Abdominopelvic cavity","Cranial cavity","Vertebral cavity","Pelvic cavity","Thoracic cavity"],a:4,e:"The thoracic cavity contains the pleural cavities housing the lungs and the mediastinum, which includes the pericardial cavity and heart."},
-{q:"Which serous membrane directly covers the surface of the lung?",o:["Parietal pleura","Visceral pleura","Parietal peritoneum","Visceral peritoneum","Pericardium"],a:1,e:"The visceral pleura adheres to the lung surface. The parietal pleura lines the thoracic wall and other boundaries of the pleural cavity."},
-{q:"Which of the following is an example of a long bone?",o:["Scapula","Patella","Femur","Carpal bone","Vertebra"],a:2,e:"The femur is a long bone with a shaft and two ends. Bone classification is based mainly on shape, not absolute size."},
-{q:"Which type of joint permits the greatest range of movement in multiple directions?",o:["Fibrous suture","Cartilaginous symphysis","Plane synovial joint","Ball-and-socket synovial joint","Gomphosis"],a:3,e:"Ball-and-socket joints, such as the shoulder and hip, permit movement in multiple axes, including flexion, extension, abduction, adduction, rotation, and circumduction."},
-{q:"Which tissue type lines body surfaces, forms glands, and commonly exhibits closely packed cells?",o:["Epithelial tissue","Nervous tissue","Skeletal muscle","Dense regular connective tissue","Adipose tissue"],a:0,e:"Epithelial tissue covers surfaces, lines cavities, and forms glands. It has closely packed cells, polarity, a basement membrane, and little extracellular matrix."},
-{q:"Which epithelial type is best adapted for rapid diffusion in pulmonary alveoli?",o:["Stratified squamous epithelium","Simple cuboidal epithelium","Transitional epithelium","Pseudostratified columnar epithelium","Simple squamous epithelium"],a:4,e:"Simple squamous epithelium is thin and facilitates diffusion and filtration. Type I alveolar cells form most of the alveolar gas-exchange surface."},
-{q:"Which epithelium commonly lines much of the urinary bladder and can stretch as the bladder fills?",o:["Simple columnar epithelium","Transitional epithelium","Simple squamous epithelium","Keratinised stratified squamous epithelium","Simple cuboidal epithelium"],a:1,e:"Transitional epithelium, also called urothelium, changes its appearance as the urinary tract expands and provides a protective barrier against urine."},
-{q:"Which connective tissue cell is principally responsible for producing collagen-rich extracellular matrix?",o:["Neutrophil","Erythrocyte","Fibroblast","Neuron","Osteoclast"],a:2,e:"Fibroblasts synthesise and maintain much of the extracellular matrix of connective tissue, including collagen fibres and ground-substance components."},
-{q:"Which cartilage type is found in the external ear and contains abundant elastic fibres?",o:["Hyaline cartilage","Fibrocartilage","Calcified cartilage only","Elastic cartilage","Articular bone"],a:3,e:"Elastic cartilage provides flexible support and is found in structures such as the auricle of the external ear and the epiglottis."},
-{q:"Which blood component is primarily responsible for oxygen transport?",o:["Erythrocytes","Platelets","Neutrophils","Plasma albumin","Lymphocytes"],a:0,e:"Erythrocytes contain haemoglobin, which binds and transports most oxygen in the blood."},
-{q:"Which muscle tissue is striated, involuntary, and characterised by intercalated discs?",o:["Smooth muscle","Skeletal muscle","Dense connective tissue","Myofibroblasts","Cardiac muscle"],a:4,e:"Cardiac muscle is striated and involuntary. Intercalated discs contain specialised junctions that support mechanical and electrical coupling between cardiomyocytes."},
-{q:"Which organelle is particularly abundant in cells with high energy demands because it produces most cellular ATP aerobically?",o:["Lysosome","Mitochondrion","Golgi apparatus","Nucleolus","Peroxisome"],a:1,e:"Mitochondria generate much of the ATP used by aerobic cells through oxidative phosphorylation and also participate in other metabolic processes."},
-{q:"Meiosis is important in gametogenesis primarily because it:",o:["Doubles the chromosome number in gametes","Produces genetically identical diploid cells only","Reduces chromosome number and contributes to genetic variation","Prevents recombination","Occurs only after fertilisation"],a:2,e:"Meiosis reduces the chromosome number from diploid to haploid and generates genetic variation through crossing over and independent assortment."},
-{q:"In human males, spermatogenesis occurs primarily within the:",o:["Epididymal duct","Prostate gland","Seminal vesicles","Seminiferous tubules","Vas deferens"],a:3,e:"Spermatogenesis takes place in the seminiferous tubules of the testes. Sertoli cells support developing germ cells, while Leydig cells produce testosterone."},
-{q:"Which pituitary hormone acts on Leydig cells to stimulate testosterone production?",o:["Luteinising hormone","Follicle-stimulating hormone","Prolactin","Oxytocin","Thyroid-stimulating hormone"],a:0,e:"LH stimulates Leydig cells to synthesise testosterone. FSH acts primarily on Sertoli cells and supports spermatogenesis."},
-{q:"During oogenesis, the primary oocyte normally remains arrested in:",o:["Metaphase II from birth until puberty","Prophase I from fetal life until resumption before ovulation","Anaphase I throughout pregnancy","Telophase II until fertilisation","Mitotic metaphase until menopause"],a:1,e:"Primary oocytes begin meiosis during fetal development and remain arrested in prophase I. Selected oocytes resume meiosis during ovarian cycles."},
-{q:"The cell normally released at ovulation in humans is a:",o:["Primary oocyte arrested in prophase I","Mature ovum that has completed meiosis II","Polar body only","Secondary oocyte arrested in metaphase II","Zygote"],a:3,e:"Ovulation normally releases a secondary oocyte arrested in metaphase II. Meiosis II is completed if fertilisation occurs."},
-{q:"Which hormonal event most directly triggers ovulation in a typical menstrual cycle?",o:["A sustained fall in FSH to zero","A progesterone surge from the placenta","A sudden fall in all ovarian hormones","A prolactin surge","The mid-cycle luteinising hormone surge"],a:4,e:"The mid-cycle LH surge, supported by sustained high oestradiol before ovulation, triggers the processes leading to follicular rupture and ovulation."},
-{q:"Which hormone is the principal product of the corpus luteum during the luteal phase?",o:["Human chorionic gonadotropin","Progesterone","Oxytocin","Thyroxine","Parathyroid hormone"],a:1,e:"The corpus luteum secretes progesterone, which supports the secretory endometrium and helps prepare it for implantation. It also produces oestrogens."},
-{q:"If pregnancy does not occur, the corpus luteum typically regresses because:",o:["LH remains permanently elevated","The placenta immediately removes all progesterone","There is no sustained embryonic hCG signal to maintain it","FSH permanently stops secretion","The oocyte becomes a blastocyst"],a:2,e:"Without a sustained hCG signal from the developing conceptus, the corpus luteum regresses, progesterone and oestrogen levels fall, and menstruation follows."},
-{q:"Fertilisation most commonly occurs in which part of the uterine tube?",o:["Ampulla","Cervical canal","Uterine fundus","Vagina","Isthmus of the cervix"],a:0,e:"Fertilisation most commonly occurs in the ampulla of the uterine tube, although the precise location can vary."},
-{q:"Which sequence correctly describes early development after fertilisation?",o:["Gastrula → zygote → morula → blastocyst","Blastocyst → zygote → cleavage → morula","Morula → zygote → gastrula → cleavage","Zygote → cleavage → morula → blastocyst","Zygote → gastrula → spermatozoon → blastocyst"],a:3,e:"After fertilisation, the zygote undergoes cleavage divisions, forms a morula, and then develops into a blastocyst before implantation."},
-{q:"Which part of the blastocyst primarily gives rise to the embryo proper?",o:["Zona pellucida","Trophoblast only","Amniotic fluid","Corpus luteum","Embryoblast (inner cell mass)"],a:4,e:"The embryoblast, or inner cell mass, gives rise to the embryo proper and some associated extraembryonic tissues. The trophoblast contributes substantially to the fetal component of the placenta."},
-{q:"Implantation of the human blastocyst normally begins approximately:",o:["Within minutes of fertilisation","Around 6–7 days after fertilisation","At the end of the second trimester","Only after organogenesis is complete","At the time of birth"],a:1,e:"Implantation generally begins around day 6–7 after fertilisation, as the blastocyst attaches to and begins to invade the endometrium."},
-{q:"Gastrulation is especially important because it:",o:["Produces mature sperm in the testes","Forms the corpus luteum","Establishes the three primary germ layers","Initiates menstruation","Completes fetal lung maturation"],a:2,e:"Gastrulation establishes the ectoderm, mesoderm, and endoderm, which contribute to the tissues and organs of the developing body."},
-{q:"Which germ layer gives rise to the epidermis of the skin and much of the nervous system?",o:["Ectoderm","Mesoderm","Endoderm","Trophoblast only","Extraembryonic mesoderm only"],a:0,e:"The ectoderm forms the epidermis and nervous system, among other structures. The mesoderm contributes to muscle, bone, connective tissues, and much of the cardiovascular system."},
-{q:"Which statement best describes the placenta?",o:["It is formed exclusively from maternal tissue","It prevents all substances from crossing between maternal and fetal blood","It is a permanent maternal organ that produces no hormones","It is a fetomaternal organ involved in exchange and endocrine support","It directly mixes maternal and fetal blood under normal conditions"],a:3,e:"The placenta has fetal and maternal components and supports gas, nutrient, and waste exchange and hormone production. Maternal and fetal blood are normally separated by a placental barrier rather than freely mixing."}
-];
-
-/* OPEN-ENDED BANK: 25 SHORT ANSWERS */
-const shortQs = [
-{q:"Define human anatomy and distinguish it from physiology.",rubric:[["study of body structure","structures of the body","anatomy studies structure"],["physiology studies function","how the body works","function of body parts"]],model:"Anatomy is the study of the structure and organisation of the body. Physiology is the study of how body parts function and how their functions are regulated.",ex:"Structure and function are closely related, but they are distinct areas of study."},
-{q:"State the standard anatomical position and name two anatomical directional terms with their meanings.",rubric:[["standing upright","standing erect","body upright"],["face forward","eyes forward","palms face anteriorly","palms forward"],["superior means above","inferior means below","proximal means nearer","distal means farther","medial means toward midline","lateral means away from midline","anterior means front","posterior means back"]],model:"In anatomical position, the person stands upright, faces forward, keeps the upper limbs at the sides, and faces the palms forward. Directional terms include superior/inferior, medial/lateral, proximal/distal, and anterior/posterior.",ex:"Any two correctly defined directional terms can earn credit."},
-{q:"Name the three anatomical planes and describe how each divides the body.",rubric:[["sagittal plane","right and left"],["coronal plane","frontal plane","anterior and posterior"],["transverse plane","horizontal plane","superior and inferior"]],model:"The sagittal plane divides the body into right and left portions; the coronal or frontal plane divides anterior and posterior portions; the transverse plane divides superior and inferior portions.",ex:"The midsagittal plane divides the body into equal right and left halves."},
-{q:"Name the four major primary tissue types in the human body.",rubric:[["epithelial"],["connective"],["muscle"],["nervous"]],model:"The four major tissue types are epithelial, connective, muscle, and nervous tissue.",ex:"These tissues combine to form organs and organ systems."},
-{q:"Define histology and state one function of a basement membrane.",rubric:[["microscopic study of tissues","study of tissues under a microscope","microscopic anatomy of tissues"],["supports epithelium","anchors epithelium","separates epithelium from connective tissue","selective filtration","basement membrane"]],model:"Histology is the microscopic study of tissues. A basement membrane supports and anchors epithelium, separates it from underlying connective tissue, and can contribute to filtration and cell signalling.",ex:"A complete answer includes the meaning of histology and one valid basement-membrane function."},
-{q:"Distinguish simple epithelium from stratified epithelium.",rubric:[["one cell layer","single layer"],["multiple cell layers","more than one layer","several layers"]],model:"Simple epithelium consists of one cell layer, whereas stratified epithelium consists of two or more layers. Simple epithelia commonly support absorption, secretion, and diffusion; stratified epithelia often provide protection.",ex:"Classification depends on the number of cell layers, not the overall thickness alone."},
-{q:"Name the three major types of muscle tissue and give one characteristic of each.",rubric:[["skeletal muscle","voluntary","striated skeletal"],["cardiac muscle","intercalated discs","involuntary striated"],["smooth muscle","non striated","involuntary","visceral walls"]],model:"Skeletal muscle is striated and generally voluntary; cardiac muscle is striated, involuntary, and has intercalated discs; smooth muscle is non-striated and involuntary.",ex:"Award credit for naming each type and providing a relevant characteristic."},
-{q:"What is the function of fibroblasts in connective tissue?",rubric:[["synthesise collagen","produce collagen","collagen fibres"],["extracellular matrix","produce matrix","ground substance","maintain connective tissue"]],model:"Fibroblasts synthesise and maintain connective-tissue extracellular matrix, including collagen fibres and ground substance.",ex:"Fibroblasts are important for tissue maintenance and repair."},
-{q:"Define gametogenesis and name the male and female forms.",rubric:[["formation of gametes","production of sex cells","development of gametes"],["spermatogenesis","formation of sperm","male gamete"],["oogenesis","formation of oocytes","female gamete"]],model:"Gametogenesis is the production and maturation of gametes. Spermatogenesis produces sperm in the testes, while oogenesis is the development of female gametes in the ovaries.",ex:"Both processes involve meiosis, but their timing and products differ."},
-{q:"Differentiate spermatogenesis from oogenesis in terms of their products.",rubric:[["four haploid sperm","four sperm","four functional gametes","spermatogenesis"],["one functional ovum or oocyte","one large functional gamete","polar bodies","unequal cytokinesis","oogenesis"]],model:"One primary spermatocyte typically produces four haploid spermatids that mature into sperm. One primary oocyte generally produces one large functional gamete and small polar bodies through unequal cytokinesis.",ex:"The precise number of polar bodies can vary; the key difference is the unequal allocation of cytoplasm in oogenesis."},
-{q:"What is the role of Sertoli cells and Leydig cells in the testes?",rubric:[["support developing germ cells","nourish sperm cells","blood testis barrier","sertoli cells"],["produce testosterone","testosterone secretion","androgen production","leydig cells"]],model:"Sertoli cells support developing germ cells, contribute to the blood-testis barrier, and regulate the seminiferous environment. Leydig cells produce testosterone in response to LH.",ex:"The two cell types have distinct but complementary roles in male reproduction."},
-{q:"Define ovulation and identify the hormone surge that triggers it.",rubric:[["release of secondary oocyte","oocyte released from follicle","rupture of mature follicle"],["lh surge","luteinising hormone surge","luteinizing hormone surge"]],model:"Ovulation is the release of a secondary oocyte from a mature ovarian follicle. It is triggered primarily by the mid-cycle luteinising hormone (LH) surge.",ex:"The oocyte is normally arrested in metaphase II when released."},
-{q:"Describe the main events of the ovarian cycle.",rubric:[["follicular phase","follicle growth","follicular development"],["ovulation","lh surge","release of secondary oocyte"],["luteal phase","corpus luteum","progesterone secretion"]],model:"The ovarian cycle comprises the follicular phase, ovulation, and luteal phase. Follicles develop before ovulation; afterwards the corpus luteum forms and secretes progesterone and oestrogens.",ex:"Ovarian events are coordinated with changes in the endometrium during the menstrual cycle."},
-{q:"State the principal functions of FSH and LH in the female reproductive cycle.",rubric:[["fsh stimulates follicular growth","follicle development","granulosa cells"],["lh surge triggers ovulation","lh causes ovulation","corpus luteum formation","luteinisation","progesterone from corpus luteum"]],model:"FSH supports ovarian follicular development and granulosa-cell activity. LH supports theca-cell androgen production, triggers ovulation through its mid-cycle surge, and promotes corpus luteum formation.",ex:"Oestrogen and inhibin provide feedback regulation of the hypothalamic-pituitary-ovarian axis."},
-{q:"Differentiate the follicular phase from the luteal phase of the ovarian cycle.",rubric:[["before ovulation","follicle develops","follicular phase"],["after ovulation","corpus luteum forms","luteal phase"],["progesterone predominates in luteal phase","corpus luteum secretes progesterone","progesterone prepares endometrium"]],model:"The follicular phase extends from the start of the cycle to ovulation and involves follicular development and rising oestrogen. The luteal phase follows ovulation and is characterised by the corpus luteum and increased progesterone.",ex:"The luteal phase is relatively more consistent in length than the follicular phase."},
-{q:"What is fertilisation, and where does it most commonly occur?",rubric:[["fusion of sperm and oocyte","fusion of male and female gametes","formation of zygote"],["ampulla","ampulla of uterine tube","fallopian tube ampulla"]],model:"Fertilisation is the fusion of a sperm and an oocyte, leading to formation of a zygote. It most commonly occurs in the ampulla of the uterine tube.",ex:"Fertilisation restores the diploid chromosome number."},
-{q:"Define implantation and state approximately when it begins after fertilisation.",rubric:[["blastocyst attaches to endometrium","attachment of blastocyst","blastocyst invades uterine lining"],["six to seven days","day 6","day 7","about one week after fertilisation"]],model:"Implantation is attachment and subsequent embedding of the blastocyst in the endometrium. It generally begins about 6–7 days after fertilisation.",ex:"Successful implantation supports continuation of pregnancy and development of placental tissues."},
-{q:"Name the main stages from zygote to blastocyst.",rubric:[["zygote"],["cleavage","blastomeres"],["morula"],["blastocyst"]],model:"The zygote undergoes cleavage to produce blastomeres, forms a morula, and then develops into a blastocyst.",ex:"The blastocyst contains an embryoblast, trophoblast, and fluid-filled cavity."},
-{q:"Name the three primary germ layers formed during gastrulation.",rubric:[["ectoderm"],["mesoderm"],["endoderm"]],model:"The three primary germ layers are ectoderm, mesoderm, and endoderm.",ex:"These layers give rise to the tissues and organs of the developing embryo."},
-{q:"Give one major derivative of each of the three primary germ layers.",rubric:[["ectoderm","epidermis","nervous system","neural tissue"],["mesoderm","muscle","bone","connective tissue","cardiovascular"],["endoderm","epithelial lining of gut","gut lining","respiratory epithelium","liver","pancreas"]],model:"Ectoderm gives rise to the epidermis and nervous system; mesoderm forms structures including muscle, bone, connective tissue, and much of the cardiovascular system; endoderm forms much of the epithelial lining of the digestive and respiratory tracts and organs such as the liver and pancreas.",ex:"Many organs have contributions from more than one germ layer."},
-{q:"What is neurulation, and which embryonic structure gives rise to the neural tube?",rubric:[["formation of neural tube","neural tube forms","neurulation"],["neural plate","ectoderm","neuroectoderm folds","neural folds fuse"]],model:"Neurulation is the process by which the neural plate folds and closes to form the neural tube. The neural plate is derived from specialised ectoderm, or neuroectoderm.",ex:"The neural tube develops into the brain and spinal cord."},
-{q:"State two important functions of the placenta.",rubric:[["oxygen and carbon dioxide exchange","gas exchange","oxygen supply"],["nutrient transfer","waste removal","hormone production","immune protection","maternal fetal exchange"]],model:"The placenta facilitates gas and nutrient exchange, removes fetal waste, produces hormones that support pregnancy, and contributes to immunological interactions between mother and fetus.",ex:"Any two distinct, valid functions earn credit."},
-{q:"What is the function of human chorionic gonadotropin (hCG) in early pregnancy?",rubric:[["maintains corpus luteum","prevents early corpus luteum regression"],["supports progesterone production","maintains progesterone","supports early pregnancy"]],model:"hCG from trophoblastic tissue maintains the corpus luteum in early pregnancy, allowing continued progesterone production until placental hormone production becomes sufficient.",ex:"hCG is also the hormone detected by most pregnancy tests."},
-{q:"Distinguish the embryonic period from the fetal period.",rubric:[["embryonic period first eight weeks","organogenesis","early organ formation"],["fetal period from ninth week to birth","growth and maturation","increases in size and functional maturation"]],model:"The embryonic period extends through the first eight weeks after fertilisation and includes major body-plan formation and organogenesis. The fetal period begins in the ninth week and is characterised by growth and functional maturation.",ex:"Clinical gestational age is usually counted from the last menstrual period, approximately two weeks before fertilisation."},
-{q:"Define teratogen and give one example of a factor that can disrupt prenatal development.",rubric:[["agent that causes developmental abnormality","factor that disrupts embryonic development","causes congenital anomalies"],["alcohol","certain medications","some infections","ionising radiation","maternal diabetes","tobacco","teratogen"]],model:"A teratogen is an environmental, chemical, infectious, or physical factor that can disturb prenatal development and cause developmental abnormalities. Examples include alcohol, certain medications, some infections, and ionising radiation.",ex:"Effects depend on the exposure, dose, timing, and susceptibility of the developing embryo or fetus."}
-];
-
-/* ESSAY BANK: 5 QUESTIONS */
-const essays = [
-{q:"Essay 1: Describe the standard anatomical position, anatomical planes, directional terms, body regions, and major body cavities. Explain why standardised anatomical terminology is important.",rubric:[
-["standing upright and facing forward","palms face anteriorly","standard anatomical position"],
-["sagittal plane","coronal or frontal plane","transverse plane"],
-["superior and inferior","anterior and posterior","medial and lateral","proximal and distal"],
-["axial and appendicular regions","head neck trunk limbs","body regions"],
-["cranial thoracic abdominal pelvic cavities","organ location","standardised communication","clinical description"]
-],model:"A strong answer defines the standard anatomical position; explains sagittal, coronal, and transverse planes; correctly uses directional terms; describes the axial and appendicular regions; and identifies major body cavities and their contents. Standard terminology reduces ambiguity in clinical communication.",ex:"One mark per rubric category. Correct equivalent terminology earns credit."},
-{q:"Essay 2: Explain the four primary tissue types and describe how epithelial tissue is classified. Include examples of epithelial types and their locations or functions.",rubric:[
-["epithelial tissue covers surfaces and lines cavities","glandular epithelium"],
-["connective tissue support binding matrix","collagen or extracellular matrix"],
-["muscle tissue contracts","skeletal cardiac smooth muscle"],
-["nervous tissue neurons and glia","electrical signalling"],
-["simple versus stratified","squamous cuboidal columnar","transitional or pseudostratified","location and function examples"]
-],model:"A complete answer explains epithelial, connective, muscle, and nervous tissue. It describes epithelial classification by cell layers and cell shape and links examples to function: simple squamous for diffusion, simple cuboidal for secretion/absorption, columnar in digestive surfaces, stratified squamous for protection, and transitional epithelium in the urinary tract.",ex:"One mark per category. Include at least one accurate structure-function relationship."},
-{q:"Essay 3: Compare spermatogenesis and oogenesis, including sites, major stages, hormonal regulation, chromosome reduction, and the differences in their mature products.",rubric:[
-["spermatogenesis occurs in seminiferous tubules","oogenesis occurs in ovaries"],
-["spermatogonia primary spermatocytes meiosis spermatids sperm","oogonia primary oocytes secondary oocyte polar bodies"],
-["meiosis reduces diploid to haploid","genetic variation","haploid gametes"],
-["four functional sperm from one primary spermatocyte","one large functional female gamete","unequal cytokinesis"],
-["FSH Sertoli cells","LH Leydig testosterone","LH FSH ovarian function","oocyte meiotic arrest"]
-],model:"A complete answer compares the testicular and ovarian sites, the stages of both processes, meiotic reduction and genetic variation, the production of four sperm versus one large functional female gamete with polar bodies, and the hormonal roles of FSH and LH.",ex:"One mark per rubric category. Distinguish the secondary oocyte released at ovulation from an ovum that has completed meiosis II."},
-{q:"Essay 4: Describe the ovarian cycle and explain the hormonal changes during the follicular phase, ovulation, and luteal phase. Relate the ovarian cycle to changes in the endometrium.",rubric:[
-["FSH supports follicular development","follicular phase"],
-["growing follicles secrete oestrogen","endometrial proliferative phase"],
-["sustained high oestrogen positive feedback","LH surge triggers ovulation"],
-["corpus luteum secretes progesterone","luteal phase"],
-["progesterone supports secretory endometrium","no pregnancy corpus luteum regresses","hormones fall and menstruation occurs"]
-],model:"Explain follicular growth under FSH, rising oestrogen and endometrial proliferation, positive feedback leading to the LH surge and ovulation, corpus luteum formation and progesterone secretion, and the hormonal decline and menstruation that follow if pregnancy does not occur.",ex:"One mark per rubric category. Include the relationship between ovarian hormone levels and endometrial changes."},
-{q:"Essay 5: Explain early human development from fertilisation through implantation, gastrulation, neurulation, and the beginning of organogenesis. Include the germ layers, placenta, and the importance of prenatal development.",rubric:[
-["fertilisation forms diploid zygote","cleavage morula blastocyst"],
-["blastocyst implantation in endometrium","embryoblast and trophoblast"],
-["gastrulation forms ectoderm mesoderm endoderm"],
-["neurulation forms neural tube","organogenesis during embryonic period"],
-["placenta exchange and hormone production","hCG supports corpus luteum","teratogens can disrupt development"]
-],model:"A strong answer follows fertilisation and cleavage through the morula and blastocyst, explains implantation and embryoblast/trophoblast roles, describes gastrulation and the three germ layers, explains neural-tube formation and organogenesis, and outlines placental functions and the importance of avoiding developmental hazards.",ex:"One mark per rubric category. Developmental timing should be described in the context of fertilisation unless gestational age is specifically stated."}
-];
-
-/* STATE AND HELPERS */
-let mode="",currentQuestions=[],answers=[],startTime=0;
-let timerInterval=null,submitted=false,results=[],currentResult=null;
-let pendingAutomatic=false;
-
-function loadResults(){
-  try{
-    const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
-    results=Array.isArray(data)?data:[];
-  }catch(e){results=[]}
-}
-function saveResults(){
-  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(results))}
-  catch(e){alert("Your browser could not save the results. You can still print this report.")}
-}
-
-function startTest(selectedMode){
-  refreshIdentity();
-  if(!student){
-    alert("Please verify your registration on index.html first.");
-    return;
-  }
-  mode=selectedMode;
-  currentQuestions=mode==="mcq"?mcqs:shortQs.concat(essays);
-  answers=Array(currentQuestions.length).fill("");
-  startTime=Date.now();
-  submitted=false;
-  currentResult=null;
-  pendingAutomatic=false;
-
-  document.getElementById("setup").classList.add("hidden");
-  document.getElementById("results").classList.add("hidden");
-  document.getElementById("exam").classList.remove("hidden");
-  document.getElementById("studentLabel").textContent=
-    student.name+" | Admission No: "+student.admission;
-  document.getElementById("modeLabel").textContent=
-    mode==="mcq"?"MCQ Challenge · 30 marks":"Open-Ended Challenge · 50 marks";
-  document.getElementById("timerLabel").textContent=
-    mode==="mcq"?"Elapsed time · target 15:00":"Elapsed time · limit 30:00";
-
-  renderQuestions();
-  updateProgress();
-  requestAnimationFrame(()=>{
-    syncDashboardSpace();
-    window.scrollTo({top:0,behavior:"instant"});
-  });
-  updateTimer();
-  if(timerInterval)clearInterval(timerInterval);
-  timerInterval=setInterval(updateTimer,250);
-}
-
-function renderQuestions(){
-  const list=document.getElementById("questionList");
-  list.innerHTML="";
-  currentQuestions.forEach((q,i)=>{
-    const section=document.createElement("section");
-    section.className="question";
-    section.id="question-"+i;
-    const num=document.createElement("div");
-    num.className="q-number";
-    num.textContent=mode==="mcq"
-      ?"Question "+(i+1)+" · 1 mark"
-      :i<25?"Short Answer "+(i+1)+" · 1 mark":"Essay "+(i-24)+" · 5 marks";
-    const title=document.createElement("h3");
-    title.textContent=q.q;
-    section.append(num,title);
-
-    if(mode==="mcq"){
-      q.o.forEach((choice,j)=>{
-        const label=document.createElement("label");
-        label.className="option";
-        const radio=document.createElement("input");
-        radio.type="radio";radio.name="q"+i;radio.value=j;
-        radio.addEventListener("change",()=>{
-          if(submitted)return;
-          answers[i]=String(j);
-          updateProgress();
-        });
-        const text=document.createElement("span");
-        text.textContent=String.fromCharCode(65+j)+". "+choice;
-        label.append(radio,text);
-        section.appendChild(label);
-      });
-    }else{
-      const ta=document.createElement("textarea");
-      ta.id="answer-"+i;
-      ta.placeholder=i<25
-        ?"Write your short answer using relevant anatomical terms…"
-        :"Develop a structured answer using relevant anatomical and developmental concepts…";
-      ta.value=answers[i]||"";
-      ta.addEventListener("input",()=>{
-        if(submitted)return;
-        answers[i]=ta.value;
-        updateProgress();
-      });
-      section.appendChild(ta);
-      if(i>=25){
-        const note=document.createElement("p");
-        note.className="small";
-        note.textContent="Essay marking: 5 rubric points available. Relevant key concepts earn partial credit.";
-        section.appendChild(note);
-      }
-    }
-    list.appendChild(section);
-  });
-}
-
-function updateProgress(){
-  const count=answers.filter(a=>String(a).trim()!=="").length;
-  document.getElementById("progressText").textContent=
-    count+" of "+currentQuestions.length+" answered";
-  document.getElementById("progressFill").style.width=
-    (count/currentQuestions.length*100)+"%";
-  document.getElementById("unansweredNotice").textContent=
-    count===currentQuestions.length
-      ?"All questions have a response. You may submit."
-      :(currentQuestions.length-count)+" unanswered question(s) may receive zero marks.";
-}
-function formatTime(s){
-  return String(Math.floor(s/60)).padStart(2,"0")+":"+
-    String(s%60).padStart(2,"0");
-}
-function updateTimer(){
-  if(submitted)return;
-  const elapsed=Math.floor((Date.now()-startTime)/1000);
-  document.getElementById("timer").textContent=formatTime(elapsed);
-  const limit=mode==="mcq"?900:1800;
-  const hardLimit=mode==="mcq"?960:1800;
-  document.getElementById("timer").classList.toggle("red",elapsed>=limit);
-  if(elapsed>=hardLimit)submitTest(true,true);
-}
-function goToTop(){window.scrollTo({top:0,behavior:"smooth"})}
-
-function normalise(s){
-  return String(s||"").toLowerCase()
-    .replace(/β/g," beta ").replace(/α/g," alpha ")
-    .replace(/γ/g," gamma ").replace(/δ/g," delta ")
-    .replace(/⁺/g,"+").replace(/⁻/g,"-")
-    .replace(/na\+/g," sodium ").replace(/k\+/g," potassium ")
-    .replace(/ca2\+/g," calcium ").replace(/ca\+\+/g," calcium ")
-    .replace(/atpase/g," atpase ")
-    .replace(/[^a-z0-9+.-]+/g," ").replace(/\s+/g," ").trim();
-}
-function containsAlternative(answer,alternatives){
-  const text=" "+normalise(answer)+" ";
-  return alternatives.some(term=>{
-    const t=normalise(term);
-    if(!t)return false;
-    return text.includes(" "+t+" ")||text.includes(t);
-  });
-}
-function markRubric(answer,rubric,pointsEach){
-  const hits=[];let score=0;
-  rubric.forEach(criterion=>{
-    const hit=containsAlternative(answer,criterion);
-    hits.push(hit);
-    if(hit)score+=pointsEach;
-  });
-  return {score,hits};
-}
-function scoreOpenAnswer(q,index,answer){
-  const essay=index>=25;
-  const marked=markRubric(answer,q.rubric,essay?1:0.5);
-  const max=essay?5:1;
-  return {score:Math.min(max,marked.score),max,hits:marked.hits};
-}
-
-/* SUBMISSION CONFIRMATION MODAL */
-function openSubmitModal(automatic=false){
-  if(submitted)return;
-  pendingAutomatic=automatic;
-  const answered=answers.filter(a=>String(a).trim()!=="").length;
-  const unanswered=answers.length-answered;
-  const modal=document.getElementById("submitModal");
-  const message=document.getElementById("submitModalMessage");
-  const warning=document.getElementById("modalWarning");
-  const cancel=document.getElementById("cancelSubmit");
-  const confirmButton=document.getElementById("confirmSubmit");
-
-  document.getElementById("modalAnswered").textContent=answered;
-  document.getElementById("modalUnanswered").textContent=unanswered;
-
-  if(automatic){
-    document.getElementById("submitModalTitle").textContent="Time Limit Reached";
-    message.textContent="Your assessment time has ended. Your responses will now be submitted automatically.";
-    warning.textContent=mode==="mcq"
-      ?"The 16-minute limit was reached. A 5-mark penalty will be applied."
-      :"The 30-minute time limit was reached.";
-    warning.classList.remove("hidden");
-    cancel.classList.add("hidden");
-    confirmButton.textContent="View Results";
-  }else{
-    document.getElementById("submitModalTitle").textContent="Submit Assessment?";
-    message.textContent=unanswered>0
-      ?"You still have unanswered questions. You can return to your assessment or submit your current responses."
-      :"You have answered every question. Are you ready to submit your assessment?";
-    if(unanswered>0){
-      warning.textContent=unanswered+" question(s) are blank and will receive zero marks.";
-      warning.classList.remove("hidden");
-    }else{
-      warning.classList.add("hidden");
-    }
-    cancel.classList.remove("hidden");
-    confirmButton.textContent="Confirm Submission";
-  }
-  modal.classList.remove("hidden");
-  document.body.style.overflow="hidden";
-  confirmButton.focus();
-}
-function closeSubmitModal(){
-  document.getElementById("submitModal").classList.add("hidden");
-  document.body.style.overflow="";
-}
-document.getElementById("cancelSubmit").addEventListener("click",closeSubmitModal);
-document.getElementById("confirmSubmit").addEventListener("click",()=>{
-  const automatic=pendingAutomatic;
-  closeSubmitModal();
-  submitTest(automatic,true);
-});
-document.getElementById("submitModal").addEventListener("click",event=>{
-  if(event.target.id==="submitModal"&&!pendingAutomatic)closeSubmitModal();
-});
-document.addEventListener("keydown",event=>{
-  const modal=document.getElementById("submitModal");
-  if(event.key==="Escape"&&!modal.classList.contains("hidden")&&!pendingAutomatic)
-    closeSubmitModal();
-});
-
-function submitTest(automatic=false,confirmed=false){
-  if(submitted)return;
-  if(!automatic&&!confirmed){
-    openSubmitModal(false);
-    return;
-  }
-  const elapsed=Math.floor((Date.now()-startTime)/1000);
-  if(timerInterval){clearInterval(timerInterval);timerInterval=null}
-  submitted=true;
-  closeSubmitModal();
-
-  let raw=0;
-  const max=mode==="mcq"?30:50;
-  const marking=[];
-  currentQuestions.forEach((q,i)=>{
-    if(mode==="mcq"){
-      const correct=answers[i]!==""&&Number(answers[i])===q.a;
-      const score=correct?1:0;
-      raw+=score;
-      marking.push({score,max:1,correct,feedback:null});
-    }else{
-      const result=scoreOpenAnswer(q,i,answers[i]);
-      raw+=result.score;
-      marking.push({score:result.score,max:result.max,correct:result.score===result.max,feedback:result.hits});
-    }
-  });
-
-  const late=mode==="mcq"&&elapsed>=960;
-  const deduction=late?5:0;
-  const finalScore=Math.max(0,raw-deduction);
-  currentResult={
-    name:student.name,admission:student.admission,mode,
-    rawScore:raw,penalty:deduction,finalScore,max,
-    percentage:finalScore/max*100,elapsedSeconds:elapsed,late,
-    answers:[...answers],marking,date:new Date().toLocaleString()
-  };
-  results.push(currentResult);
-  saveResults();
-
-  document.getElementById("exam").classList.add("hidden");
-  document.getElementById("results").classList.remove("hidden");
-  document.documentElement.style.setProperty("--dashboard-height","0px");
-  showResult(currentResult,automatic);
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function performanceComment(p){
-  if(p>=90)return"Outstanding performance. You demonstrated excellent command of the assessed concepts.";
-  if(p>=80)return"Excellent performance. Continue practising anatomical and developmental applications.";
-  if(p>=70)return"Very good understanding. Review the concepts that cost you marks.";
-  if(p>=60)return"Good progress, but some concepts need more consolidation.";
-  if(p>=50)return"A developing foundation. Revisit the explanations and practise retrieval.";
-  if(p>=40)return"More revision is needed. Focus on understanding structures, tissue types, and developmental mechanisms.";
-  return"Use this attempt diagnostically. Review foundational concepts, then attempt the assessment again.";
-}
-function bandComment(lower){
-  if(lower===0)return"Revisit foundational terminology and core concepts.";
-  if(lower===20)return"Basic knowledge is emerging; practise explaining structure and function.";
-  if(lower===40)return"Develop a stronger conceptual foundation.";
-  if(lower===60)return"Good progress; practise applying concepts to new situations.";
-  if(lower===80)return"Strong performance and a good level of conceptual understanding.";
-  return"Excellent to outstanding mastery of the assessed concepts.";
-}
-
-function showResult(r,automatic){
-  document.getElementById("resultName").textContent=
-    "Student: "+r.name+" · Admission number: "+r.admission+" · "+r.date;
-  document.getElementById("resultMode").textContent=
-    r.mode==="mcq"?"MCQ Challenge":"Open-Ended Challenge";
-  document.getElementById("scoreDisplay").textContent=
-    r.finalScore.toFixed(1)+"/"+r.max;
-  document.getElementById("percentageDisplay").textContent=
-    "Final percentage: "+r.percentage.toFixed(1)+"%";
-  document.getElementById("rawScore").textContent=r.rawScore.toFixed(1)+"/"+r.max;
-  document.getElementById("penalty").textContent=r.penalty+" marks";
-  document.getElementById("answeredCount").textContent=
-    r.answers.filter(a=>String(a).trim()!=="").length;
-  document.getElementById("unansweredCount").textContent=
-    r.answers.filter(a=>String(a).trim()==="").length;
-  document.getElementById("overallRemark").innerHTML=
-    "<strong>Overall feedback</strong><br>"+escapeHTML(performanceComment(r.percentage));
-
-  let timeText="Time used: "+formatTime(r.elapsedSeconds)+". ";
-  if(r.mode==="mcq"){
-    timeText+=r.late
-      ?"The 16-minute limit was reached and a 5-mark penalty was applied."
-      :r.elapsedSeconds>=900
-        ?"The 15-minute target was exceeded, but the 16-minute penalty threshold was not reached."
-        :"Completed within the 15-minute target.";
-  }else{
-    timeText+=r.elapsedSeconds>=1800
-      ?"The 30-minute time limit was reached."
-      :"Completed within the 30-minute time limit.";
-  }
-  if(automatic)timeText+=" Assessment submitted automatically.";
-  document.getElementById("timeRemark").innerHTML=
-    "<div class='"+(r.late?"warning":"notice")+"'>"+escapeHTML(timeText)+"</div>";
-
-  const bands=document.getElementById("intervalRemarks");
-  bands.innerHTML="";
-  for(let lower=0;lower<=80;lower+=20){
-    const upper=lower+19.99;
-    const reached=r.percentage>=lower&&
-      (lower===80?r.percentage<=100:r.percentage<=upper);
-    const div=document.createElement("div");
-    div.className="remark";
-    div.innerHTML="<strong>"+lower+"–"+(lower===80?100:upper.toFixed(0))+
-      "%</strong> — "+escapeHTML(bandComment(lower))+
-      (reached?" <strong>← Your band</strong>":"");
-    bands.appendChild(div);
-  }
-  renderReview(r);
-  renderRegister();
-}
-
-function renderReview(r){
-  const box=document.getElementById("reviewList");
-  box.innerHTML="";
-  currentQuestions.forEach((q,i)=>{
-    const m=r.marking[i];
-    const div=document.createElement("div");
-    div.className="review-item";
-    let html="<strong>Q"+(i+1)+". "+escapeHTML(q.q)+"</strong><br>";
-    html+="<span class='"+(m.correct?"correct":"incorrect")+"'>"+
-      (m.correct?"✓ Full marks":"Score: "+m.score.toFixed(1)+"/"+m.max)+
-      "</span><br>";
-
-    if(r.mode==="mcq"){
-      const yours=r.answers[i]===""
-        ?"Not answered"
-        :String.fromCharCode(65+Number(r.answers[i]))+". "+q.o[Number(r.answers[i])];
-      const key=String.fromCharCode(65+q.a)+". "+q.o[q.a];
-      html+="<span class='small'>Your answer: "+escapeHTML(yours)+"</span><br>";
-      html+="<span class='correct'>Correct answer: "+escapeHTML(key)+"</span><br>";
-      html+="<p>"+escapeHTML(q.e)+"</p>";
-    }else{
-      html+="<p><strong>Your response:</strong><br>"+
-        escapeHTML(r.answers[i]||"Not answered").replace(/\n/g,"<br>")+"</p>";
-      html+="<p><strong>Model answer:</strong><br>"+escapeHTML(q.model)+"</p>";
-      html+="<p>"+escapeHTML(q.ex)+"</p>";
-      html+="<p><strong>Rubric detected:</strong> ";
-      html+=(m.feedback||[]).map((hit,j)=>
-        "<span class='badge'>"+(hit?"✓":"○")+" Criterion "+(j+1)+"</span>"
-      ).join(" ");
-      html+="</p>";
-    }
-    div.innerHTML=html;
-    box.appendChild(div);
-  });
-}
-
-function renderRegister(){
-  const box=document.getElementById("register");
-  box.innerHTML="";
-  if(!results.length){
-    box.textContent="No completed attempts yet.";
-    return;
-  }
-  const wrap=document.createElement("div");
-  wrap.className="register-table-wrap";
-  const table=document.createElement("table");
-  const thead=document.createElement("thead");
-  const head=document.createElement("tr");
-  ["Student","Admission No.","Mode","Date","Raw","Penalty","Final","%","Time"].forEach(t=>{
-    const th=document.createElement("th");
-    th.textContent=t;
-    head.appendChild(th);
-  });
-  thead.appendChild(head);
-  table.appendChild(thead);
-  const body=document.createElement("tbody");
-  results.forEach(r=>{
-    const tr=document.createElement("tr");
-    [
-      r.name,r.admission,r.mode==="mcq"?"MCQ":"Open",r.date,
-      r.rawScore.toFixed(1)+"/"+r.max,"-"+r.penalty,
-      r.finalScore.toFixed(1)+"/"+r.max,r.percentage.toFixed(1)+"%",
-      formatTime(r.elapsedSeconds)
-    ].forEach(value=>{
-      const td=document.createElement("td");
-      td.textContent=value;
-      tr.appendChild(td);
-    });
-    body.appendChild(tr);
-  });
-  table.appendChild(body);
-  wrap.appendChild(table);
-  box.appendChild(wrap);
-}
-function printResults(){window.print()}
-function showRegister(){document.getElementById("register").scrollIntoView({behavior:"smooth"})}
-function backHome(){
-  if(timerInterval){clearInterval(timerInterval);timerInterval=null}
-  closeSubmitModal();
-  document.getElementById("results").classList.add("hidden");
-  document.getElementById("exam").classList.add("hidden");
-  document.getElementById("setup").classList.remove("hidden");
-  document.documentElement.style.setProperty("--dashboard-height","0px");
-  refreshIdentity();
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-loadResults();
+const SESSION_KEY="pharmily31Student";
+const STORAGE_KEY="pharmily31AnatomyResults_v2";
+const TOPICS={
+ general:{name:"General Anatomy",icon:"🧍",mcq:[
+ ["Which plane divides the body into equal right and left halves?",["Coronal","Transverse","Median sagittal","Oblique","Horizontal"],2,"The median sagittal plane divides the body into equal right and left halves."],
+ ["In anatomical position, the palms face which direction?",["Posteriorly","Anteriorly","Medially","Inferiorly","Laterally"],1,"The palms face anteriorly."],
+ ["Which term means nearer to the point of limb attachment?",["Distal","Superficial","Lateral","Proximal","Inferior"],3,"Proximal means nearer to the trunk or point of attachment."],
+ ["Which cavity contains the heart and lungs?",["Cranial","Vertebral","Thoracic","Pelvic","Abdominal"],2,"The thoracic cavity contains the lungs and mediastinal structures, including the heart."],
+ ["Which membrane directly covers the lung surface?",["Parietal pleura","Visceral pleura","Peritoneum","Pericardium","Dura mater"],1,"The visceral pleura covers the lung surface."],
+ ["Which term means farther from the midline?",["Medial","Superior","Proximal","Deep","Lateral"],4,"Lateral means away from the midline."],
+ ["The plane separating anterior and posterior portions is the:",["Sagittal","Coronal","Transverse","Median","Oblique"],1,"The coronal (frontal) plane divides anterior and posterior portions."],
+ ["Which cavity houses the brain?",["Thoracic","Abdominal","Cranial","Pelvic","Pleural"],2,"The cranial cavity houses the brain."],
+ ["The elbow is _____ to the wrist.",["Distal","Proximal","Inferior","Superficial","Lateral"],1,"The elbow is proximal to the wrist."],
+ ["Which term describes a structure closer to the body surface?",["Deep","Distal","Superficial","Medial","Caudal"],2,"Superficial means closer to the surface."],
+ ["The diaphragm separates the thoracic cavity from the:",["Cranial cavity","Abdominal cavity","Vertebral canal","Pleural cavity","Pericardial cavity"],1,"The diaphragm separates thoracic and abdominal cavities."],
+ ["Which region contains the umbilicus?",["Cervical","Umbilical","Patellar","Scapular","Popliteal"],1,"The umbilical region surrounds the navel."],
+ ["The nose is _____ to the ears.",["Lateral","Posterior","Medial","Inferior","Distal"],2,"The nose is medial to the ears."],
+ ["Which directional pair means toward the head and toward the feet?",["Medial/lateral","Proximal/distal","Superficial/deep","Superior/inferior","Anterior/posterior"],3,"Superior is toward the head; inferior is toward the feet."],
+ ["Which cavity contains most digestive organs?",["Cranial","Thoracic","Abdominal","Vertebral","Pericardial"],2,"Most digestive organs lie in the abdominal cavity."],
+ ["The sternum is _____ to the heart.",["Posterior","Anterior","Distal","Inferior","Lateral"],1,"The sternum lies anterior to the heart."],
+ ["A section dividing the body into superior and inferior parts is:",["Sagittal","Coronal","Transverse","Median","Parasagittal"],2,"A transverse section divides superior and inferior parts."],
+ ["Which term means nearer the surface of an organ?",["Deep","Superficial","Proximal","Caudal","Medial"],1,"Superficial refers to proximity to the surface."],
+ ["The spinal cord is protected by the:",["Pleural cavity","Cranial cavity only","Vertebral canal","Peritoneal cavity","Mediastinum"],2,"The vertebral canal protects the spinal cord."],
+ ["Which is part of the axial skeleton?",["Femur","Humerus","Scapula","Vertebral column","Carpal bones"],3,"The vertebral column is part of the axial skeleton."],
+ ["Which term describes the front of the body?",["Posterior","Dorsal","Anterior","Caudal","Deep"],2,"Anterior means toward the front in human anatomical terminology."],
+ ["The patellar region refers to the:",["Knee front","Back of knee","Shoulder","Wrist","Ankle"],0,"The patellar region is the anterior knee."],
+ ["The popliteal region is located:",["Palm","Back of knee","Sole","Groin","Neck"],1,"The popliteal region is posterior to the knee."],
+ ["Which cavity contains the urinary bladder when it is empty?",["Cranial","Thoracic","Pelvic","Pleural","Pericardial"],2,"The urinary bladder is located in the pelvic cavity when empty."],
+ ["A structure on the same side as another is described as:",["Contralateral","Ipsilateral","Bilateral","Distal","Superficial"],1,"Ipsilateral means on the same side."],
+ ["Which term means toward the feet?",["Cranial","Superior","Caudal","Medial","Proximal"],2,"Caudal means toward the tail or feet in humans."],
+ ["The heart is located in the:",["Pleural cavity","Pericardial cavity","Cranial cavity","Vertebral canal","Abdominal cavity"],1,"The heart is enclosed by the pericardial cavity within the mediastinum."],
+ ["Which region is the armpit?",["Inguinal","Axillary","Brachial","Crural","Gluteal"],1,"The axillary region is the armpit."],
+ ["The thumb is generally _____ to the little finger in anatomical position.",["Medial","Lateral","Posterior","Inferior","Proximal"],1,"The thumb is lateral when the palms face forward."],
+ ["Which body division includes the limbs?",["Axial","Appendicular","Cranial","Visceral","Thoracic"],1,"The appendicular region includes upper and lower limbs and their girdles."]
+ ],open:[
+ ["Define anatomy and distinguish it from physiology.",["Anatomy studies body structure; physiology studies function."],["structure","physiology","function"]],
+ ["Name the three anatomical planes and explain each.",["Sagittal divides right/left; coronal divides anterior/posterior; transverse divides superior/inferior."],["sagittal","coronal","transverse"]],
+ ["Describe the standard anatomical position.",["Upright, facing forward, arms at sides, palms facing anteriorly."],["upright","forward","palms"]],
+ ["Define proximal and distal.",["Proximal is nearer the trunk or attachment; distal is farther away."],["proximal","distal"]],
+ ["Name four major body cavities.",["Cranial, vertebral, thoracic, abdominal and pelvic cavities."],["cranial","thoracic","abdominal","pelvic"]],
+ ["Distinguish medial from lateral.",["Medial is toward the midline; lateral is away from it."],["medial","lateral"]],
+ ["What does ipsilateral mean? Contrast with contralateral.",["Ipsilateral means same side; contralateral means opposite sides."],["ipsilateral","contralateral"]],
+ ["Name the four abdominal quadrants.",["Right upper, left upper, right lower and left lower quadrants."],["right upper","left upper","right lower","left lower"]],
+ ["What is the mediastinum?",["Central region of thorax between the pleural cavities; contains heart and major structures."],["central","thorax","heart"]],
+ ["Explain superficial and deep using an example.",["Superficial is nearer the surface; deep is farther from it."],["superficial","deep"]],
+ ["Name the axial and appendicular divisions of the skeleton.",["Axial: skull, vertebral column, ribs and sternum; appendicular: limbs and girdles."],["axial","appendicular","limbs"]],
+ ["What is anatomical variation?",["Normal differences in structures between individuals."],["differences","individuals"]],
+ ["Define flexion and extension.",["Flexion generally decreases a joint angle; extension increases it."],["flexion","extension","angle"]],
+ ["Distinguish anterior from posterior.",["Anterior means toward the front; posterior means toward the back."],["anterior","posterior"]],
+ ["Name the main serous membranes and the cavities they line.",["Pleura in thorax, pericardium around heart, peritoneum in abdominopelvic cavity."],["pleura","pericardium","peritoneum"]],
+ ["What is a body region and why is regional terminology useful?",["A named area of the body; terminology supports precise description and communication."],["area","precise","communication"]],
+ ["Distinguish a section from a plane.",["A plane is an imaginary flat surface; a section is a cut or view through the body."],["plane","section","cut"]],
+ ["What is the anatomical position of the forearm?",["In standard position the forearm is supinated and palms face anteriorly."],["supinated","palms","anteriorly"]],
+ ["Define bilateral.",["Present on both the right and left sides."],["both","sides"]],
+ ["Give two examples of regional anatomical terms.",["Examples include brachial (arm), femoral (thigh), axillary (armpit), and patellar (front of knee)."],["brachial","femoral","axillary","patellar"]],
+ ["Explain why standard anatomical language matters in healthcare.",["It reduces ambiguity and improves clinical documentation and team communication."],["ambiguity","communication","clinical"]],
+ ["Locate the epigastric region.",["Upper central abdominal region above the umbilical region."],["upper","central","abdominal"]],
+ ["What is the difference between a cavity and an organ?",["A cavity is a space housing structures; an organ is a body structure with specialised functions."],["space","organ","function"]],
+ ["Define abduction and adduction.",["Abduction moves away from the midline; adduction moves toward it."],["abduction","adduction","midline"]],
+ ["Explain the terms prone and supine.",["Prone lies face down; supine lies face up."],["prone","supine","face"]]
+ ]},
+ cell:{name:"Cell Biology",icon:"🧫",mcq:[
+ ["Which organelle produces most ATP during aerobic respiration?",["Golgi apparatus","Mitochondrion","Lysosome","Nucleolus","Ribosome"],1,"Mitochondria produce most ATP through oxidative phosphorylation."],
+ ["Which organelle modifies and packages proteins for secretion?",["Golgi apparatus","Centriole","Peroxisome","Nucleus","Smooth ER"],0,"The Golgi apparatus modifies, sorts and packages proteins."],
+ ["Protein synthesis occurs at:",["Lysosomes","Ribosomes","Centrioles","Peroxisomes","Nucleoli only"],1,"Ribosomes translate mRNA into polypeptides."],
+ ["Which structure selectively regulates movement into and out of a cell?",["Cell wall","Plasma membrane","Nucleolus","Chromatin","Centrosome"],1,"The plasma membrane is selectively permeable."],
+ ["DNA replication occurs during which cell-cycle phase?",["G1","S","G2","M only","Cytokinesis"],1,"DNA is replicated during S phase."],
+ ["Which organelle contains hydrolytic enzymes for intracellular digestion?",["Lysosome","Ribosome","Golgi vesicle only","Nucleolus","Centrosome"],0,"Lysosomes digest macromolecules and cellular material."],
+ ["Osmosis is the movement of:",["Solute against gradient","Water across a selectively permeable membrane","Proteins through ribosomes","ATP into nucleus","Ions only using ATP"],1,"Osmosis is net water movement across a selectively permeable membrane."],
+ ["Which transport process directly requires ATP to move a substance against its gradient?",["Simple diffusion","Facilitated diffusion","Active transport","Osmosis","Filtration"],2,"Active transport uses energy to move substances against an electrochemical gradient."],
+ ["Which structure contains most of a eukaryotic cell's DNA?",["Golgi","Nucleus","Lysosome","Cell membrane","Ribosome"],1,"Most eukaryotic DNA is in the nucleus."],
+ ["Which organelle is the major site of lipid synthesis and detoxification?",["Smooth endoplasmic reticulum","Rough ER","Nucleolus","Lysosome","Ribosome"],0,"Smooth ER synthesises lipids and participates in detoxification."],
+ ["What is the main role of the nucleolus?",["ATP synthesis","Ribosomal RNA production and ribosome assembly","Lipid digestion","Cell motility","DNA translation"],1,"The nucleolus produces rRNA and assembles ribosomal subunits."],
+ ["A cell placed in a hypertonic solution will generally:",["Swell","Shrink","Remain unchanged always","Divide immediately","Burst"],1,"Water leaves the cell in a hypertonic environment, causing shrinkage."],
+ ["Which junction allows direct passage of ions between adjacent cells?",["Tight junction","Gap junction","Desmosome","Hemidesmosome","Basement membrane"],1,"Gap junctions permit communication through intercellular channels."],
+ ["Mitosis usually produces:",["Four haploid cells","Two genetically similar daughter cells","Two haploid gametes","One cell without DNA","Four identical nuclei in one cell"],1,"Mitosis distributes replicated chromosomes into two daughter nuclei."],
+ ["Which molecule forms the basic structural framework of the plasma membrane?",["Cellulose","Phospholipid bilayer","Peptidoglycan","Triglyceride layer","Glycogen"],1,"The membrane is organised around a phospholipid bilayer with proteins and other components."],
+ ["Which cytoskeletal element forms the mitotic spindle?",["Microtubules","Collagen fibres","Actin only","Intermediate filaments only","Elastin"],0,"Spindle microtubules move chromosomes during cell division."],
+ ["Apoptosis is best described as:",["Uncontrolled swelling only","Programmed cell death","Cell division","Protein secretion","DNA replication"],1,"Apoptosis is regulated programmed cell death."],
+ ["Which organelle breaks down hydrogen peroxide using catalase?",["Peroxisome","Ribosome","Nucleolus","Centrosome","Golgi"],0,"Peroxisomes contain catalase and other oxidative enzymes."],
+ ["Facilitated diffusion differs from simple diffusion because it:",["Always uses ATP","Uses membrane proteins","Moves only water","Moves against gradients","Requires vesicles"],1,"Facilitated diffusion uses channels or carriers but moves down a gradient without direct ATP use."],
+ ["Which phase follows G1 in the typical cell cycle?",["M","S","Cytokinesis","G0 only","Telophase"],1,"S phase follows G1 and is when DNA synthesis occurs."],
+ ["Which base pairs with adenine in DNA?",["Uracil","Cytosine","Guanine","Thymine","Ribose"],3,"Adenine pairs with thymine in DNA."],
+ ["Transcription produces:",["DNA from protein","RNA from a DNA template","Protein from RNA","ATP from glucose","Lipids from amino acids"],1,"Transcription uses DNA as a template to produce RNA."],
+ ["Translation takes place on:",["Ribosomes","Lysosomes","Centrioles","Nuclear pores only","Peroxisomes"],0,"Ribosomes read mRNA to build polypeptides."],
+ ["Which process engulfs large particles into a cell?",["Exocytosis","Phagocytosis","Osmosis","Simple diffusion","Filtration"],1,"Phagocytosis is a type of endocytosis for large particles."],
+ ["Which organelle is continuous with the nuclear envelope and often bears ribosomes?",["Rough ER","Lysosome","Peroxisome","Centrosome","Golgi only"],0,"Rough ER is continuous with the outer nuclear membrane and is studded with ribosomes."],
+ ["A diploid human somatic cell normally has:",["23 chromosomes","46 chromosomes","44 chromosomes","92 chromosomes at all times","22 chromosomes"],1,"A typical human diploid somatic cell has 46 chromosomes."],
+ ["Which molecule carries amino acids to the ribosome during translation?",["mRNA","tRNA","rRNA only","DNA polymerase","ATP synthase"],1,"Transfer RNA carries specific amino acids to the ribosome."],
+ ["Exocytosis involves:",["Vesicles fusing with plasma membrane","Water crossing by osmosis","DNA entering nucleus","Chromosome separation","Ribosomes leaving cell"],0,"Exocytosis releases vesicle contents when vesicles fuse with the plasma membrane."],
+ ["Which phase includes chromosome alignment at the cell equator?",["Prophase","Metaphase","Anaphase","Telophase","G1"],1,"Chromosomes align at the metaphase plate."],
+ ["Which molecule is the main immediate energy currency of cells?",["DNA","ATP","Collagen","Glycogen only","Cholesterol"],1,"ATP provides readily usable energy for many cellular processes."]
+ ],open:[
+ ["Describe the fluid mosaic model of the plasma membrane.",["Phospholipid bilayer with embedded proteins and mobile components; selective barrier."],["phospholipid","bilayer","proteins","selective"]],
+ ["Compare diffusion, facilitated diffusion and active transport.",["Diffusion is passive down gradient; facilitated diffusion uses proteins; active transport uses energy against gradient."],["passive","gradient","proteins","energy"]],
+ ["Outline the major phases of the cell cycle.",["G1 growth, S DNA replication, G2 preparation, M mitosis and cytokinesis."],["g1","s phase","g2","mitosis"]],
+ ["Distinguish mitosis from meiosis.",["Mitosis usually yields two similar diploid cells; meiosis yields haploid cells and variation."],["mitosis","meiosis","haploid","two"]],
+ ["State the functions of mitochondria.",["ATP production through aerobic respiration; also roles in metabolism and apoptosis."],["atp","respiration","apoptosis"]],
+ ["Explain the role of ribosomes.",["They translate mRNA to synthesise polypeptides."],["translate","mrna","protein"]],
+ ["Compare rough and smooth endoplasmic reticulum.",["Rough ER synthesises secreted/membrane proteins; smooth ER synthesises lipids and aids detoxification."],["rough","proteins","smooth","lipids"]],
+ ["What are lysosomes and what do they do?",["Membrane-bound organelles with enzymes that digest macromolecules and worn-out cell components."],["enzymes","digest","membrane"]],
+ ["Define osmosis and predict a cell's response to a hypertonic solution.",["Water moves across a selectively permeable membrane; a cell loses water and shrinks in hypertonic solution."],["water","membrane","shrinks"]],
+ ["Describe DNA structure and complementary base pairing.",["Double helix; A pairs with T and C pairs with G."],["double helix","adenine","thymine","cytosine","guanine"]],
+ ["Explain transcription and translation.",["Transcription produces RNA from DNA; translation uses mRNA at ribosomes to make protein."],["transcription","rna","translation","ribosome"]],
+ ["What is apoptosis and why is it important?",["Regulated cell death removes damaged/unneeded cells and supports development and tissue balance."],["programmed","cell death","development"]],
+ ["Describe the functions of the Golgi apparatus.",["Modifies, sorts and packages proteins/lipids into vesicles for delivery or secretion."],["modifies","sorts","packages","vesicles"]],
+ ["Distinguish endocytosis from exocytosis.",["Endocytosis brings material in by vesicles; exocytosis releases material by vesicle fusion."],["endocytosis","into","exocytosis","release"]],
+ ["What are the main functions of the cytoskeleton?",["Maintains shape, supports intracellular transport, movement and cell division."],["shape","transport","movement","division"]],
+ ["Explain the roles of mRNA, tRNA and rRNA.",["mRNA carries coding information; tRNA delivers amino acids; rRNA forms the ribosome's structural/catalytic core."],["mrna","trna","rrna","amino acids"]],
+ ["What is the function of peroxisomes?",["Oxidative reactions, fatty-acid metabolism and hydrogen peroxide breakdown by catalase."],["hydrogen peroxide","catalase","fatty"]],
+ ["Define stem cell and state two properties.",["Undifferentiated cell able to self-renew and differentiate into specialised cell types."],["self renew","differentiate","specialised"]],
+ ["What is a chromosome?",["A DNA-protein structure that carries genetic information."],["dna","protein","genetic"]],
+ ["Explain why cell membranes are selectively permeable.",["Their lipid bilayer and specific channels/carriers regulate passage of substances."],["lipid","channels","carriers","regulate"]],
+ ["Distinguish genotype from phenotype.",["Genotype is genetic makeup; phenotype is observable traits influenced by genes and environment."],["genotype","genetic","phenotype","traits"]],
+ ["What is cytokinesis?",["Division of cytoplasm to form separate daughter cells after nuclear division."],["cytoplasm","daughter cells"]],
+ ["Describe the role of ATP in cells.",["ATP supplies usable energy for biosynthesis, transport, movement and other cellular work."],["energy","transport","movement"]],
+ ["What is the difference between a gene and a genome?",["A gene is a DNA sequence with a functional product; genome is the organism's total genetic material."],["gene","dna","genome","genetic material"]],
+ ["Explain how mutations may affect proteins.",["DNA sequence changes can alter RNA/codons and protein sequence or expression; effects may be neutral, harmful or beneficial."],["dna","protein","codon","neutral"]]
+ ]},
+ histology:{name:"Histology & Tissues",icon:"🔬",mcq:[
+ ["Which tissue lines surfaces and forms glands?",["Epithelial","Nervous","Muscle","Bone","Blood"],0,"Epithelial tissue covers surfaces and forms glands."],
+ ["Which epithelium is suited to rapid diffusion in alveoli?",["Stratified squamous","Simple cuboidal","Simple squamous","Transitional","Pseudostratified"],2,"Simple squamous epithelium is thin and supports gas exchange."],
+ ["Which epithelium stretches in the urinary bladder?",["Simple columnar","Transitional","Keratinised squamous","Simple cuboidal","Stratified cuboidal"],1,"Transitional epithelium (urothelium) adapts to urinary tract distension."],
+ ["Which connective-tissue cell produces collagen-rich matrix?",["Neutrophil","Fibroblast","Neuron","Erythrocyte","Osteoclast"],1,"Fibroblasts produce extracellular matrix including collagen."],
+ ["Which cartilage contains abundant elastic fibres?",["Hyaline","Fibrocartilage","Elastic","Calcified","Articular bone"],2,"Elastic cartilage is found in the auricle and epiglottis."],
+ ["Which muscle is striated and has intercalated discs?",["Smooth","Skeletal","Cardiac","Myofibroblast","Dense connective"],2,"Cardiac muscle is striated and joined by intercalated discs."],
+ ["Which blood cell transports most oxygen?",["Platelet","Erythrocyte","Lymphocyte","Neutrophil","Monocyte"],1,"Erythrocytes carry haemoglobin."],
+ ["Which epithelium lines much of the trachea?",["Simple squamous","Pseudostratified ciliated columnar","Transitional","Simple cuboidal","Keratinised squamous"],1,"Respiratory epithelium is typically pseudostratified ciliated columnar with goblet cells."],
+ ["Which connective tissue stores energy and insulates?",["Adipose","Dense regular","Reticular","Hyaline cartilage","Areolar only"],0,"Adipose tissue stores triglycerides and provides insulation and cushioning."],
+ ["Which cell forms myelin in the peripheral nervous system?",["Astrocyte","Oligodendrocyte","Schwann cell","Microglia","Ependymal cell"],2,"Schwann cells myelinate peripheral axons."],
+ ["What is the principal role of osteoclasts?",["Build bone matrix","Resorb bone","Produce myelin","Store fat","Secrete mucus"],1,"Osteoclasts resorb bone."],
+ ["Which fibre provides high tensile strength in connective tissue?",["Collagen","Elastin only","Actin","Keratin only","Myosin"],0,"Collagen fibres resist tensile forces."],
+ ["Which epithelial type commonly forms kidney tubules?",["Simple cuboidal","Stratified squamous","Transitional","Simple squamous only","Pseudostratified"],0,"Simple cuboidal epithelium commonly lines kidney tubules."],
+ ["Goblet cells primarily secrete:",["Collagen","Mucus","Haemoglobin","Insulin only","Bile"],1,"Goblet cells secrete mucins that form mucus."],
+ ["Which tissue contains chondrocytes in lacunae?",["Cartilage","Skeletal muscle","Nervous tissue","Epithelium","Blood"],0,"Chondrocytes reside in lacunae within cartilage matrix."],
+ ["Which bone cell produces new osteoid?",["Osteoclast","Osteoblast","Chondroclast","Fibrocyte","Macrophage"],1,"Osteoblasts produce osteoid and support bone formation."],
+ ["Which tissue is specialised for electrical signalling?",["Epithelial","Nervous","Adipose","Cartilage","Dense regular"],1,"Neurons and glial cells form nervous tissue."],
+ ["Which connective tissue forms tendons?",["Loose areolar","Dense regular collagenous","Adipose","Elastic cartilage","Reticular"],1,"Tendons contain dense regular collagen fibres aligned with tensile forces."],
+ ["Which epithelium protects the epidermis against abrasion?",["Simple squamous","Keratinised stratified squamous","Simple cuboidal","Transitional","Simple columnar"],1,"The epidermis is keratinised stratified squamous epithelium."],
+ ["Which leukocyte is strongly associated with antibody production after differentiation?",["Erythrocyte","Plasma cell","Platelet","Neutrophil","Eosinophil"],1,"Plasma cells are differentiated B lymphocytes that secrete antibodies."],
+ ["Which structure anchors epithelium to underlying tissue?",["Basement membrane","Sarcomere","Axon hillock","Canaliculus","Intercalated disc"],0,"The basement membrane supports and anchors epithelium."],
+ ["Which cartilage type resists compression in intervertebral discs?",["Elastic","Fibrocartilage","Hyaline only","Calcified","No cartilage"],1,"Fibrocartilage is adapted to resist compression and tensile stress."],
+ ["Which tissue has abundant extracellular matrix relative to cells?",["Connective","Epithelial","Nervous only","Cardiac only","All epithelia"],0,"Connective tissues generally have abundant extracellular matrix."],
+ ["What is a sarcomere?",["Nerve junction","Contractile unit of striated muscle","Bone cell","Epithelial layer","Lymph node"],1,"The sarcomere is the basic contractile unit of striated muscle."],
+ ["Which cell type helps form the blood-brain barrier with its end-feet?",["Astrocyte","Schwann cell","Osteocyte","Goblet cell","Chondrocyte"],0,"Astrocytes support blood-brain barrier function."],
+ ["Which gland releases its product through a duct?",["Endocrine","Exocrine","Neuroendocrine only","Pituitary only","None"],1,"Exocrine glands secrete through ducts onto a surface or into a lumen."],
+ ["What is the main function of platelets?",["Oxygen transport","Haemostasis and clot formation","Antibody secretion","Bone resorption","Nerve conduction"],1,"Platelets contribute to primary haemostasis and clot formation."],
+ ["Which epithelial classification describes cells that appear multilayered but all contact the basement membrane?",["Transitional","Pseudostratified","Stratified squamous","Simple cuboidal","Simple squamous"],1,"Pseudostratified epithelium appears multilayered but all cells contact the basement membrane."],
+ ["Which cell forms bone's mature maintenance network?",["Osteocyte","Osteoclast","Osteoblast only","Chondroblast","Fibroblast"],0,"Osteocytes are mature bone cells embedded in matrix."],
+ ["Which muscle tissue is typically voluntary and attached to the skeleton?",["Cardiac","Smooth","Skeletal","Visceral","Myocardial"],2,"Skeletal muscle is generally under voluntary control."]
+ ],open:[
+ ["Name the four major tissue types and one role of each.",["Epithelial covers/lines; connective supports; muscle contracts; nervous communicates."],["epithelial","connective","muscle","nervous"]],
+ ["Compare simple and stratified epithelium.",["Simple has one cell layer; stratified has multiple layers and often protects."],["one","layer","multiple","protect"]],
+ ["Explain the function of the basement membrane.",["Supports and anchors epithelium and separates it from connective tissue."],["supports","anchors","epithelium"]],
+ ["Describe the structure and function of simple squamous epithelium.",["A single thin cell layer suited to diffusion and filtration, e.g. alveoli or endothelium."],["single","thin","diffusion","alveoli"]],
+ ["Distinguish hyaline, elastic and fibrocartilage.",["Hyaline provides smooth support; elastic bends; fibrocartilage resists compression and tensile forces."],["hyaline","elastic","fibrocartilage"]],
+ ["Compare the three muscle tissue types.",["Skeletal striated voluntary; cardiac striated involuntary with intercalated discs; smooth nonstriated involuntary."],["skeletal","cardiac","smooth"]],
+ ["Describe the roles of fibroblasts.",["Synthesis and maintenance of extracellular matrix, especially collagen."],["extracellular matrix","collagen"]],
+ ["What are the functions of adipose tissue?",["Energy storage, insulation, cushioning and endocrine signalling."],["energy","insulation","cushioning"]],
+ ["Distinguish osteoblasts, osteocytes and osteoclasts.",["Osteoblasts form bone, osteocytes maintain it, osteoclasts resorb it."],["osteoblast","osteocyte","osteoclast"]],
+ ["Describe the components and functions of blood.",["Plasma transports substances; red cells carry gases; white cells defend; platelets aid clotting."],["plasma","red cells","white cells","platelets"]],
+ ["What is the role of Schwann cells?",["They form myelin around peripheral nerve axons and support axonal repair."],["myelin","peripheral","axon"]],
+ ["Explain the structure and function of a neuron.",["Cell body, dendrites and axon; receives, integrates and transmits signals."],["cell body","dendrites","axon","signals"]],
+ ["Compare endocrine and exocrine glands.",["Endocrine release hormones into blood/interstitial fluid; exocrine secrete through ducts."],["endocrine","hormones","exocrine","ducts"]],
+ ["What are goblet cells?",["Unicellular epithelial glands that secrete mucus."],["epithelial","secrete","mucus"]],
+ ["Explain how tendons differ from ligaments.",["Tendons connect muscle to bone; ligaments connect bone to bone and stabilise joints."],["tendon","muscle","ligament","bone"]],
+ ["Describe the microscopic organisation of compact bone.",["Osteons with concentric lamellae around central canals; osteocytes occupy lacunae."],["osteons","lamellae","canals","lacunae"]],
+ ["What is a sarcomere and why is it important?",["Basic contractile unit between Z discs containing actin and myosin filaments."],["contractile","actin","myosin"]],
+ ["Describe the function of cilia in respiratory epithelium.",["Move mucus and trapped particles toward the pharynx for clearance."],["mucus","particles","move"]],
+ ["What is the difference between a tissue and an organ?",["Tissue is a group of similar/interacting cells; organ contains multiple tissue types working together."],["cells","organ","tissue types"]],
+ ["Explain the role of collagen and elastin.",["Collagen resists tensile stress; elastin allows stretch and recoil."],["collagen","tensile","elastin","recoil"]],
+ ["What are intercalated discs?",["Specialised junctions between cardiac muscle cells with mechanical and electrical connections."],["cardiac","junctions","electrical"]],
+ ["Describe the role of macrophages in tissues.",["Phagocytose debris/pathogens and participate in immune signalling and repair."],["phagocytose","pathogens","repair"]],
+ ["What is the difference between a serous membrane and mucous membrane?",["Serous membranes line closed cavities and reduce friction; mucous membranes line tracts opening to exterior and secrete mucus."],["serous","friction","mucous","mucus"]],
+ ["Explain why epithelial tissue is avascular.",["It lacks blood vessels and receives nutrients by diffusion from underlying connective tissue."],["lacks blood vessels","diffusion","connective"]],
+ ["Describe the role of extracellular matrix in connective tissue.",["Provides structural support, mechanical properties, adhesion and a medium for exchange/signalling."],["support","collagen","exchange"]]
+ ]},
+ skeletal:{name:"Skeletal & Muscular Anatomy",icon:"🦴",mcq:[
+ ["Which is the longest bone in the human body?",["Tibia","Humerus","Femur","Fibula","Ulna"],2,"The femur is the longest bone."],
+ ["Which bone forms the forehead?",["Parietal","Frontal","Occipital","Temporal","Sphenoid"],1,"The frontal bone forms the forehead and roof of the orbits."],
+ ["The scapula belongs to the:",["Axial skeleton","Pectoral girdle","Pelvic girdle","Carpus","Tarsus"],1,"The scapula is part of the pectoral girdle."],
+ ["Which bone is in the medial forearm in anatomical position?",["Radius","Ulna","Humerus","Scaphoid","Clavicle"],1,"The ulna is medial and radius lateral in anatomical position."],
+ ["The patella is classified as a:",["Long bone","Flat bone","Sesamoid bone","Irregular bone","Pneumatic bone"],2,"The patella is a sesamoid bone embedded in the quadriceps tendon."],
+ ["Which muscle is the principal elbow flexor regardless of forearm position?",["Biceps brachii only","Brachialis","Triceps brachii","Anconeus","Deltoid"],1,"Brachialis is a powerful elbow flexor."],
+ ["Which muscle primarily extends the elbow?",["Biceps brachii","Brachialis","Triceps brachii","Brachioradialis","Pronator teres"],2,"Triceps brachii extends the elbow."],
+ ["Which bone articulates with the acetabulum?",["Tibia","Femur","Fibula","Sacrum","Patella"],1,"The femoral head articulates with the acetabulum."],
+ ["The rotator cuff includes all except:",["Supraspinatus","Infraspinatus","Teres minor","Subscapularis","Teres major"],4,"Rotator cuff muscles are supraspinatus, infraspinatus, teres minor and subscapularis."],
+ ["Which muscle is a major plantar flexor of the ankle?",["Tibialis anterior","Gastrocnemius","Extensor digitorum longus","Fibularis tertius","Sartorius"],1,"Gastrocnemius contributes strongly to plantar flexion."],
+ ["Which bone forms the heel?",["Talus","Calcaneus","Navicular","Cuboid","Cuneiform"],1,"The calcaneus forms the heel."],
+ ["Which vertebrae normally have transverse foramina?",["Thoracic","Lumbar","Cervical","Sacral only","Coccygeal"],2,"Cervical vertebrae characteristically have transverse foramina."],
+ ["Which muscle abducts the arm from about 15 to 90 degrees?",["Latissimus dorsi","Middle deltoid","Pectoralis major","Teres major","Triceps"],1,"The middle fibres of deltoid are major abductors after initial supraspinatus action."],
+ ["Which structure connects muscle to bone?",["Ligament","Tendon","Meniscus","Bursa","Labrum"],1,"Tendons connect muscle to bone."],
+ ["Which structure connects bone to bone?",["Tendon","Ligament","Fascia only","Cartilage only","Aponeurosis"],1,"Ligaments connect bones and help stabilise joints."],
+ ["Which bone is part of the axial skeleton?",["Femur","Clavicle","Sternum","Scapula","Radius"],2,"The sternum is part of the axial skeleton."],
+ ["Which muscle is the main inspiratory muscle?",["Rectus abdominis","Diaphragm","Internal oblique","Transversus abdominis","Pectoralis minor only"],1,"Contraction of the diaphragm increases thoracic volume during inspiration."],
+ ["Which movement turns the palm posteriorly from anatomical position?",["Supination","Pronation","Abduction","Opposition","Circumduction"],1,"Pronation rotates the forearm so the palm faces posteriorly in anatomical position."],
+ ["Which bone is lateral in the leg?",["Tibia","Femur","Fibula","Patella","Talus"],2,"The fibula is lateral to the tibia."],
+ ["The deltoid inserts on the:",["Olecranon","Deltoid tuberosity","Radial tuberosity","Coracoid process","Acromion"],1,"Deltoid inserts on the deltoid tuberosity of the humerus."],
+ ["Which muscle flexes the hip and extends the knee?",["Biceps femoris","Rectus femoris","Gluteus maximus","Soleus","Semitendinosus"],1,"Rectus femoris crosses the hip and knee, flexing the hip and extending the knee."],
+ ["Which group primarily extends the knee?",["Hamstrings","Quadriceps femoris","Adductors","Gluteals","Triceps surae"],1,"Quadriceps femoris extends the knee."],
+ ["Which muscle group is commonly called the hamstrings?",["Quadriceps","Biceps femoris, semitendinosus, semimembranosus","Rotator cuff","Thenar muscles","Intercostals"],1,"The hamstrings comprise biceps femoris, semitendinosus and semimembranosus."],
+ ["Which bone is the main weight-bearing bone of the leg?",["Fibula","Tibia","Patella","Talus","Calcaneus"],1,"The tibia transmits most weight from the knee to the ankle."],
+ ["Which muscle is a powerful hip extensor?",["Gluteus maximus","Iliopsoas","Sartorius","Tensor fasciae latae","Adductor longus"],0,"Gluteus maximus powerfully extends the hip."],
+ ["Which type of bone contains a medullary cavity in its shaft?",["Long bone","Flat bone only","Short bone","Sesamoid only","Irregular only"],0,"The diaphysis of a typical long bone contains a medullary cavity."],
+ ["Which joint type permits movement in multiple axes, such as the shoulder?",["Suture","Hinge","Ball-and-socket","Pivot","Gomphosis"],2,"Ball-and-socket joints permit multiaxial movement."],
+ ["Which muscle dorsiflexes the ankle?",["Gastrocnemius","Soleus","Tibialis anterior","Flexor hallucis longus","Popliteus"],2,"Tibialis anterior dorsiflexes and inverts the foot."],
+ ["Which bone forms the upper arm?",["Radius","Ulna","Humerus","Scapula","Clavicle"],2,"The humerus is the bone of the upper arm."],
+ ["Which muscle abducts the thigh and stabilises the pelvis during gait?",["Gluteus medius","Adductor magnus","Gracilis","Rectus femoris","Iliacus"],0,"Gluteus medius abducts the thigh and helps keep the pelvis level."]
+ ],open:[
+ ["Distinguish axial and appendicular skeletons.",["Axial includes skull, vertebral column, ribs and sternum; appendicular includes limbs and girdles."],["axial","appendicular","skull","limbs"]],
+ ["Describe the structure of a typical long bone.",["Diaphysis, epiphyses, metaphysis, compact/spongy bone, periosteum and medullary cavity."],["diaphysis","epiphyses","periosteum","medullary"]],
+ ["Compare tendons and ligaments.",["Tendons connect muscle to bone; ligaments connect bone to bone and stabilise joints."],["tendon","muscle","ligament","bone"]],
+ ["Name the four rotator cuff muscles.",["Supraspinatus, infraspinatus, teres minor and subscapularis."],["supraspinatus","infraspinatus","teres minor","subscapularis"]],
+ ["Explain flexion, extension, abduction and adduction.",["Flexion decreases angle, extension increases it, abduction moves away from midline, adduction toward it."],["flexion","extension","abduction","adduction"]],
+ ["Describe the main actions of quadriceps femoris.",["Extends the knee; rectus femoris also flexes the hip."],["extends","knee","rectus femoris","hip"]],
+ ["Name the hamstring muscles and their general actions.",["Biceps femoris, semitendinosus, semimembranosus; extend hip and flex knee."],["biceps femoris","semitendinosus","semimembranosus","knee"]],
+ ["Describe the roles of the tibia and fibula.",["Tibia is the main weight-bearing medial leg bone; fibula is lateral and supports muscle attachment and ankle stability."],["tibia","weight","fibula","lateral"]],
+ ["Explain how skeletal muscle produces movement.",["Nerve stimulation triggers calcium release; actin-myosin cross-bridge cycling shortens sarcomeres using ATP."],["calcium","actin","myosin","atp"]],
+ ["Name the major bones of the pectoral girdle and upper limb.",["Clavicle, scapula, humerus, radius, ulna, carpals, metacarpals and phalanges."],["clavicle","scapula","humerus","radius","ulna"]],
+ ["Name the major bones of the pelvic girdle and lower limb.",["Hip bones, femur, patella, tibia, fibula, tarsals, metatarsals and phalanges."],["femur","patella","tibia","fibula","tarsals"]],
+ ["Compare compact and spongy bone.",["Compact bone is dense and organised into osteons; spongy bone has trabeculae and marrow spaces."],["compact","osteons","spongy","trabeculae"]],
+ ["What is the function of articular cartilage?",["Reduces friction and distributes load at synovial joint surfaces."],["friction","load","joint"]],
+ ["Describe the actions of the diaphragm.",["Contraction flattens it and increases thoracic volume for inspiration; relaxation assists expiration."],["contracts","thoracic volume","inspiration"]],
+ ["Distinguish pronation from supination.",["Pronation turns palm posteriorly/down; supination turns it anteriorly/up in anatomical reference."],["pronation","supination","palm"]],
+ ["Explain the function of the gluteus medius.",["Abducts hip and stabilises pelvis during single-leg stance and walking."],["abducts","pelvis","walking"]],
+ ["What is a sesamoid bone? Give an example.",["Bone embedded in a tendon; patella is the largest example."],["tendon","patella"]],
+ ["Describe the actions of gastrocnemius and soleus.",["Both plantar-flex the ankle; gastrocnemius also flexes the knee."],["plantar","ankle","gastrocnemius","knee"]],
+ ["Name the three classes of muscle tissue and compare control.",["Skeletal generally voluntary; cardiac and smooth involuntary."],["skeletal","cardiac","smooth","voluntary"]],
+ ["What is periosteum?",["Vascular connective tissue covering external bone surfaces except articular surfaces; supports growth and repair."],["connective tissue","bone","repair"]],
+ ["Explain why the femoral head is suited to the hip joint.",["Its rounded head fits acetabulum, allowing multiaxial movement and stable weight transmission."],["rounded","acetabulum","movement"]],
+ ["Describe the role of the vertebral column.",["Supports trunk and head, protects spinal cord, permits movement and transfers load to pelvis."],["supports","spinal cord","movement","load"]],
+ ["What is the difference between origin and insertion of a muscle?",["Origin is usually the less mobile attachment; insertion is usually the more mobile attachment."],["origin","insertion","attachment"]],
+ ["Explain dorsiflexion and plantar flexion.",["Dorsiflexion brings foot toward shin; plantar flexion points foot downward."],["dorsiflexion","shin","plantar flexion"]],
+ ["How do muscles work in antagonistic pairs?",["One muscle produces a movement while its antagonist produces the opposite movement, coordinating joint control."],["antagonist","opposite","movement"]]
+ ]},
+ development:{name:"Development & Embryology",icon:"🧬",mcq:[
+ ["Meiosis is important in gametogenesis because it:",["Doubles chromosome number","Creates only identical diploid cells","Reduces chromosome number and promotes variation","Prevents recombination","Occurs only after birth"],2,"Meiosis produces haploid cells and genetic variation."],
+ ["Spermatogenesis occurs in the:",["Epididymis","Seminiferous tubules","Prostate","Vas deferens","Seminal vesicles"],1,"Spermatogenesis occurs in seminiferous tubules."],
+ ["Which hormone stimulates Leydig cells to produce testosterone?",["FSH","LH","Prolactin","Oxytocin","TSH"],1,"LH stimulates testosterone production by Leydig cells."],
+ ["Primary oocytes are arrested for years in:",["Metaphase II","Prophase I","Anaphase II","Telophase I","G2"],1,"Primary oocytes remain arrested in prophase I until recruited."],
+ ["The cell released during ovulation is normally a:",["Primary oocyte","Secondary oocyte arrested in metaphase II","Zygote","Ovum after completed meiosis II","Morula"],1,"Ovulation releases a secondary oocyte arrested in metaphase II."],
+ ["The LH surge most directly triggers:",["Menstruation","Ovulation","Implantation","Gastrulation","Parturition only"],1,"The mid-cycle LH surge triggers ovulation."],
+ ["The corpus luteum principally secretes:",["Insulin","Progesterone","Thyroxine","Oxytocin","Adrenaline"],1,"Progesterone supports the secretory endometrium."],
+ ["Fertilisation most commonly occurs in the:",["Cervix","Ampulla of uterine tube","Uterine fundus","Vagina","Ovary surface"],1,"Fertilisation usually occurs in the ampulla."],
+ ["Which sequence is correct?",["Blastocyst → zygote → morula","Zygote → cleavage → morula → blastocyst","Morula → zygote → gastrula","Gastrula → sperm → zygote","Ovum → fetus → morula"],1,"Cleavage produces blastomeres, then morula and blastocyst."],
+ ["The embryo proper primarily develops from the:",["Trophoblast","Embryoblast","Zona pellucida","Corpus luteum","Amniotic cavity"],1,"The embryoblast forms the embryo proper."],
+ ["Implantation generally begins around:",["Day 1","Day 2","Day 6–7","Day 21","Week 12"],2,"Implantation begins about 6–7 days after fertilisation."],
+ ["Gastrulation establishes the:",["Four ventricles","Three primary germ layers","Placenta alone","Neural crest only","Mature organs"],1,"Gastrulation establishes ectoderm, mesoderm and endoderm."],
+ ["The epidermis and much of the nervous system derive from:",["Endoderm","Mesoderm","Ectoderm","Trophoblast","Yolk sac only"],2,"Ectoderm gives rise to epidermis and nervous system."],
+ ["Much of the muscular and skeletal system derives from:",["Ectoderm","Mesoderm","Endoderm","Trophoblast","Amnion"],1,"Mesoderm contributes to muscle, bone and connective tissue."],
+ ["The epithelial lining of much of the digestive tract derives from:",["Ectoderm","Mesoderm","Endoderm","Neural crest","Trophoblast"],2,"Endoderm forms much of the digestive tract epithelium."],
+ ["The neural tube develops into the:",["Liver and pancreas","Brain and spinal cord","Heart and vessels","Kidney cortex only","Placenta"],1,"The neural tube forms the central nervous system."],
+ ["hCG in early pregnancy helps maintain the:",["Corpus luteum","Primary follicle only","Pituitary forever","Endometrium directly without hormones","Oocyte meiosis arrest only"],0,"hCG maintains the corpus luteum and progesterone production."],
+ ["Which structure contributes substantially to the fetal part of the placenta?",["Trophoblast","Mature ovary","Myometrium","Cervix","Corpus albicans"],0,"Trophoblast contributes to the fetal component of the placenta."],
+ ["The fetal period begins approximately at:",["Fertilisation","End of first week","Ninth week after fertilisation","Birth","Second trimester only"],2,"The fetal period begins in the ninth week after fertilisation."],
+ ["A teratogen is a factor that can:",["Always improve development","Disrupt prenatal development","Cause only normal growth","Prevent fertilisation in every case","Form germ layers"],1,"Teratogens can disturb prenatal development; effects depend on timing and exposure."],
+ ["Sertoli cells primarily:",["Produce most testicular testosterone","Support developing germ cells","Release hCG","Form the placenta","Trigger ovulation"],1,"Sertoli cells support spermatogenesis."],
+ ["The acrosome of a sperm contains enzymes that help with:",["Implantation","Penetrating coverings of the oocyte","Meiosis in ovary","Progesterone synthesis","Placental circulation"],1,"Acrosomal enzymes help sperm penetrate the oocyte's surrounding layers."],
+ ["The zona pellucida is a:",["Layer surrounding the oocyte/early embryo","Maternal blood vessel","Part of the neural tube","Placental hormone","Muscle layer"],0,"The zona pellucida is a glycoprotein coat around the oocyte and early embryo."],
+ ["Which event normally follows implantation and is central to early body-plan formation?",["Gastrulation","Menstruation","Spermatogenesis","Ovulation","Meiosis in adult liver"],0,"Gastrulation establishes the primary germ layers."],
+ ["Which membrane surrounds the amniotic cavity?",["Amnion","Pleura","Peritoneum","Pericardium","Endometrium only"],0,"The amnion encloses the amniotic cavity."],
+ ["The placenta normally allows:",["Free mixing of maternal and fetal blood","Gas and nutrient exchange across a barrier","No movement of substances","Only fetal waste entry into mother","Only hormone transfer"],1,"The placenta supports exchange while maternal and fetal blood are normally separated."],
+ ["The blastocyst's outer cell layer is called the:",["Embryoblast","Trophoblast","Epiblast only","Hypoblast only","Neural crest"],1,"The trophoblast forms the outer layer of the blastocyst."],
+ ["Crossing over occurs during:",["Mitosis metaphase","Meiosis prophase I","Cytokinesis","Fertilisation only","G1"],1,"Crossing over in prophase I contributes to genetic variation."],
+ ["The acrosomal reaction is associated with:",["Sperm-oocyte interaction","Placental delivery","Gastrulation","Neural tube closure","Menstruation"],0,"The acrosomal reaction helps sperm interact with and penetrate the oocyte's coverings."],
+ ["The ovarian cycle's luteal phase follows:",["Implantation","Ovulation","Gastrulation","Birth","Menopause only"],1,"The luteal phase follows ovulation and involves the corpus luteum."]
+ ],open:[
+ ["Define gametogenesis and name its male and female forms.",["Gametogenesis forms gametes; spermatogenesis forms sperm and oogenesis develops female gametes."],["gametes","spermatogenesis","oogenesis"]],
+ ["Compare spermatogenesis and oogenesis.",["Spermatogenesis typically yields four functional haploid cells; oogenesis yields one large gamete and polar bodies."],["four","sperm","oogenesis","polar bodies"]],
+ ["Explain the roles of Sertoli and Leydig cells.",["Sertoli cells support germ cells; Leydig cells produce testosterone in response to LH."],["sertoli","support","leydig","testosterone"]],
+ ["Describe the stages from fertilisation to blastocyst.",["Zygote undergoes cleavage, forms morula and then blastocyst."],["zygote","cleavage","morula","blastocyst"]],
+ ["What is fertilisation and where does it usually occur?",["Fusion of sperm and oocyte, usually in the ampulla of uterine tube."],["fusion","sperm","ampulla"]],
+ ["Define implantation and give its usual timing.",["Blastocyst attaches to and invades endometrium beginning around day 6–7 after fertilisation."],["blastocyst","endometrium","day 6"]],
+ ["Name the three germ layers and one derivative of each.",["Ectoderm: epidermis/nervous system; mesoderm: muscle/bone; endoderm: gut epithelium."],["ectoderm","mesoderm","endoderm"]],
+ ["Explain the function of hCG in early pregnancy.",["Maintains corpus luteum and progesterone secretion until placental steroid production is adequate."],["corpus luteum","progesterone"]],
+ ["Describe the ovarian cycle.",["Follicular phase, LH-surge ovulation, and luteal phase with corpus luteum progesterone."],["follicular","ovulation","luteal","progesterone"]],
+ ["What is the role of progesterone after ovulation?",["Supports secretory endometrium and helps prepare uterus for implantation."],["endometrium","implantation"]],
+ ["Explain the difference between embryonic and fetal periods.",["Embryonic period through first eight weeks after fertilisation; fetal period from ninth week to birth, with growth and maturation."],["eight weeks","ninth week","growth"]],
+ ["What is neurulation?",["Folding and closure of neural plate to form neural tube, precursor of brain and spinal cord."],["neural plate","neural tube","brain","spinal cord"]],
+ ["Describe two functions of the placenta.",["Gas/nutrient exchange, waste removal, hormone production and immunological roles."],["exchange","nutrient","waste","hormone"]],
+ ["Define teratogen and give examples.",["Factor that disrupts prenatal development; examples include alcohol, some infections, certain medicines or radiation."],["disrupts","development","alcohol"]],
+ ["What are the functions of the amniotic fluid?",["Cushions fetus, permits movement, helps maintain temperature and supports development."],["cushions","movement","temperature"]],
+ ["Explain how meiosis creates genetic variation.",["Crossing over and independent assortment generate new combinations of alleles."],["crossing over","independent assortment","variation"]],
+ ["What is the function of the zona pellucida?",["Glycoprotein coat around oocyte; participates in sperm interaction and helps prevent polyspermy after fertilisation."],["glycoprotein","oocyte","sperm"]],
+ ["Distinguish embryoblast from trophoblast.",["Embryoblast forms embryo proper; trophoblast contributes to implantation and fetal placenta."],["embryoblast","embryo","trophoblast","placenta"]],
+ ["Describe the menstrual-cycle changes after corpus luteum regression.",["Progesterone and oestrogen fall, endometrium breaks down and menstruation occurs."],["progesterone","oestrogen","endometrium","menstruation"]],
+ ["What is the acrosome reaction?",["Release/action of sperm acrosomal contents that help penetrate oocyte coverings."],["sperm","enzymes","oocyte"]],
+ ["Explain the importance of the neural tube closing correctly.",["It forms the central nervous system; failed closure can cause neural tube defects."],["central nervous system","closure","defects"]],
+ ["Describe the role of the yolk sac in early development.",["Early nutrient transfer and blood-cell formation; contributes to primordial germ-cell pathways."],["blood","nutrient","germ"]],
+ ["What is organogenesis?",["Formation and early development of organs, mainly during the embryonic period."],["formation","organs","embryonic"]],
+ ["Explain why timing matters for teratogen exposure.",["Developing tissues differ in susceptibility; effects depend on developmental stage, dose and duration."],["stage","dose","development"]],
+ ["Outline how the placenta supports pregnancy.",["Exchange of gases/nutrients/waste, hormone secretion and interface between maternal and fetal tissues."],["exchange","waste","hormone","maternal","fetal"]]
+ ]}
+};
+let student=null,mode=null,topic=null,questions=[],answers=[],startTime=0,timerInterval=null,submitted=false,pendingAutomatic=false,lastResult=null;
+const $=id=>document.getElementById(id);
+function escapeHTML(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function getIdentity(){try{const raw=sessionStorage.getItem(SESSION_KEY);if(!raw)return null;const d=JSON.parse(raw);if(!d||typeof d!=="object")return null;const name=d.name||d.fullName||d.studentName||d.student||d.full_name||"",admission=d.admissionNumber||d.admission_number||d.admission||d.regNo||d.registrationNumber||d.registration_number||"";return String(name).trim()&&String(admission).trim()?{name:String(name).trim(),admission:String(admission).trim()}:null;}catch(e){return null;}}
+function refreshIdentity(){student=getIdentity();if(student){$("identityBox").className="notice";$("identityBox").innerHTML="<strong>Verified session detected</strong><br>Student: "+escapeHTML(student.name)+"<br>Admission number: "+escapeHTML(student.admission);}else{$("identityBox").className="warning";$("identityBox").innerHTML="<strong>Registration verification required</strong><br>No verified student session was found. Return to the PHARMILY31 registration page, verify your registration, then reopen Anatomy Arena.";}updateStartButton();}
+function chooseMode(value){mode=value;$("modeMcq").classList.toggle("selected",mode==="mcq");$("modeOpen").classList.toggle("selected",mode==="open");$("step2").classList.add("active");updateStartButton();}
+function chooseTopic(value){topic=value;document.querySelectorAll("[data-topic]").forEach(b=>b.classList.toggle("selected",b.dataset.topic===value));$("step3").classList.add("active");updateStartButton();}
+function updateStartButton(){const ok=!!student&&!!mode&&!!topic;$("startButton").disabled=!ok;$("selectionSummary").textContent=(!mode&&!topic)?"Choose an assessment mode and a topic to continue.":!mode?"Choose MCQ or Open-Ended Challenge.":!topic?"Choose one topic to load its separate question bank.":"Ready: "+TOPICS[topic].name+" · "+(mode==="mcq"?"30 MCQs · 15-minute target":"25 short-answer questions · 30-minute limit")+". "+(student?"Registration verified.":"Registration verification is required.");}
+function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function startTest(){refreshIdentity();if(!student){alert("Please verify your registration before starting.");return;}if(!mode||!topic){alert("Please select an assessment mode and a topic.");return;}const bank=TOPICS[topic];questions=shuffle((mode==="mcq"?bank.mcq:bank.open).map((q,i)=>({data:q,originalIndex:i})));answers=Array(questions.length).fill("");startTime=Date.now();submitted=false;lastResult=null;$("setup").classList.add("hidden");$("results").classList.add("hidden");$("exam").classList.remove("hidden");$("studentLabel").textContent=student.name+" | Admission No: "+student.admission;$("modeLabel").textContent=bank.name+" · "+(mode==="mcq"?"MCQ Challenge":"Open-Ended Challenge");$("timerLabel").textContent=mode==="mcq"?"Elapsed · target 15:00":"Time remaining · 30:00";$("examHeading").textContent=bank.icon+" "+bank.name+" — "+(mode==="mcq"?"MCQ Challenge":"Open-Ended Challenge");$("examInstructions").textContent=mode==="mcq"?"Select one best answer for each question. The target is 15 minutes; submission is automatic at 16 minutes, with a 5-mark penalty.":"Answer each question in your own words. The assessment lasts 30 minutes and is marked against key concepts for revision purposes.";renderQuestions();updateProgress();window.scrollTo({top:0,behavior:"instant"});updateTimer();if(timerInterval)clearInterval(timerInterval);timerInterval=setInterval(updateTimer,500);}
+function renderQuestions(){const list=$("questionList");list.innerHTML="";questions.forEach((item,i)=>{const q=item.data,section=document.createElement("section");section.className="question";section.id="question-"+i;const num=document.createElement("div");num.className="q-number";num.textContent=(mode==="mcq"?"Question "+(i+1)+" · 1 mark":"Short Answer "+(i+1)+" · 2 marks");const title=document.createElement("h3");title.textContent=q[0];section.append(num,title);if(mode==="mcq"){q[1].forEach((choice,j)=>{const label=document.createElement("label");label.className="option";const radio=document.createElement("input");radio.type="radio";radio.name="q"+i;radio.value=String(j);radio.addEventListener("change",()=>{if(submitted)return;answers[i]=String(j);updateProgress();});const span=document.createElement("span");span.textContent=String.fromCharCode(65+j)+". "+choice;label.append(radio,span);section.appendChild(label);});}else{const ta=document.createElement("textarea");ta.id="answer-"+i;ta.placeholder="Write a clear answer using relevant anatomical and scientific terms…";ta.value=answers[i]||"";ta.addEventListener("input",()=>{if(submitted)return;answers[i]=ta.value;updateProgress();});section.appendChild(ta);const p=document.createElement("p");p.className="essay-note";p.textContent="2 marks · partial credit for relevant concepts.";section.appendChild(p);}list.appendChild(section);});}
+function updateProgress(){const count=answers.filter(a=>String(a).trim()!=="").length;$("progressText").textContent=count+" of "+questions.length+" answered";$("progressFill").style.width=(count/questions.length*100)+"%";$("unansweredNotice").textContent=count===questions.length?"All questions answered":(questions.length-count)+" unanswered";}
+function updateTimer(){if(submitted)return;const elapsed=Math.floor((Date.now()-startTime)/1000),limit=mode==="mcq"?900:1800,hard=mode==="mcq"?960:1800;$("timer").textContent=formatTime(mode==="mcq"?elapsed:Math.max(0,limit-elapsed));$("timer").classList.toggle("red",elapsed>=limit);if(elapsed>=hard)submitTest(true);}
+function formatTime(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");}
+function openSubmitModal(automatic=false){if(submitted)return;pendingAutomatic=automatic;const answered=answers.filter(a=>String(a).trim()!=="").length,unanswered=answers.length-answered;$("modalTitle").textContent=automatic?"Time limit reached":"Submit assessment?";$("modalMessage").textContent=automatic?"Your time has ended. Your current responses will be submitted automatically.":"Are you sure you want to submit your current responses?";$("modalCounts").textContent="Answered: "+answered+" · Unanswered: "+unanswered+(unanswered?" — blank answers receive zero marks.":"");$("submitModal").classList.remove("hidden");document.body.style.overflow="hidden";}
+function closeSubmitModal(){if(pendingAutomatic)return;$("submitModal").classList.add("hidden");document.body.style.overflow="";}
+function confirmSubmit(){pendingAutomatic=false;$("submitModal").classList.add("hidden");document.body.style.overflow="";submitTest(true);}
+function submitTest(automatic=false){if(submitted)return;if(!automatic){openSubmitModal(false);return;}const elapsed=Math.floor((Date.now()-startTime)/1000);if(timerInterval){clearInterval(timerInterval);timerInterval=null;}submitted=true;let raw=0;const marking=[];questions.forEach((item,i)=>{const q=item.data,answer=answers[i]||"";if(mode==="mcq"){const correct=answer!==""&&Number(answer)===q[2];raw+=correct?1:0;marking.push({score:correct?1:0,max:1,correct,feedback:q[3]});}else{const result=scoreOpen(answer,q[2]);raw+=result.score;marking.push({score:result.score,max:2,correct:result.score===2,feedback:q[1][0],hits:result.hits});}});const max=mode==="mcq"?30:50,penalty=mode==="mcq"&&elapsed>=960?5:0,finalScore=Math.max(0,raw-penalty);lastResult={name:student.name,admission:student.admission,topic:TOPICS[topic].name,mode,rawScore:raw,penalty,finalScore,max,percentage:finalScore/max*100,elapsedSeconds:elapsed,answers:answers.slice(),marking,date:new Date().toLocaleString()};saveResult(lastResult);$("exam").classList.add("hidden");$("results").classList.remove("hidden");showResult(lastResult);window.scrollTo({top:0,behavior:"smooth"});}
+function norm(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();}
+function scoreOpen(answer,keywords){const a=norm(answer);if(!a)return{score:0,hits:[]};const hits=keywords.map(k=>{const n=norm(k);return n.length>2&&a.includes(n);});const ratio=hits.filter(Boolean).length/Math.max(1,keywords.length);return{score:Math.min(2,Math.round(ratio*2*2)/2),hits};}
+function saveResult(result){try{const old=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");old.unshift(result);localStorage.setItem(STORAGE_KEY,JSON.stringify(old.slice(0,100)));}catch(e){console.warn("Could not save result",e);}}
+function readResults(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");}catch(e){return[];}}
+function showResult(r){$("resultName").textContent="Student: "+r.name+" · Admission No: "+r.admission;$("resultMode").textContent=r.topic+" · "+(r.mode==="mcq"?"MCQ Challenge":"Open-Ended Challenge")+" · "+r.date;$("scoreDisplay").textContent=r.finalScore+"/"+r.max;$("percentageDisplay").textContent=r.percentage.toFixed(1)+"%";$("rawScore").textContent=r.rawScore;$("penalty").textContent=r.penalty;$("answeredCount").textContent=r.answers.filter(a=>String(a).trim()!=="").length;$("unansweredCount").textContent=r.answers.length-Number($("answeredCount").textContent);$("overallRemark").textContent=r.percentage>=80?"Excellent work — strong performance. Review any missed concepts to consolidate your learning.":r.percentage>=60?"Good progress. Review the feedback below and revisit the concepts you missed.":"Use the model answers as a revision guide, then attempt the topic again."; $("timeRemark").textContent="Time taken: "+formatTime(r.elapsedSeconds)+(r.penalty?" · A 5-mark late penalty was applied.":"");renderRegister();renderReview(r);}
+function renderRegister(){const rows=readResults();if(!rows.length){$("register").innerHTML="<p>No saved assessments yet.</p>";return;}let html="<table><thead><tr><th>Date</th><th>Student</th><th>Admission</th><th>Topic</th><th>Mode</th><th>Score</th></tr></thead><tbody>";rows.forEach(r=>{html+="<tr><td>"+escapeHTML(r.date)+"</td><td>"+escapeHTML(r.name)+"</td><td>"+escapeHTML(r.admission)+"</td><td>"+escapeHTML(r.topic)+"</td><td>"+(r.mode==="mcq"?"MCQ":"Open-ended")+"</td><td>"+r.finalScore+"/"+r.max+"</td></tr>";});$("register").innerHTML=html+"</tbody></table>";}
+function renderReview(r){const wrap=$("reviewList");wrap.innerHTML="";questions.forEach((item,i)=>{const q=item.data,m=r.marking[i],div=document.createElement("div");div.className="review-item";const title=document.createElement("strong");title.textContent=(i+1)+". "+q[0];const score=document.createElement("div");score.className=m.correct?"correct":"incorrect";score.textContent="Score: "+m.score+"/"+m.max;div.append(title,score);const your=document.createElement("p");your.textContent="Your answer: "+(r.answers[i]||"No answer");div.appendChild(your);const model=document.createElement("div");model.className="feedback";if(r.mode==="mcq"){model.textContent="Correct answer: "+String.fromCharCode(65+q[2])+". "+q[1][q[2]]+" Explanation: "+q[3];}else{model.textContent="Model answer: "+q[1][0]+" Detected concepts: "+(m.hits?m.hits.filter(Boolean).length:0)+" of "+(m.hits?m.hits.length:0)+". Automated marking is approximate; review the model answer even if a valid response received partial credit.";}div.appendChild(model);wrap.appendChild(div);});}
+function backHome(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}submitted=false;mode=null;topic=null;questions=[];answers=[];$("exam").classList.add("hidden");$("results").classList.add("hidden");$("setup").classList.remove("hidden");$("modeMcq").classList.remove("selected");$("modeOpen").classList.remove("selected");document.querySelectorAll("[data-topic]").forEach(b=>b.classList.remove("selected"));$("step2").classList.remove("active");$("step3").classList.remove("active");refreshIdentity();updateStartButton();window.scrollTo({top:0,behavior:"smooth"});}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!pendingAutomatic&&!$("submitModal").classList.contains("hidden"))closeSubmitModal();});
+$("submitModal").addEventListener("click",e=>{if(e.target.id==="submitModal"&&!pendingAutomatic)closeSubmitModal();});
 refreshIdentity();
 </script>
 </body>
 </html>
-
